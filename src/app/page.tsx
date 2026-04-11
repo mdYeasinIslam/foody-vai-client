@@ -1,5 +1,5 @@
 'use client'
-import { useSocket } from "./hooks/useSocket";
+import { useSocket } from "../@libs/hooks/useSocket";
 
 export default function Home() {
 const {socket,connected} = useSocket()
