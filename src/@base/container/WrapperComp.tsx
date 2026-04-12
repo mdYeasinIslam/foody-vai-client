@@ -4,7 +4,7 @@ interface IProps {
   className?: string;
   children: React.ReactNode;
 }
-const WrapperCom: React.FC<IProps> = ({ children }) => {
+const WrapperComp: React.FC<IProps> = ({ children }) => {
   return (
     <>
       {children}
@@ -13,4 +13,4 @@ const WrapperCom: React.FC<IProps> = ({ children }) => {
   );
 };
 
-export default WrapperCom;
+export default WrapperComp;
