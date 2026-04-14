@@ -42,10 +42,10 @@ const LandingHeader: React.FC<IProps> = () => {
   const notifCount = 2;
 
   return (
-    <nav className="relative bg-green-700 shadow-md">
-      <div className="container mx-auto flex items-center justify-between  max-w-full h-16 md:h-20 ">
+    <nav className="relative w-full bg-green-700 shadow-md">
+      <div className="container flex items-center justify-between gap-2  h-16 md:h-20  ">
         {/* Logo */}
-        <div className="flex items-center gap-2 shrink-0 cursor-pointer">
+        <div className="flex items-center gap-1 shrink-0 cursor-pointer">
           <button
             type="button"
             onClick={() => setOpenMenu(!openMenu)}
@@ -67,7 +67,7 @@ const LandingHeader: React.FC<IProps> = () => {
             </div>
           )}
 
-          <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-xl shadow-sm select-none">
+          <div className="w-8 h-8 md:w-10 md:h-10 bg-white rounded-xl flex items-center justify-center text-xl shadow-sm select-none">
             🍛
           </div>
           <span className="hidden sm:block font-extrabold text-xl text-white tracking-tight leading-none">
@@ -76,7 +76,7 @@ const LandingHeader: React.FC<IProps> = () => {
         </div>
 
         {/* Search Bar */}
-        <div className="flex-1 max-w-xl">
+        <div className="flex-1 max-w-xs xl:max-w-xl">
           <Input
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
@@ -135,9 +135,9 @@ const LandingHeader: React.FC<IProps> = () => {
           <Dropdown menu={{ items: accountItems }} trigger={["click"]}>
             <button
               type="button"
-              className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-2 py-1 mg:px-3 md:py-1.5 text-white hover:bg-white/20 transition-colors"
+              className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-1 py-1 mg:px-3 md:py-1.5 text-white hover:bg-white/20 transition-colors"
             >
-              <div className="w-6 h-6 md:w-7 md:h-7 rounded-full bg-yellow-300 flex items-center justify-center text-green-800 font-bold text-sm select-none">
+              <div className="w-5 h-5 md:w-7 md:h-7 rounded-full bg-yellow-300 flex items-center justify-center text-green-800 font-bold text-sm select-none">
                 Y
               </div>
               <span className="hidden md:block text-sm font-semibold">
@@ -150,7 +150,7 @@ const LandingHeader: React.FC<IProps> = () => {
           <Badge count={cartCount} size="small" offset={[-2, 2]}>
             <button
               type="button"
-              className="p-1.5 md:p-2.5 rounded-full flex items-center justify-center bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-colors"
+              className="p-1 md:p-2.5 rounded-full flex items-center justify-center bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-colors"
             >
               <ShoppingCartOutlined style={{ fontSize: 18 }} />
             </button>

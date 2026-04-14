@@ -1,11 +1,10 @@
-import LandingBanner from "@/src/@modules/home/LandingBanner";
-import MenuItems from "@/src/@modules/home/MenuItems";
+import LandingBannerWithMenuItems from "@/src/@modules/home/LandingBannerWithMenuItems";
 import React from "react";
 
 const page = () => {
   return (
     <React.Fragment>
-     <LandingBanner/>
+      <LandingBannerWithMenuItems />
     </React.Fragment>
   );
 };
