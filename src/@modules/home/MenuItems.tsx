@@ -1,5 +1,5 @@
 "use client";
-import { AppstoreOutlined, MailOutlined } from "@ant-design/icons";
+import cn from "@/src/@libs/utils/_cn";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
 import React from "react";
@@ -14,8 +14,13 @@ import {
 } from "react-icons/gi";
 import { PiBowlSteamDuotone } from "react-icons/pi";
 import { SiFoodpanda } from "react-icons/si";
+import { TiThSmallOutline } from "react-icons/ti";
+import { ClassNameValue } from "tailwind-merge";
 
 type MenuItem = Required<MenuProps>["items"][number];
+interface IProps {
+  className?: ClassNameValue;
+}
 const labelDefine = (icon: React.ReactNode, label: string) => {
   return (
     <div className="flex items-center gap-2">
@@ -27,7 +32,10 @@ const labelDefine = (icon: React.ReactNode, label: string) => {
 const items: MenuItem[] = [
   {
     key: "all-products",
-    label: "All Products",
+    label: labelDefine(
+      <TiThSmallOutline className="w-6 h-auto" />,
+      "All Products",
+    ),
   },
   {
     key: "rice-pulse-grains",
@@ -140,15 +148,15 @@ const onClick: MenuProps["onClick"] = (e) => {
   console.log("click", e);
 };
 
-const MenuItems: React.FC = () => (
+const MenuItems: React.FC<IProps> = ({className}) => (
   <Menu
     onClick={onClick}
     style={{
-      width: 256,
       fontSize: 16,
     }}
     mode="vertical"
-        items={items}
+    items={items}
+    className={cn(className)}
   />
 );
 
