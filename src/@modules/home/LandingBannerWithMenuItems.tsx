@@ -9,7 +9,7 @@ const LandingBannerWithMenuItems: React.FC<IProps> = () => {
   return (
     <section>
       <div className="container mx-auto grid grid-cols-8">
-        <div className="hidden md:block col-span-2 w-full">
+        <div className="hidden lg:block col-span-2 w-full">
           <MenuItems className="" />
         </div>
         <div className="col-span-6 flex flex-col md:flex-row justify-center w-full">
