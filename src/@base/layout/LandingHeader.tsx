@@ -59,7 +59,7 @@ const LandingHeader: React.FC<IProps> = () => {
           </button>
           {!openMenu && (
             <div
-              className={cn("lg:hidden absolute left-0 top-16 md:top-20", {
+              className={cn("lg:hidden absolute left-0 top-16 md:top-20 z-50", {
                 openMenu: "",
               })}
             >
