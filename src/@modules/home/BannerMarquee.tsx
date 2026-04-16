@@ -24,16 +24,18 @@ const BannerMarquee: React.FC<IProps> = ({ className }) => {
       )}
     >
       <div className="marqueeSliderLeft flex items-center gap-5">
-        {doubledComponents.map((item, index) => (
-          <Image
-            key={index}
-            src={item.img}
-            alt="banner image"
-            width={300}
-            height={200}
-            className="w-full h-auto"
-          />
-        ))}
+        {doubledComponents.map((item, index) => {
+          return (
+            <Image
+              key={index}
+              src={item.img}
+              alt="banner image"
+              width={300}
+              height={200}
+              className="w-full h-auto"
+            />
+          );
+        })}
       </div>
     </div>
   );
