@@ -87,7 +87,7 @@ const Footer: React.FC = () => {
             <h3 className="text-[1.2rem]  font-semibold  mb-2">
               Use Cases
             </h3>
-            <div className="flex flex-col gap-[8px] text-black">
+            <div className="flex flex-col gap-2 text-black">
               <span>
                 <a className="text-[0.9rem] text-(--secondary-color-800) cursor-pointer">
                   Use Cases
@@ -120,7 +120,7 @@ const Footer: React.FC = () => {
             <h3 className="text-[1.2rem]  font-semibold  mb-2">
               Resources
             </h3>
-            <div className="flex flex-col gap-[8px] text-black">
+            <div className="flex flex-col gap-2 text-black">
               <span>
                 <a className="text-[0.9rem] text-(--secondary-color-800) cursor-pointer">
                   Resources
@@ -163,7 +163,7 @@ const Footer: React.FC = () => {
             <h3 className="text-[1.2rem]  font-semibold  mb-2">
               Company
             </h3>
-            <div className="flex flex-col gap-[8px] text-black">
+            <div className="flex flex-col gap-2 text-black">
               <span>
                 <a className="text-[0.9rem] text-(--secondary-color-800) cursor-pointer">
                   About Us

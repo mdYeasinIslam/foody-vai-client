@@ -51,13 +51,13 @@ const LandingHeader: React.FC<IProps> = () => {
             onClick={() => setOpenMenu(!openMenu)}
             className="lg:hidden  text-white"
           >
-            {!openMenu ? (
+            {openMenu ? (
               <RxCross2 className="w-7 h-7" />
             ) : (
               <IoMenu className="w-7 h-7" />
             )}
           </button>
-          {!openMenu && (
+          {openMenu && (
             <div
               className={cn("lg:hidden absolute left-0 top-16 md:top-20 z-50", {
                 openMenu: "",

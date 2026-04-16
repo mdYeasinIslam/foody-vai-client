@@ -9,6 +9,8 @@
   --primary-color-900:#014725;
 
 
+    --secondary-color-500:#F7F7F7;
+    --secondary-color-700:#878585;
     --secondary-color-800:#62595D;
 }
 /* 
@@ -44,4 +46,10 @@ body {
     }
   }
 }
-
+.hidden_scrollbar{
+  scrollbar-width: none;
+  -ms-overflow-style:none;
+  &::-webkit-scrollbar{
+    display: none;
+  }
+}
