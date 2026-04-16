@@ -2,6 +2,7 @@ import React from "react";
 import MenuItems from "./MenuItems";
 import Image from "next/image";
 import { IoMenu } from "react-icons/io5";
+import BannerMarquee from "./BannerMarquee";
 
 interface IProps {
   className?: string;
@@ -13,9 +14,11 @@ const LandingBannerWithMenuItems: React.FC<IProps> = () => {
         <aside className="hidden lg:block col-span-2 w-full">
           <div className="flex items-center gap-4 px-2 xl:px-4 py-2 ">
             <IoMenu className="w-6 h-auto xl:w-7 xl:h-7" />
-            <p className="font-semibold text-base xl:text-lg uppercase">Shop By Category</p>
+            <p className="font-semibold text-base xl:text-lg uppercase">
+              Shop By Category
+            </p>
           </div>
-          <hr  className="text-gray-300"/>
+          <hr className="text-gray-300" />
           <MenuItems className="" />
         </aside>
         <aside className="col-span-6  w-full">
@@ -31,8 +34,12 @@ const LandingBannerWithMenuItems: React.FC<IProps> = () => {
               "Blog",
             ].map((item, index) => (
               <div key={item} className="flex items-center ">
-                <p className="px-2 xl:px-4 py-2 text-base xl:text-lg font-medium">{item}</p>
-                {index < 7 && <div className="h-10 xl:h-5 w-px bg-gray-300"></div>}
+                <p className="px-2 xl:px-4 py-2 text-base xl:text-lg font-medium">
+                  {item}
+                </p>
+                {index < 7 && (
+                  <div className="h-10 xl:h-5 w-px bg-gray-300"></div>
+                )}
               </div>
             ))}
           </div>
@@ -57,6 +64,9 @@ const LandingBannerWithMenuItems: React.FC<IProps> = () => {
               />
             </div>
           </div>
+          <>
+            <BannerMarquee className="grid items-end mt-5" />
+          </>
         </aside>
       </div>
     </section>
