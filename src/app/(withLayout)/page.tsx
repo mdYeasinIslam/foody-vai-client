@@ -1,4 +1,4 @@
-import LandingBannerWithMenuItems from "@/src/@modules/home/LandingBannerWithMenuItems";
+import LandingBannerWithMenuItems from "@/src/@modules/home/components/LandingBannerWithMenuItems";
 import React from "react";
 
 const page = () => {

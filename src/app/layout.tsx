@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import '../@styles/main.scss'
+import "../@styles/main.scss";
 import WrapperComp from "../@base/container/WrapperComp";
+import Provider from "../@base/providers/Provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +31,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable}  antialiased`}
     >
       <body>
-        <WrapperComp>{children}</WrapperComp>
+        <Provider>
+          <WrapperComp>{children}</WrapperComp>
+        </Provider>
       </body>
     </html>
   );

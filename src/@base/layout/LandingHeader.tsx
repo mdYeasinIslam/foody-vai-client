@@ -1,7 +1,7 @@
 "use client";
 
 import cn from "@/src/@libs/utils/_cn";
-import MenuItems from "@/src/@modules/home/MenuItems";
+import MenuItems from "@/src/@modules/home/components/MenuItems";
 import {
   BellOutlined,
   DownOutlined,
