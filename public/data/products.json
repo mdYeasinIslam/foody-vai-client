@@ -1,0 +1,194 @@
+[
+    {
+        "id": "1",
+        "name": "Cumin Powder",
+        "description": "Freshly ground cumin powder with rich aroma.",
+        "price": 142,
+        "category": "Spices",
+        "img": "/images/products/1.png"
+    },
+    {
+        "id": "2",
+        "name": "Khaas Signature Lachsa Semai",
+        "description": "Premium quality lachsa semai for desserts.",
+        "price": 614,
+        "category": "Dessert",
+        "img": "/images/products/2.png"
+    },
+    {
+        "id": "3",
+        "name": "IKO Muesli",
+        "description": "Healthy breakfast cereal with grains and fruits.",
+        "price": 365,
+        "category": "Breakfast",
+        "img": "/images/products/3.png"
+    },
+    {
+        "id": "4",
+        "name": "Psyllium Husk (Isopguler Bhusi)",
+        "description": "Natural fiber supplement for digestion.",
+        "price": 222,
+        "category": "Health",
+        "img": "/images/products/4.png"
+    },
+    {
+        "id": "5",
+        "name": "Coriander Powder",
+        "description": "Pure coriander powder for cooking.",
+        "price": 58,
+        "category": "Spices",
+        "img": "/images/products/5.png"
+    },
+    {
+        "id": "6",
+        "name": "Blended Floral Honey",
+        "description": "Natural blended floral honey.",
+        "price": 187,
+        "category": "Organic",
+        "img": "/images/products/6.png"
+    },
+    {
+        "id": "7",
+        "name": "Sonali Chicken",
+        "description": "Fresh sonali chicken meat.",
+        "price": 418,
+        "category": "Meat",
+        "img": "/images/products/7.png"
+    },
+    {
+        "id": "8",
+        "name": "Grinded Three Myrobalan (Trifola)",
+        "description": "Herbal powder made from three fruits.",
+        "price": 67,
+        "category": "Herbal",
+        "img": "/images/products/8.png"
+    },
+    {
+        "id": "9",
+        "name": "Black Pepper",
+        "description": "Whole black pepper with strong flavor.",
+        "price": 55,
+        "category": "Spices",
+        "img": "/images/products/9.png"
+    },
+    {
+        "id": "10",
+        "name": "Almond",
+        "description": "Premium quality almonds.",
+        "price": 258,
+        "category": "Nuts",
+        "img": "/images/products/10.png"
+    },
+    {
+        "id": "11",
+        "name": "Honey with Nuts",
+        "description": "Honey mixed with assorted nuts.",
+        "price": 1024,
+        "category": "Organic",
+        "img": "/images/products/1.png"
+    },
+    {
+        "id": "12",
+        "name": "Clove (Labonga)",
+        "description": "Dried clove spice with strong aroma.",
+        "price": 116,
+        "category": "Spices",
+        "img": "/images/products/2.png"
+    },
+    {
+        "id": "13",
+        "name": "Roasted Cashew Nuts (Nona Kazu Badam)",
+        "description": "Salted roasted cashew nuts.",
+        "price": 345,
+        "category": "Nuts",
+        "img": "/images/products/3.png"
+    },
+    {
+        "id": "14",
+        "name": "Mixed Fruit Chutney",
+        "description": "Sweet and tangy mixed fruit chutney.",
+        "price": 120,
+        "category": "Condiments",
+        "img": "/images/products/4.png"
+    },
+    {
+        "id": "15",
+        "name": "Olive Chutney",
+        "description": "Delicious olive-based chutney.",
+        "price": 258,
+        "category": "Condiments",
+        "img": "/images/products/5.png"
+    },
+    {
+        "id": "16",
+        "name": "Aman Rice",
+        "description": "High-quality aman rice.",
+        "price": 87,
+        "category": "Rice",
+        "img": "/images/products/6.png"
+    },
+    {
+        "id": "17",
+        "name": "Cardamom (Elach)",
+        "description": "Premium aromatic cardamom.",
+        "price": 195,
+        "category": "Spices",
+        "img": "/images/products/7.png"
+    },
+    {
+        "id": "18",
+        "name": "Garlic Pickle",
+        "description": "Spicy and tangy garlic pickle.",
+        "price": 218,
+        "category": "Pickle",
+        "img": "/images/products/8.png"
+    },
+    {
+        "id": "19",
+        "name": "Peanut Butter (Diabatic)",
+        "description": "Sugar-free peanut butter for diabetics.",
+        "price": 280,
+        "category": "Healthy Food",
+        "img": "/images/products/9.png"
+    },
+    {
+        "id": "20",
+        "name": "Churi Dry Fish",
+        "description": "Dried fish with strong traditional flavor.",
+        "price": 578,
+        "category": "Dry Fish",
+        "img": "/images/products/10.png"
+    },
+    {
+        "id": "21",
+        "name": "Firni Mix",
+        "description": "Instant firni dessert mix.",
+        "price": 62,
+        "category": "Dessert",
+        "img": "/images/products/1.png"
+    },
+    {
+        "id": "22",
+        "name": "Black Seed",
+        "description": "Natural black seed (kalojira).",
+        "price": 98,
+        "category": "Spices",
+        "img": "/images/products/2.png"
+    },
+    {
+        "id": "23",
+        "name": "Pigeon",
+        "description": "Fresh pigeon meat (1 pair).",
+        "price": 400,
+        "category": "Meat",
+        "img": "/images/products/3.png"
+    },
+    {
+        "id": "24",
+        "name": "Chickpea (Chola)",
+        "description": "High-quality chickpeas.",
+        "price": 106,
+        "category": "Grains",
+        "img": "/images/products/4.png"
+    }
+]
