@@ -1,4 +1,4 @@
-export interface IFilter {
+export interface IProductFilter {
     category?: string;
     minPrice?: number;
     maxPrice?: number;
