@@ -4,6 +4,8 @@
         "name": "Cumin Powder",
         "description": "Freshly ground cumin powder with rich aroma.",
         "price": 142,
+        "originalPrice": 180,
+        "weight": [0.1, 0.25, 0.5],
         "category": "Spices",
         "img": "/images/products/1.png"
     },
@@ -12,6 +14,8 @@
         "name": "Khaas Signature Lachsa Semai",
         "description": "Premium quality lachsa semai for desserts.",
         "price": 614,
+        "originalPrice": 750,
+        "weight": [0.5, 1.0],
         "category": "Dessert",
         "img": "/images/products/2.png"
     },
@@ -20,6 +24,8 @@
         "name": "IKO Muesli",
         "description": "Healthy breakfast cereal with grains and fruits.",
         "price": 365,
+        "originalPrice": 450,
+        "weight": [0.4, 0.8],
         "category": "Breakfast",
         "img": "/images/products/3.png"
     },
@@ -28,6 +34,8 @@
         "name": "Psyllium Husk (Isopguler Bhusi)",
         "description": "Natural fiber supplement for digestion.",
         "price": 222,
+        "originalPrice": 280,
+        "weight": [0.2, 0.5, 1.0],
         "category": "Health",
         "img": "/images/products/4.png"
     },
@@ -36,6 +44,8 @@
         "name": "Coriander Powder",
         "description": "Pure coriander powder for cooking.",
         "price": 58,
+        "originalPrice": 85,
+        "weight": [0.1, 0.25],
         "category": "Spices",
         "img": "/images/products/5.png"
     },
@@ -44,6 +54,8 @@
         "name": "Blended Floral Honey",
         "description": "Natural blended floral honey.",
         "price": 187,
+        "originalPrice": 240,
+        "weight": [0.5, 1.0],
         "category": "Organic",
         "img": "/images/products/6.png"
     },
@@ -52,6 +64,8 @@
         "name": "Sonali Chicken",
         "description": "Fresh sonali chicken meat.",
         "price": 418,
+        "originalPrice": 520,
+        "weight": [1.0, 2.0],
         "category": "Meat",
         "img": "/images/products/7.png"
     },
@@ -60,6 +74,8 @@
         "name": "Grinded Three Myrobalan (Trifola)",
         "description": "Herbal powder made from three fruits.",
         "price": 67,
+        "originalPrice": 95,
+        "weight": [0.1, 0.25],
         "category": "Herbal",
         "img": "/images/products/8.png"
     },
@@ -68,6 +84,8 @@
         "name": "Black Pepper",
         "description": "Whole black pepper with strong flavor.",
         "price": 55,
+        "originalPrice": 80,
+        "weight": [0.1, 0.25, 0.5],
         "category": "Spices",
         "img": "/images/products/9.png"
     },
@@ -76,6 +94,8 @@
         "name": "Almond",
         "description": "Premium quality almonds.",
         "price": 258,
+        "originalPrice": 320,
+        "weight": [0.25, 0.5, 1.0],
         "category": "Nuts",
         "img": "/images/products/10.png"
     },
@@ -84,6 +104,8 @@
         "name": "Honey with Nuts",
         "description": "Honey mixed with assorted nuts.",
         "price": 1024,
+        "originalPrice": 1280,
+        "weight": [0.75, 1.5],
         "category": "Organic",
         "img": "/images/products/1.png"
     },
@@ -92,6 +114,8 @@
         "name": "Clove (Labonga)",
         "description": "Dried clove spice with strong aroma.",
         "price": 116,
+        "originalPrice": 160,
+        "weight": [0.05, 0.1],
         "category": "Spices",
         "img": "/images/products/2.png"
     },
@@ -100,6 +124,8 @@
         "name": "Roasted Cashew Nuts (Nona Kazu Badam)",
         "description": "Salted roasted cashew nuts.",
         "price": 345,
+        "originalPrice": 430,
+        "weight": [0.25, 0.5],
         "category": "Nuts",
         "img": "/images/products/3.png"
     },
@@ -108,6 +134,8 @@
         "name": "Mixed Fruit Chutney",
         "description": "Sweet and tangy mixed fruit chutney.",
         "price": 120,
+        "originalPrice": 160,
+        "weight": [0.35, 0.7],
         "category": "Condiments",
         "img": "/images/products/4.png"
     },
@@ -116,6 +144,8 @@
         "name": "Olive Chutney",
         "description": "Delicious olive-based chutney.",
         "price": 258,
+        "originalPrice": 330,
+        "weight": [0.35, 0.7],
         "category": "Condiments",
         "img": "/images/products/5.png"
     },
@@ -124,6 +154,8 @@
         "name": "Aman Rice",
         "description": "High-quality aman rice.",
         "price": 87,
+        "originalPrice": 120,
+        "weight": [1.0, 2.0, 5.0],
         "category": "Rice",
         "img": "/images/products/6.png"
     },
@@ -132,6 +164,8 @@
         "name": "Cardamom (Elach)",
         "description": "Premium aromatic cardamom.",
         "price": 195,
+        "originalPrice": 260,
+        "weight": [0.05, 0.1],
         "category": "Spices",
         "img": "/images/products/7.png"
     },
@@ -140,6 +174,8 @@
         "name": "Garlic Pickle",
         "description": "Spicy and tangy garlic pickle.",
         "price": 218,
+        "originalPrice": 290,
+        "weight": [0.4, 0.8],
         "category": "Pickle",
         "img": "/images/products/8.png"
     },
@@ -148,6 +184,8 @@
         "name": "Peanut Butter (Diabatic)",
         "description": "Sugar-free peanut butter for diabetics.",
         "price": 280,
+        "originalPrice": 360,
+        "weight": [0.5, 1.0],
         "category": "Healthy Food",
         "img": "/images/products/9.png"
     },
@@ -156,6 +194,8 @@
         "name": "Churi Dry Fish",
         "description": "Dried fish with strong traditional flavor.",
         "price": 578,
+        "originalPrice": 720,
+        "weight": [0.4, 0.8],
         "category": "Dry Fish",
         "img": "/images/products/10.png"
     },
@@ -164,6 +204,8 @@
         "name": "Firni Mix",
         "description": "Instant firni dessert mix.",
         "price": 62,
+        "originalPrice": 90,
+        "weight": [0.2, 0.5],
         "category": "Dessert",
         "img": "/images/products/1.png"
     },
@@ -172,6 +214,8 @@
         "name": "Black Seed",
         "description": "Natural black seed (kalojira).",
         "price": 98,
+        "originalPrice": 135,
+        "weight": [0.1, 0.25],
         "category": "Spices",
         "img": "/images/products/2.png"
     },
@@ -180,6 +224,8 @@
         "name": "Pigeon",
         "description": "Fresh pigeon meat (1 pair).",
         "price": 400,
+        "originalPrice": 500,
+        "weight": [0.8, 1.6],
         "category": "Meat",
         "img": "/images/products/3.png"
     },
@@ -188,6 +234,8 @@
         "name": "Chickpea (Chola)",
         "description": "High-quality chickpeas.",
         "price": 106,
+        "originalPrice": 150,
+        "weight": [0.5, 1.0, 2.0],
         "category": "Grains",
         "img": "/images/products/4.png"
     }

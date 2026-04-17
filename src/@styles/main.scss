@@ -1,8 +1,39 @@
 @use 'sass:meta';
 @use './marquee.scss';
-.container {
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
+
+// Define responsive breakpoints
+$breakpoints: (
+  'sm': 640px,
+  'md': 768px,
+  'lg': 1024px,
+  'xl': 1280px,
+  '2xl': 1536px
+);
+
+// Mixin for media queries
+@mixin respond-to($breakpoint) {
+  @media (min-width: map-get($breakpoints, $breakpoint)) {
+    @content;
   }
+}
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  @include respond-to('lg') {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  // @include respond-to('xl') {
+  //   padding-left: 60px;
+  //   padding-right: 60px;
+  // }
+
+  @include respond-to('2xl') {
+    max-width: 1536px;
+  }
+}

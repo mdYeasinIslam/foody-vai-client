@@ -1,22 +1,23 @@
-import axios from "axios";
-import { IProductFilter, IProductsResponse } from "./interfaces";
 
-const END_POINT: string = "";
+import axios from "axios";
+import { IProductFilter, IProductResponse, IProductsResponse } from "./interfaces";
+
+const END_POINT: string = "/data/products.json";
 
 export const ProductsService = {
   Name: END_POINT,
-  async find(query: IProductFilter): Promise<IProductsResponse> {
+  async find(query?: IProductFilter): Promise<IProductsResponse> {
     try {
-      const res = await axios.get(END_POINT, { params: query });
-      return Promise.resolve(res.data);
+      const res = await axios.get(END_POINT);
+      return Promise.resolve(res?.data);
     } catch (error) {
       throw error;
     }
   },
-  async findById(id: string): Promise<IProductsResponse> {
+  async findById(id: string): Promise<IProductResponse> {
     try {
       const res = await axios.get(`${END_POINT}/${id}`);
-      return Promise.resolve(res.data);
+      return Promise.resolve(res?.data);
     } catch (error) {
       throw error;
     }

@@ -4,14 +4,14 @@ import { useQuery } from "@tanstack/react-query";
 import { ProductsService } from "./services";
 
 type IUseProducts = {
-  options: IProductFilter;
-  config: QueryConfig<typeof ProductsService.find>;
+  options?: IProductFilter;
+  config?: QueryConfig<typeof ProductsService.find>;
 };
 export const useProducts = ({ options, config }: IUseProducts) => {
   return useQuery({
     ...config,
-    queryKey: ["products", options],
-    queryFn: () => ProductsService.find(options),
+    queryKey: ["products"],
+    queryFn: () => ProductsService.find(),
   });
 };
 
