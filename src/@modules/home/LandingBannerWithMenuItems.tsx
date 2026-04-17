@@ -33,7 +33,7 @@ const LandingBannerWithMenuItems: React.FC<IProps> = () => {
               <div
                 key={item}
                 className={cn(
-                  "flex flex-none items-center justify-center  max-md:bg-( --secondary-color-500) max-md:text-(--secondary-color-700) max-md:rounded-full shadow-md px-4 py-1.5 md:px-2.5 xl:px-4 md:py-2.5 max-md:my-1",
+                  "flex flex-none items-center justify-center  max-md:bg-(--secondary-color-500) max-md:text-(--secondary-color-700) max-md:rounded-full shadow-md px-4 py-1.5 md:px-2.5 xl:px-4 md:py-2.5 max-md:my-1",
                   index < 7 && "border-r border-gray-300",
                   index ===0 && 'hidden'
                 )}
