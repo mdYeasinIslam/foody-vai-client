@@ -51,9 +51,10 @@ const LandingBannerWithMenuItems: React.FC<IProps> = () => {
         </div>
         <hr className="hidden md:block  text-gray-300" />
         <div className=" grid lg:grid-cols-8">
-          <aside className="hidden lg:block col-span-2 w-full">
-            <MenuItems className="" />
-          </aside>
+            <aside className="hidden lg:block col-span-2 w-full">
+            {/* <MenuItems className="[&_.ant-menu-item]:border [&_.ant-menu-item]:border-gray-200   [&_.ant-menu-submenu]:border  [&_.ant-menu-submenu]:border-gray-200  " /> */}
+            <MenuItems/>
+            </aside>
           <aside className="col-span-6  w-full">
             <div className="flex flex-col md:flex-row justify-center gap-4 pt-1">
               <div className="w-full">

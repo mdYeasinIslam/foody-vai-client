@@ -9,9 +9,7 @@ export interface IProduct {
   id: string;
   name: string;
   description: string;
-  originalPrice: number;
-  price: number;
-  weight: number[];
+  prices: { weight: number, price:number,originalPrice: number}[];
   category: string;
   img: string;
 }
@@ -19,9 +17,7 @@ export interface IProductCreate {
   id: string;
   name: string;
   description: string;
-  originalPrice: number;
-  price: number;
-  weight: number[];
+  prices: { weight: number; price: number; originalPrice: number }[];
   category: string;
   img: string;
 }

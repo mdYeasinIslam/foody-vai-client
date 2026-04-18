@@ -1,11 +1,9 @@
-"use client";
-import Image from "next/image";
+'use client'
 import { useProducts } from "../libs/hooks";
 import Product from "./Product";
 
 const AllProducts = () => {
   const { data, isLoading, error } = useProducts({});
-  console.log(data);
   if (isLoading) {
     return (
       <section className="py-12 px-4">
@@ -42,7 +40,7 @@ const AllProducts = () => {
   return (
     <section className="">
       <div className="container">
-        <h2 className="text-3xl font-bold mt-8">All Products</h2>
+        <h2 className="text-2xl font-bold mt-8">All Products</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6">
           {data.map((product) => (
            <Product key={product.id} product={product} />
