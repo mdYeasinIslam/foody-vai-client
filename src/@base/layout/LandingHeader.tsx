@@ -43,7 +43,7 @@ const LandingHeader: React.FC<IProps> = () => {
   const [searchValue, setSearchValue] = useState("");
   const [openMenu, setOpenMenu] = useState(false);
   const [open,setOpen] = useState(false)
-  const [cart] = useGlobalState({
+  const [cart,setCart] = useGlobalState({
     key: "cart",
     initialValue: [],
   });
@@ -176,17 +176,21 @@ const LandingHeader: React.FC<IProps> = () => {
         </div>
       </div>
 
-      {
-        open && (
-          <CartDrawer
-            open={open}
-            onClose={() => setOpen(false)}
-            content={
-              <><CartContent cartItems={cart}/></>
-            }
-          />
-        )
-      }
+      {open && (
+        <CartDrawer
+          title={<h1 className="text-xl font-semibold">Shopping Cart</h1>}
+          open={open}
+          onClose={() => setOpen(false)}
+          handleClearCart={() => {
+            setCart([]);
+          }}
+          content={
+            <>
+              <CartContent cartItems={cart} />
+            </>
+          }
+        />
+      )}
     </nav>
   );
 };
