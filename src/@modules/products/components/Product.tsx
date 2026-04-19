@@ -18,13 +18,14 @@ const Product: React.FC<IProps> = ({ className, product }) => {
   const originalPrice = product?.prices?.filter(
     (price) => price.weight === weightForPrice,
   );
-  console.log(price);
-  const [cart, setCart] = useGlobalState<IProductCreate[]>({
+  const [, setCart] = useGlobalState<IProductCreate[]>({
     key: "cart",
     initialValue: [],
   });
 
+  
   const addToCart = () => {
+    let updatedCart;
     try {
       const existingCart = LocalStorage.get<IProductCreate[]>("cart", []);
 
@@ -41,7 +42,6 @@ const Product: React.FC<IProps> = ({ className, product }) => {
           item?.id === product.id && item?.weight === selectedPriceObj.weight,
       );
 
-      let updatedCart;
 
       if (existingItem) {
         updatedCart = existingCart.map((item) =>

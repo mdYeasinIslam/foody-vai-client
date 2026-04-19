@@ -1,5 +1,6 @@
 "use client";
 
+import useGlobalState from "@/src/@libs/hooks/useGlobalState";
 import cn from "@/src/@libs/utils/_cn";
 import MenuItems from "@/src/@modules/home/components/MenuItems";
 import {
@@ -9,10 +10,14 @@ import {
   ShoppingCartOutlined,
 } from "@ant-design/icons";
 import { Badge, Dropdown, Input, MenuProps } from "antd";
+import { redirect } from "next/navigation";
 import React, { useState } from "react";
 import { IoMenu } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { ClassNameValue } from "tailwind-merge";
+import Link from "next/link";
+import CartDrawer from "@/src/@modules/cart/components/CartDrawer";
+import CartContent from "@/src/@modules/cart/components/CartContent";
 
 interface IProps {
   className?: ClassNameValue;
@@ -37,8 +42,11 @@ const LandingHeader: React.FC<IProps> = () => {
   //   const [selectedCity, setSelectedCity] = useState("Dhaka");
   const [searchValue, setSearchValue] = useState("");
   const [openMenu, setOpenMenu] = useState(false);
-
-  const cartCount = 3;
+  const [open,setOpen] = useState(false)
+  const [cart] = useGlobalState({
+    key: "cart",
+    initialValue: [],
+  });
   const notifCount = 2;
 
   return (
@@ -63,17 +71,21 @@ const LandingHeader: React.FC<IProps> = () => {
                 openMenu: "",
               })}
             >
-              
               <MenuItems className="md:w-[50vw]" />
             </div>
           )}
 
-          <div className="w-8 h-8 md:w-10 md:h-10 bg-white rounded-xl flex items-center justify-center text-xl shadow-sm select-none">
-            🍛
-          </div>
-          <span className="hidden sm:block font-extrabold text-xl text-white tracking-tight leading-none">
-            Foody<span className="text-yellow-300">Vai</span>
-          </span>
+          <Link
+            href="/"
+            className="flex items-center gap-1 shrink-0 cursor-pointer"
+          >
+            <div className="w-8 h-8 md:w-10 md:h-10 bg-white rounded-xl flex items-center justify-center text-xl shadow-sm select-none">
+              🍛
+            </div>
+            <span className="hidden sm:block font-extrabold text-xl text-white tracking-tight leading-none">
+              Foody<span className="text-yellow-300">Vai</span>
+            </span>
+          </Link>
         </div>
 
         {/* Search Bar */}
@@ -148,16 +160,33 @@ const LandingHeader: React.FC<IProps> = () => {
             </button>
           </Dropdown>
 
-          <Badge count={cartCount} size="small" offset={[-2, 2]}>
+          <Badge
+            onClick={() => setOpen(true)}
+            count={cart?.length}
+            size="small"
+            offset={[-2, 2]}
+          >
             <button
               type="button"
-              className="p-1 md:p-2.5 rounded-full flex items-center justify-center bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-colors"
+              className="p-1 md:p-2.5 rounded-full flex items-center justify-center bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer"
             >
               <ShoppingCartOutlined style={{ fontSize: 18 }} />
             </button>
           </Badge>
         </div>
       </div>
+
+      {
+        open && (
+          <CartDrawer
+            open={open}
+            onClose={() => setOpen(false)}
+            content={
+              <><CartContent cartItems={cart}/></>
+            }
+          />
+        )
+      }
     </nav>
   );
 };

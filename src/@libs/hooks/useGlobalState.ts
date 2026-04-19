@@ -18,10 +18,20 @@ const useGlobalState = <T = any>(
   TGlobalStateValue<T>,
   (value: T | ((val: TGlobalStateValue<T>) => T)) => void,
   () => void,
-] => {
-  const [storeValue, setStoreValue] = useState<TGlobalStateValue<T>>(
-    config.initialValue,
-  );
+  ] => {
+  
+  const getInitialValue = () => {
+    if (typeof window === "undefined") return config.initialValue;
+
+    try {
+      const stored = localStorage.getItem(config.key);
+      return stored ? JSON.parse(stored) : config.initialValue;
+    } catch {
+      return config.initialValue;
+    }
+  };
+  const [storeValue, setStoreValue] =
+    useState<TGlobalStateValue<T>>(getInitialValue);
 
   const handleChangeFn = (e: IGlobalStateEvent) => {
     if (e.key !== config.key || e.type !== "onChangeGlobalState") return;
@@ -30,8 +40,8 @@ const useGlobalState = <T = any>(
 
   const setValueFn = (value: T | null | ((val: TGlobalStateValue<T>) => T)) => {
     const event = new Event("onChangeGlobalState") as IGlobalStateEvent;
-
     const holdValue = value instanceof Function ? value(storeValue) : value;
+    localStorage.setItem(config.key, JSON.stringify(holdValue));
     event.key = config.key;
     event.value = holdValue;
     window.dispatchEvent(event);
