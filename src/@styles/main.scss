@@ -24,6 +24,10 @@ $breakpoints: (
   padding-right: 1rem;
 
   @include respond-to('lg') {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+  @include respond-to('xl') {
     padding-left: 40px;
     padding-right: 40px;
   }

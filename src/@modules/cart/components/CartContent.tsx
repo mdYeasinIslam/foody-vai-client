@@ -1,10 +1,10 @@
-import React from "react";
-import { ClassNameValue } from "tailwind-merge";
-import { FiTrash2, FiPlus, FiMinus, FiX } from "react-icons/fi";
+import useGlobalState from "@/src/@libs/hooks/useGlobalState";
 import cn from "@/src/@libs/utils/_cn";
 import Image from "next/image";
+import React from "react";
+import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
+import { ClassNameValue } from "tailwind-merge";
 import { ICartItem } from "../libs/interfaces";
-import useGlobalState from "@/src/@libs/hooks/useGlobalState";
 
 interface IProps {
   className?: ClassNameValue;
@@ -61,30 +61,36 @@ const CartContent: React.FC<IProps> = ({ className, cartItems }) => {
       </div> */}
 
       {/* Cart Items */}
-      <div className="flex-1 overflow-y-auto space-y-4 hidden_scrollbar">
+      <div className="flex-1 overflow-y-auto space-y-2 hidden_scrollbar">
         {cartItems.length === 0 ? (
           <p className="text-center text-gray-500 py-8">Cart is empty</p>
         ) : (
           cartItems.map((item) => (
-            <div key={item.id} className="flex gap-3 border-b pb-4">
-              {/* Product Image */}
-              <div className="w-16 h-16 bg-gray-200 rounded shrink-0">
-                {item.img && (
-                  <Image
-                    src={item.img}
-                    alt={item.name}
-                    width={100}
-                    height={100}
-                    className="w-full h-full object-cover rounded"
-                  />
-                )}
-              </div>
+            <div key={item.id} className="flex justify-between border-b pb-1">
+              <div className="flex items-center gap-3">
+                {/* Product Image */}
+                <div className="w-16 h-16 bg-gray-200 rounded shrink-0">
+                  {item.img && (
+                    <Image
+                      src={item.img}
+                      alt={item.name}
+                      width={100}
+                      height={100}
+                      className="w-full h-full object-cover rounded"
+                    />
+                  )}
+                </div>
 
-              {/* Product Details */}
-              <div className="flex-1">
-                <h3 className="font-semibold text-sm">{item.name}</h3>
-                <p className="text-green-600 font-bold">৳ {item.price}</p>
-                <p className="text-gray-500 text-xs">{item.weight} kg</p>
+                {/* Product Details */}
+                <div className="flex-1">
+                  <h3 className="font-semibold text-sm">{item.name}</h3>
+                  <p className="flex items-center gap-2">
+                    <span className="text-green-600 font-bold">
+                      ৳ {item.price}
+                    </span>
+                    |<span className="text-gray-500">{item.weight} kg</span>
+                  </p>
+                </div>
               </div>
 
               {/* Actions */}
@@ -95,10 +101,10 @@ const CartContent: React.FC<IProps> = ({ className, cartItems }) => {
                 >
                   <FiTrash2 size={18} />
                 </button>
-                <div className="flex items-center gap-2 border rounded">
+                <div className="flex items-center gap-2 border border-(--primary-color-800) rounded">
                   <button
                     onClick={() => handleQuantityChange(item.id, -1)}
-                    className="p-1 hover:bg-gray-100 transition cursor-pointer"
+                    className="p-1 hover:bg-(--primary-color-600) transition cursor-pointer"
                   >
                     <FiMinus size={16} />
                   </button>
@@ -107,7 +113,7 @@ const CartContent: React.FC<IProps> = ({ className, cartItems }) => {
                   </span>
                   <button
                     onClick={() => handleQuantityChange(item.id, 1)}
-                    className="p-1 hover:bg-gray-100 transition cursor-pointer"
+                    className="p-1 hover:bg-(--primary-color-600) transition cursor-pointer"
                   >
                     <FiPlus size={16} />
                   </button>

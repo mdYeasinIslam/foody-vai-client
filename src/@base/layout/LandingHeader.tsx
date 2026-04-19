@@ -2,33 +2,25 @@
 
 import useGlobalState from "@/src/@libs/hooks/useGlobalState";
 import cn from "@/src/@libs/utils/_cn";
+import CartContent from "@/src/@modules/cart/components/CartContent";
+import CartDrawer from "@/src/@modules/cart/components/CartDrawer";
 import MenuItems from "@/src/@modules/home/components/MenuItems";
 import {
-  BellOutlined,
   DownOutlined,
   SearchOutlined,
-  ShoppingCartOutlined,
+  ShoppingCartOutlined
 } from "@ant-design/icons";
 import { Badge, Dropdown, Input, MenuProps } from "antd";
-import { redirect } from "next/navigation";
+import Link from "next/link";
 import React, { useState } from "react";
 import { IoMenu } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { ClassNameValue } from "tailwind-merge";
-import Link from "next/link";
-import CartDrawer from "@/src/@modules/cart/components/CartDrawer";
-import CartContent from "@/src/@modules/cart/components/CartContent";
 
 interface IProps {
   className?: ClassNameValue;
 }
 
-// const cityItems: MenuProps["items"] = [
-//   { key: "dhaka", label: "Dhaka" },
-//   { key: "chittagong", label: "Chittagong" },
-//   { key: "sylhet", label: "Sylhet" },
-//   { key: "rajshahi", label: "Rajshahi" },
-// ];
 
 const accountItems: MenuProps["items"] = [
   { key: "profile", label: "My Profile" },
@@ -39,7 +31,6 @@ const accountItems: MenuProps["items"] = [
 ];
 
 const LandingHeader: React.FC<IProps> = () => {
-  //   const [selectedCity, setSelectedCity] = useState("Dhaka");
   const [searchValue, setSearchValue] = useState("");
   const [openMenu, setOpenMenu] = useState(false);
   const [open,setOpen] = useState(false)
@@ -47,8 +38,6 @@ const LandingHeader: React.FC<IProps> = () => {
     key: "cart",
     initialValue: [],
   });
-  const notifCount = 2;
-
   return (
     <nav className="relative w-full bg-green-700 shadow-md">
       <div className="container flex items-center justify-between gap-2  h-16 md:h-20  ">
@@ -129,19 +118,18 @@ const LandingHeader: React.FC<IProps> = () => {
 
         {/* Actions */}
         <div className="flex items-center gap-1 md:gap-2 shrink-0">
-          <Badge
+          {/* <Badge
             count={notifCount}
             size="small"
             offset={[-2, 2]}
             className="hidden! md:block!"
           >
-            <button
-              type="button"
+            <span
               className="md:p-2.5 p-1.5 rounded-full flex items-center justify-center bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-colors"
             >
               <BellOutlined style={{ fontSize: 18 }} />
-            </button>
-          </Badge>
+            </span>
+          </Badge> */}
 
           <div className="hidden md:block w-px h-7 bg-white/20 mx-1" />
 
@@ -166,12 +154,11 @@ const LandingHeader: React.FC<IProps> = () => {
             size="small"
             offset={[-2, 2]}
           >
-            <button
-              type="button"
+            <span
               className="p-1 md:p-2.5 rounded-full flex items-center justify-center bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer"
             >
               <ShoppingCartOutlined style={{ fontSize: 18 }} />
-            </button>
+            </span>
           </Badge>
         </div>
       </div>

@@ -20,7 +20,7 @@ const BannerMarquee: React.FC<IProps> = ({ className }) => {
     <div
       className={cn(
         className,
-        "slider-container w-full flex-nowrap relative overflow-hidden mask-[linear-gradient(to_right,transparent_0,black_128px,black_calc(100%-128px),transparent_100%)]",
+        "slider-container w-full  overflow-hidden mask-[linear-gradient(to_right,transparent_0,black_128px,black_calc(100%-128px),transparent_100%)] mt-4 ",
       )}
     >
       <div className="marqueeSliderLeft flex items-center gap-5">

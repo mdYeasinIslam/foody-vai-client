@@ -34,10 +34,11 @@ const CartDrawer: React.FC<IProps> = ({
             onClick={handleClearCart}
             className="text-gray-400 hover:text-red-600 transition"
           >
-            <FiTrash2 size={20} />
+            <FiTrash2 size={20} className="mt-0.5" />
           </button>
         </>
       }
+      size={'500px'}
       className={cn(className)}
     >
       {content}
