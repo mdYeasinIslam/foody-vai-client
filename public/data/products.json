@@ -1,14 +1,15 @@
 [
     {
         "id": "1",
-        "name": "Cumin Powder",
-        "description": "Freshly ground cumin powder with rich aroma.",
+        "name": "Premium Basmati Rice",
+        "description": "Long grain aromatic basmati rice, perfect for biryani and pulao.",
         "prices": [
             {"weight": 0.1, "price": 28, "originalPrice": 36},
             {"weight": 0.25, "price": 71, "originalPrice": 90},
             {"weight": 0.5, "price": 142, "originalPrice": 180}
         ],
-        "category": "Spices",
+        "category": "rice-pulse-grains",
+        "subcategory": "rice",
         "img": "/images/products/1.png"
     },
     {
@@ -19,7 +20,8 @@
             {"weight": 0.5, "price": 614, "originalPrice": 750},
             {"weight": 1.0, "price": 1228, "originalPrice": 1500}
         ],
-        "category": "Dessert",
+        "category": "poultry-meat",
+        "subcategory": "meat",
         "img": "/images/products/2.png"
     },
     {
@@ -30,7 +32,8 @@
             {"weight": 0.4, "price": 365, "originalPrice": 450},
             {"weight": 0.8, "price": 730, "originalPrice": 900}
         ],
-        "category": "Breakfast",
+        "category": "honey",
+        "subcategory": "raw-honey",
         "img": "/images/products/3.png"
     },
     {
@@ -43,6 +46,7 @@
             {"weight": 1.0, "price": 444, "originalPrice": 560}
         ],
         "category": "Health",
+        "subcategory": "supplements",
         "img": "/images/products/4.png"
     },
     {
@@ -54,6 +58,7 @@
             {"weight": 0.25, "price": 58, "originalPrice": 85}
         ],
         "category": "Spices",
+        "subcategory": "spices",
         "img": "/images/products/5.png"
     },
     {
@@ -64,18 +69,20 @@
             {"weight": 0.5, "price": 187, "originalPrice": 240},
             {"weight": 1.0, "price": 374, "originalPrice": 480}
         ],
-        "category": "Organic",
+        "category": "honey",
+        "subcategory": "organic-honey",
         "img": "/images/products/6.png"
     },
     {
         "id": "7",
-        "name": "Sonali Chicken",
-        "description": "Fresh sonali chicken meat.",
+        "name": "Farm Fresh Chicken",
+        "description": "Fresh farm-raised chicken, cleaned and ready to cook.",
         "prices": [
             {"weight": 1.0, "price": 418, "originalPrice": 520},
             {"weight": 2.0, "price": 836, "originalPrice": 1040}
         ],
-        "category": "Meat",
+        "category": "poultry-meat",
+        "subcategory": "poultry",
         "img": "/images/products/7.png"
     },
     {
@@ -87,6 +94,7 @@
             {"weight": 0.25, "price": 67, "originalPrice": 95}
         ],
         "category": "Herbal",
+        "subcategory": "herbal",
         "img": "/images/products/8.png"
     },
     {
@@ -99,6 +107,7 @@
             {"weight": 0.5, "price": 55, "originalPrice": 80}
         ],
         "category": "Spices",
+        "subcategory": "spices",
         "img": "/images/products/9.png"
     },
     {
@@ -111,6 +120,7 @@
             {"weight": 1.0, "price": 258, "originalPrice": 320}
         ],
         "category": "Nuts",
+        "subcategory": "nuts",
         "img": "/images/products/10.png"
     },
     {
@@ -121,7 +131,8 @@
             {"weight": 0.75, "price": 768, "originalPrice": 960},
             {"weight": 1.5, "price": 1024, "originalPrice": 1280}
         ],
-        "category": "Organic",
+        "category": "honey",
+        "subcategory": "organic-honey",
         "img": "/images/products/1.png"
     },
     {
@@ -133,6 +144,7 @@
             {"weight": 0.1, "price": 58, "originalPrice": 80}
         ],
         "category": "Spices",
+        "subcategory": "spices",
         "img": "/images/products/2.png"
     },
     {
@@ -144,6 +156,7 @@
             {"weight": 0.5, "price": 345, "originalPrice": 430}
         ],
         "category": "Nuts",
+        "subcategory": "nuts",
         "img": "/images/products/3.png"
     },
     {
@@ -155,6 +168,7 @@
             {"weight": 0.7, "price": 240, "originalPrice": 320}
         ],
         "category": "Condiments",
+        "subcategory": "condiments",
         "img": "/images/products/4.png"
     },
     {
@@ -166,6 +180,7 @@
             {"weight": 0.7, "price": 258, "originalPrice": 330}
         ],
         "category": "Condiments",
+        "subcategory": "condiments",
         "img": "/images/products/5.png"
     },
     {
@@ -177,7 +192,8 @@
             {"weight": 2.0, "price": 174, "originalPrice": 240},
             {"weight": 5.0, "price": 435, "originalPrice": 600}
         ],
-        "category": "Rice",
+        "category": "rice-pulse-grains",
+        "subcategory": "rice",
         "img": "/images/products/6.png"
     },
     {
@@ -189,6 +205,7 @@
             {"weight": 0.1, "price": 98, "originalPrice": 130}
         ],
         "category": "Spices",
+        "subcategory": "spices",
         "img": "/images/products/7.png"
     },
     {
@@ -200,6 +217,7 @@
             {"weight": 0.8, "price": 436, "originalPrice": 580}
         ],
         "category": "Pickle",
+        "subcategory": "pickle",
         "img": "/images/products/8.png"
     },
     {
@@ -211,6 +229,7 @@
             {"weight": 1.0, "price": 560, "originalPrice": 720}
         ],
         "category": "Healthy Food",
+        "subcategory": "healthy-food",
         "img": "/images/products/9.png"
     },
     {
@@ -222,6 +241,7 @@
             {"weight": 0.8, "price": 578, "originalPrice": 720}
         ],
         "category": "Dry Fish",
+        "subcategory": "dry-fish",
         "img": "/images/products/10.png"
     },
     {
@@ -233,6 +253,7 @@
             {"weight": 0.5, "price": 62, "originalPrice": 90}
         ],
         "category": "Dessert",
+        "subcategory": "dessert",
         "img": "/images/products/1.png"
     },
     {
@@ -244,29 +265,32 @@
             {"weight": 0.25, "price": 98, "originalPrice": 135}
         ],
         "category": "Spices",
+        "subcategory": "spices",
         "img": "/images/products/2.png"
     },
     {
         "id": "23",
-        "name": "Pigeon",
-        "description": "Fresh pigeon meat (1 pair).",
+        "name": "Country Chicken (Deshi)",
+        "description": "Free-range deshi chicken with rich flavor and tender meat.",
         "prices": [
             {"weight": 0.8, "price": 320, "originalPrice": 400},
             {"weight": 1.6, "price": 400, "originalPrice": 500}
         ],
-        "category": "Meat",
+        "category": "poultry-meat",
+        "subcategory": "poultry",
         "img": "/images/products/3.png"
     },
     {
         "id": "24",
-        "name": "Chickpea (Chola)",
-        "description": "High-quality chickpeas.",
+        "name": "Red Lentil (Masoor Dal)",
+        "description": "High protein red lentils, great for dal and soups.",
         "prices": [
             {"weight": 0.5, "price": 53, "originalPrice": 75},
             {"weight": 1.0, "price": 106, "originalPrice": 150},
             {"weight": 2.0, "price": 212, "originalPrice": 300}
         ],
-        "category": "Grains",
+        "category": "rice-pulse-grains",
+        "subcategory": "pulse",
         "img": "/images/products/4.png"
     }
 ]

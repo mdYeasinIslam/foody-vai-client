@@ -30,12 +30,12 @@ const menuData: MenuData[] = [
   {
     key: "all-products",
     label: "All Products",
-    icon: <TiThSmallOutline />,
+    icon: <TiThSmallOutline className="w-7! h-7!" />,
   },
   {
     key: "rice-pulse-grains",
     label: "Rice, Pulse & Grains",
-    icon: <FaBowlRice />,
+    icon: <FaBowlRice className="w-7! h-7!" />,
     children: [
       { key: "rice", label: "Rice" },
       { key: "pulse", label: "Pulse" },
@@ -45,7 +45,7 @@ const menuData: MenuData[] = [
   {
     key: "poultry-meat",
     label: "Poultry & Meat",
-    icon: <GiChickenOven />,
+    icon: <GiChickenOven className="w-7! h-7!" />,
     children: [
       { key: "poultry", label: "Poultry" },
       { key: "meat", label: "Meat" },
@@ -54,11 +54,34 @@ const menuData: MenuData[] = [
   {
     key: "honey",
     label: "Honey",
-    icon: <GiHoneyJar />,
+    icon: <GiHoneyJar className="w-7! h-7!" />,
     children: [
       { key: "raw-honey", label: "Raw Honey" },
       { key: "organic-honey", label: "Organic Honey" },
     ],
+  },
+  {
+    key: "oil",
+    label: "Oil",
+    icon: <FaBowlRice className="w-7! h-7!" />,
+    children: [
+      { key: "cooking-oil", label: "Cooking Oil" },
+      { key: "olive-oil", label: "Olive Oil" },
+    ],
+  },
+  {
+    key: "super-food",
+    label: "Super Food",
+    icon: <GiChickenOven className="w-7! h-7!" />,
+    children: [
+      { key: "beans", label: "Beans and Booster" },
+      { key: "herbal-powder", label: "Herbal Powder" },
+    ],
+  },
+  {
+    key: "fish",
+    label: "Fish",
+    icon: <GiHoneyJar className="w-7! h-7!" />,
   },
 ];
 const MenuItems: React.FC<IProps> = ({ className }) => {
@@ -123,7 +146,7 @@ const MenuItems: React.FC<IProps> = ({ className }) => {
       selectedKeys={[selectedKey]}
       defaultOpenKeys={[openKey]}
       className={cn(className)}
-      style={{ fontSize: 16 }}
+      style={{ fontSize: 18 }}
     />
   );
 };

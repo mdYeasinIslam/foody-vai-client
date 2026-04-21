@@ -61,7 +61,5 @@ body {
 
   scrollbar-color: var(--primary-color-500) transparent;
 
-  &:hover {
-    scrollbar-width: auto;
-  }
+ 
 }
