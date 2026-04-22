@@ -6,6 +6,7 @@ import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
 import { ClassNameValue } from "tailwind-merge";
 import { ICartItem } from "../libs/interfaces";
 import Link from "next/link";
+import { calculateTotal } from "@/src/@libs/utils/helperFunction";
 
 interface IProps {
   className?: ClassNameValue;
@@ -23,9 +24,9 @@ const CartContent: React.FC<IProps> = ({
     initialValue: [],
   });
 
-  const calculateTotal = () => {
-    return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  };
+  // const calculateTotal = () => {
+  //   return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  // };
 
   const calculateSaved = () => {
     return cartItems.reduce(
@@ -48,7 +49,7 @@ const CartContent: React.FC<IProps> = ({
     setCart(updatedCart);
   };
 
-  const total = calculateTotal();
+  const total = calculateTotal(cartItems);
   const saved = calculateSaved();
 
   return (
