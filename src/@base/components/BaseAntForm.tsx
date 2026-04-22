@@ -20,7 +20,7 @@ interface IProps<D = any> {
   isStep?: boolean;
 }
 
-const MultiStepForm = <D = any,>({
+const BaseAntForm = <D = any,>({
   className,
   formType = "create",
   formInstance,
@@ -59,7 +59,6 @@ const MultiStepForm = <D = any,>({
       handlePersistFn(purifiedValues);
       setCompletedSteps((prev) => new Set(prev).add(currentStep));
       setCurrentStep((prev) => prev + 1);
-
       formInstance.setFieldsValue(purifiedValues);
     } catch (_error) {}
   }, [currentStep, formInstance, handlePersistFn, persist]);
@@ -70,19 +69,16 @@ const MultiStepForm = <D = any,>({
       const purifiedValues = { ...persist, ...lastStepValues };
 
       setCompletedSteps((prev) => new Set(prev).add(currentStep));
-
-      onSubmit(purifiedValues);
+      onSubmit(purifiedValues as D);
     } catch (_error) {}
   }, [currentStep, formInstance, onSubmit, persist]);
 
   useEffect(() => {
     if (formType === "update" && initialValues) {
       const completed = new Set<number>();
-
       for (let i = 0; i < steps.length; i++) {
         completed.add(i);
       }
-
       setCompletedSteps(completed);
     }
   }, [formType, initialValues, steps.length]);
@@ -102,8 +98,6 @@ const MultiStepForm = <D = any,>({
 
                 if (completedSteps.has(idx)) {
                   if (idx > currentStep) await formInstance.validateFields();
-
-                  // setCurrentStep(idx);
                   formInstance.setFieldsValue(persist);
                   return;
                 }
@@ -114,9 +108,7 @@ const MultiStepForm = <D = any,>({
                     const purifiedValues = { ...persist, ...currentValues };
 
                     handlePersistFn(purifiedValues);
-                    // setCurrentStep(idx);
                     formInstance.setFieldsValue(purifiedValues);
-
                     setCompletedSteps((prev) => new Set(prev).add(currentStep));
                   } catch (_error) {}
                 }
@@ -125,6 +117,7 @@ const MultiStepForm = <D = any,>({
           />
         </div>
       )}
+
       <Form
         layout="vertical"
         size="large"
@@ -133,7 +126,7 @@ const MultiStepForm = <D = any,>({
         initialValues={initialValues}
         onFinish={handleFinishFn}
       >
-        {isStep && (
+        {isStep ? (
           <>
             <div>{steps[currentStep].content}</div>
             <div className="mt-4 flex justify-between border-t pt-4">
@@ -156,10 +149,21 @@ const MultiStepForm = <D = any,>({
               )}
             </div>
           </>
+        ) : (
+          <>
+            {steps.map((step) => (
+              <div key={step.label}>{step.content}</div>
+            ))}
+            <div className="mt-4 flex justify-end border-t pt-4">
+              <Button type="primary" htmlType="submit" loading={isLoading}>
+                {formType === "create" ? "Submit" : "Update"}
+              </Button>
+            </div>
+          </>
         )}
       </Form>
     </div>
   );
 };
 
-export default MultiStepForm;
+export default BaseAntForm;
