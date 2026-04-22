@@ -31,9 +31,7 @@ const CheckoutPage: React.FC<IProps> = () => {
             {/* Delivery Address */}
             <div className="border border-(--primary-color-500) rounded-lg ">
               <div className="flex justify-between items-center bg-(--primary-color-600) px-4 py-2 ">
-                <h3 className="text-base font-semibold text-gray-800">
-                  Delivery address
-                </h3>
+                <h3 className="text-base font-semibold ">Delivery address</h3>
                 <button className=" text-sm font-semibold cursor-pointer">
                   + Add new
                 </button>
@@ -44,9 +42,7 @@ const CheckoutPage: React.FC<IProps> = () => {
             {/* Coupon Section */}
             <div className="border border-(--primary-color-500) rounded-lg ">
               <div className="flex justify-between items-center bg-(--primary-color-600) px-4 py-2">
-                <h3 className="text-base font-semibold text-gray-800">
-                  Coupon and Others
-                </h3>
+                <h3 className="text-base font-semibold ">Coupon and Others</h3>
                 <div>
                   <button
                     onClick={() => setShowCoupon(!showCoupon)}
@@ -89,9 +85,7 @@ const CheckoutPage: React.FC<IProps> = () => {
             {/* Delivery Date */}
             <div className="border border-(--primary-color-500) rounded-lg ">
               <div className="bg-(--primary-color-600) px-4 py-2">
-                <h3 className="text-base font-semibold text-gray-800">
-                  Delivery Date
-                </h3>
+                <h3 className="text-base font-semibold">Delivery Date</h3>
               </div>
               {/* <input
                 type="text"
@@ -99,21 +93,27 @@ const CheckoutPage: React.FC<IProps> = () => {
                 className="w-full px-4 py-2 border border-(--primary-color-500) rounded-lg focus:outline-none focus:ring-2 focus:ring-(--primary-color-600)"
                 readOnly
               /> */}
-              <DatePicker size={'large'} placement="bottomLeft"  className="w-full" suffixIcon={null} defaultPickerValue={dayjs()}/>
+              <DatePicker
+                size={"large"}
+                placement="bottomLeft"
+                className="w-full border-(--primary-color-600)!"
+                suffixIcon={null}
+                defaultPickerValue={dayjs()}
+              />
             </div>
 
             {/* Special Notes */}
             <div className="border border-(--primary-color-500) rounded-lg ">
               <div className="bg-(--primary-color-600) px-4 py-2">
-                <h3 className="text-base font-semibold text-gray-800">
-                  Special Notes
-                </h3>
+                <h3 className="text-base font-semibold">Special Notes</h3>
               </div>
-              <textarea
-                placeholder="Add any additional delivery instructions"
-                rows={5}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-(--primary-color-800) resize-none"
-              ></textarea>
+              <div className="p-4">
+                <textarea
+                  placeholder="Add any additional delivery instructions"
+                  rows={5}
+                  className="w-full px-4 py-2 border border-(--primary-color-500) rounded-lg focus:outline-none focus:ring-2 focus:ring-(--primary-color-800) resize-none"
+                />
+              </div>
             </div>
           </div>
 
