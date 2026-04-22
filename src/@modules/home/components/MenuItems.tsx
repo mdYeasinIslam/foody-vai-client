@@ -17,6 +17,7 @@ type MenuItem = Required<MenuProps>["items"][number];
 
 interface IProps {
   className?: ClassNameValue;
+  handleAfterNavigate?: () => void;
 }
 
 type MenuData = {
@@ -84,7 +85,7 @@ const menuData: MenuData[] = [
     icon: <GiHoneyJar className="w-7! h-7!" />,
   },
 ];
-const MenuItems: React.FC<IProps> = ({ className }) => {
+const MenuItems: React.FC<IProps> = ({ className,handleAfterNavigate }) => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -97,6 +98,7 @@ const MenuItems: React.FC<IProps> = ({ className }) => {
       <div
         onClick={(e) => {
           e.stopPropagation(); // prevent submenu toggle
+          handleAfterNavigate?.();
           router.push(`/product-category/${item.key}`);
         }}
         className="flex items-center gap-2 cursor-pointer"
@@ -134,6 +136,7 @@ const MenuItems: React.FC<IProps> = ({ className }) => {
   }
 
   const onClick: MenuProps["onClick"] = (e) => {
+    handleAfterNavigate?.()
     //  Child click only
     router.push(`/product-category/${e.key}`);
   };

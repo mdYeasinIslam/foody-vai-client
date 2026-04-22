@@ -8,7 +8,7 @@ import MenuItems from "@/src/@modules/home/components/MenuItems";
 import {
   DownOutlined,
   SearchOutlined,
-  ShoppingCartOutlined
+  ShoppingCartOutlined,
 } from "@ant-design/icons";
 import { Badge, Dropdown, Input, MenuProps } from "antd";
 import Link from "next/link";
@@ -21,7 +21,6 @@ interface IProps {
   className?: ClassNameValue;
 }
 
-
 const accountItems: MenuProps["items"] = [
   { key: "profile", label: "My Profile" },
   { key: "orders", label: "My Orders" },
@@ -33,11 +32,17 @@ const accountItems: MenuProps["items"] = [
 const LandingHeader: React.FC<IProps> = () => {
   const [searchValue, setSearchValue] = useState("");
   const [openMenu, setOpenMenu] = useState(false);
-  const [open,setOpen] = useState(false)
-  const [cart,setCart] = useGlobalState({
+  const [open, setOpen] = useState(false);
+  const [cart, setCart] = useGlobalState({
     key: "cart",
     initialValue: [],
   });
+  const handleAfterNavigateFn = () => {
+    setOpenMenu(false);
+  };
+  const handleOnCloseAfterCheckoutFn = () => {
+    setOpen(false);
+  };
   return (
     <nav className="relative w-full bg-green-700 shadow-md">
       <div className="container flex items-center justify-between gap-2  h-16 md:h-20  ">
@@ -57,10 +62,13 @@ const LandingHeader: React.FC<IProps> = () => {
           {openMenu && (
             <div
               className={cn("lg:hidden absolute left-0 top-16 md:top-20 z-50", {
-                openMenu: "",
+                "-left-80": !openMenu,
               })}
             >
-              <MenuItems className="md:w-[50vw]" />
+              <MenuItems
+                handleAfterNavigate={handleAfterNavigateFn}
+                className="md:w-[50vw]"
+              />
             </div>
           )}
 
@@ -154,9 +162,7 @@ const LandingHeader: React.FC<IProps> = () => {
             size="small"
             offset={[-2, 2]}
           >
-            <span
-              className="p-1 md:p-2.5 rounded-full flex items-center justify-center bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer"
-            >
+            <span className="p-1 md:p-2.5 rounded-full flex items-center justify-center bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer">
               <ShoppingCartOutlined style={{ fontSize: 18 }} />
             </span>
           </Badge>
@@ -167,13 +173,13 @@ const LandingHeader: React.FC<IProps> = () => {
         <CartDrawer
           title={<h1 className="text-xl font-semibold">Shopping Cart</h1>}
           open={open}
-          onClose={() => setOpen(false)}
+          onClose={handleOnCloseAfterCheckoutFn}
           handleClearCart={() => {
             setCart([]);
           }}
           content={
             <>
-              <CartContent cartItems={cart} />
+              <CartContent cartItems={cart} handleOnCloseAfterCheckoutFn={handleOnCloseAfterCheckoutFn} />
             </>
           }
         />

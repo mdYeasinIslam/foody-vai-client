@@ -5,13 +5,19 @@ import React from "react";
 import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
 import { ClassNameValue } from "tailwind-merge";
 import { ICartItem } from "../libs/interfaces";
+import Link from "next/link";
 
 interface IProps {
   className?: ClassNameValue;
   cartItems: ICartItem[];
+  handleOnCloseAfterCheckoutFn: () => void;
 }
 
-const CartContent: React.FC<IProps> = ({ className, cartItems }) => {
+const CartContent: React.FC<IProps> = ({
+  className,
+  cartItems,
+  handleOnCloseAfterCheckoutFn,
+}) => {
   const [, setCart] = useGlobalState<ICartItem[]>({
     key: "cart",
     initialValue: [],
@@ -141,12 +147,15 @@ const CartContent: React.FC<IProps> = ({ className, cartItems }) => {
         )}
 
         {/* Checkout Button */}
-        <button
-          disabled={cartItems.length === 0}
-          className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold py-3 rounded-lg transition"
-        >
-          Proceed To Checkout
-        </button>
+        <Link href={"/checkout"}>
+          <button
+            onClick={handleOnCloseAfterCheckoutFn}
+            disabled={cartItems.length === 0}
+            className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold py-3 rounded-lg transition cursor-pointer"
+          >
+            Proceed To Checkout
+          </button>
+        </Link>
       </div>
     </div>
   );

@@ -41,7 +41,7 @@ const AllProducts = () => {
     <section className="">
       <div className="container">
         <h2 className="text-2xl font-bold mt-8">All Products</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
           {data.map((product) => (
            <Product key={product.id} product={product} />
           ))}

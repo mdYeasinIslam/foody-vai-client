@@ -23,7 +23,6 @@ const Product: React.FC<IProps> = ({ className, product }) => {
     initialValue: [],
   });
 
-  
   const addToCart = () => {
     let updatedCart;
     try {
@@ -41,7 +40,6 @@ const Product: React.FC<IProps> = ({ className, product }) => {
         (item: IProductCreate) =>
           item?.id === product.id && item?.weight === selectedPriceObj.weight,
       );
-
 
       if (existingItem) {
         updatedCart = existingCart.map((item) =>
