@@ -2,13 +2,12 @@
 import useGlobalState from "@/src/@libs/hooks/useGlobalState";
 import cn from "@/src/@libs/utils/_cn";
 import { LocalStorage } from "@/src/@libs/utils/localStorage";
-import { ShoppingCartOutlined } from "@ant-design/icons";
 import { Badge } from "antd";
 import Image from "next/image";
-import React, { useState, useMemo } from "react";
+import React, { useMemo, useState } from "react";
+import { FaCircleMinus, FaCirclePlus } from "react-icons/fa6";
 import { ClassNameValue } from "tailwind-merge";
 import { IProduct, IProductCreate } from "../libs/interfaces";
-import { FaCirclePlus } from "react-icons/fa6";
 interface IProps {
   className?: ClassNameValue;
   product: IProduct;
@@ -103,8 +102,29 @@ const Product: React.FC<IProps> = ({ className, product }) => {
           offset={[-2, 2]}
           className=" absolute! bottom-2! right-2!"
         >
-          <FaCirclePlus className="w-7 h-7 text-green-600 cursor-pointer " />
+          <FaCirclePlus className="w-7 h-7 text-green-600 cursor-pointer" />
         </Badge>
+        {badgeCount > 0 && (
+          <button
+            onClick={() => {
+              // Handle remove from cart logic
+              const existingCart = LocalStorage.get<IProductCreate[]>("cart", []);
+              const selectedWeight = weightForPrice ?? product.prices?.[0]?.weight;
+              const updatedCart = existingCart
+          .map((item) =>
+            item.id === product.id && item.weight === selectedWeight
+              ? { ...item, quantity: item.quantity - 1 }
+              : item,
+          )
+          .filter((item) => item.quantity > 0);
+              localStorage.setItem("cart", JSON.stringify(updatedCart));
+              setCart(updatedCart);
+            }}
+            className="absolute bottom-2 left-2"
+          >
+            <FaCircleMinus className="w-7 h-7 text-red-600 cursor-pointer" />
+          </button>
+        )}
       </div>
       <div className="p-4 flex flex-col justify-between flex-1">
         <h3 className="font-semibold text-gray-800 mb-">{product.name}</h3>
