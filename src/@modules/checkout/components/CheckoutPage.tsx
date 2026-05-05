@@ -9,6 +9,7 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { ClassNameValue } from "tailwind-merge";
 import { ICartItem } from "../../cart/libs/interfaces";
 import { Delivery_Charge } from "../libs/enums";
+import DeliveryAddressForm from "./DeliveryAddressForm";
 interface IProps {
   className?: ClassNameValue;
 }
@@ -32,15 +33,7 @@ const CheckoutPage: React.FC<IProps> = () => {
           {/* Left Section */}
           <div className="lg:col-span-2 space-y-6">
             {/* Delivery Address */}
-            <div className="border border-(--primary-color-500) rounded-lg ">
-              <div className="flex justify-between items-center bg-(--primary-color-600) px-4 py-2 ">
-                <h3 className="text-base font-semibold ">Delivery address</h3>
-                <button className=" text-sm font-semibold cursor-pointer">
-                  + Add new
-                </button>
-              </div>
-              <p className="text-gray-500  px-4 py-2">No address found.</p>
-            </div>
+            <DeliveryAddressForm/>
 
             {/* Coupon Section */}
             <div className="border border-(--primary-color-500) rounded-lg ">
