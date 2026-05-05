@@ -1,23 +1,26 @@
 "use client";
 import useGlobalState from "@/src/@libs/hooks/useGlobalState";
 import { calculateTotal } from "@/src/@libs/utils/helperFunction";
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
 import Image from "next/image";
 import React, { useState } from "react";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { ClassNameValue } from "tailwind-merge";
 import { ICartItem } from "../../cart/libs/interfaces";
 import { Delivery_Charge } from "../libs/enums";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { DatePicker } from "antd";
-import dayjs from "dayjs";
 interface IProps {
   className?: ClassNameValue;
 }
 const CheckoutPage: React.FC<IProps> = () => {
   const [showCoupon, setShowCoupon] = useState(true);
+  const [paymentMethod, setPaymentMethod] = useState("online");
+
   const [cart] = useGlobalState<ICartItem[]>({
     key: "cart",
     initialValue: [],
   });
+  console.log(paymentMethod)
   const subTotal = calculateTotal(cart);
   const deliveryCharge = Delivery_Charge.INSIDE_DHAKA;
   const isDiscount = false;
@@ -194,25 +197,26 @@ const CheckoutPage: React.FC<IProps> = () => {
               </div>
 
               {/* Payment Methods */}
+
               <div className="space-y-3 mb-6">
-                <label className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
-                  <input type="radio" name="payment" className="w-5 h-5" />
-                  <span className="text-gray-700 font-medium">
-                    Cash on delivery
-                  </span>
-                </label>
-                <label className="flex items-center gap-3 p-3 border-2 border-green-500 rounded-lg cursor-pointer bg-green-50">
-                  <input
-                    type="radio"
-                    name="payment"
-                    defaultChecked
-                    className="w-5 h-5 accent-green-600"
-                  />
-                  <span className="text-gray-700 font-medium">Pay Online</span>
-                </label>
-                <p className="text-gray-600 text-sm">
-                  Please check the Delivery Policy before completing your order.
-                </p>
+                {["cod", "online"].map((method) => (
+                  <label
+                    key={method}
+                    className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 has-checked:border-(--primary-color-800) has-checked:bg-(--primary-color-500)"
+                  >
+                    <input
+                      type="radio"
+                      name="payment"
+                      value={method}
+                      checked={paymentMethod === method}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                      className="w-5 h-5 accent-green-600"
+                    />
+                    <span className="text-gray-700 font-medium">
+                      {method === "cod" ? "Cash on delivery" : "Pay Online"}
+                    </span>
+                  </label>
+                ))}
               </div>
 
               {/* Order Button */}

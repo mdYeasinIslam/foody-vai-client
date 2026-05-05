@@ -108,15 +108,19 @@ const Product: React.FC<IProps> = ({ className, product }) => {
           <button
             onClick={() => {
               // Handle remove from cart logic
-              const existingCart = LocalStorage.get<IProductCreate[]>("cart", []);
-              const selectedWeight = weightForPrice ?? product.prices?.[0]?.weight;
+              const existingCart = LocalStorage.get<IProductCreate[]>(
+                "cart",
+                [],
+              );
+              const selectedWeight =
+                weightForPrice ?? product.prices?.[0]?.weight;
               const updatedCart = existingCart
-          .map((item) =>
-            item.id === product.id && item.weight === selectedWeight
-              ? { ...item, quantity: item.quantity - 1 }
-              : item,
-          )
-          .filter((item) => item.quantity > 0);
+                .map((item) =>
+                  item.id === product.id && item.weight === selectedWeight
+                    ? { ...item, quantity: item.quantity - 1 }
+                    : item,
+                )
+                .filter((item) => item.quantity > 0);
               localStorage.setItem("cart", JSON.stringify(updatedCart));
               setCart(updatedCart);
             }}
