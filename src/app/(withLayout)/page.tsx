@@ -6,7 +6,7 @@ const page = () => {
   return (
     <React.Fragment>
       <LandingBannerWithMenuItems />
-      <AllProducts/>
+      <AllProducts />
     </React.Fragment>
   );
 };

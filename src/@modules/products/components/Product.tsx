@@ -1,27 +1,35 @@
 "use client";
-import React, { useState } from "react";
+import useGlobalState from "@/src/@libs/hooks/useGlobalState";
+import cn from "@/src/@libs/utils/_cn";
+import { LocalStorage } from "@/src/@libs/utils/localStorage";
+import { ShoppingCartOutlined } from "@ant-design/icons";
+import { Badge } from "antd";
+import Image from "next/image";
+import React, { useState, useMemo } from "react";
 import { ClassNameValue } from "tailwind-merge";
 import { IProduct, IProductCreate } from "../libs/interfaces";
-import Image from "next/image";
-import cn from "@/src/@libs/utils/_cn";
-import useGlobalState from "@/src/@libs/hooks/useGlobalState";
-import { LocalStorage } from "@/src/@libs/utils/localStorage";
+import { FaCirclePlus } from "react-icons/fa6";
 interface IProps {
   className?: ClassNameValue;
   product: IProduct;
 }
 const Product: React.FC<IProps> = ({ className, product }) => {
   const [weightForPrice, setWeightForPrice] = useState<null | number>(null);
+  const [cart, setCart] = useGlobalState<IProductCreate[]>({
+    key: "cart",
+    initialValue: [],
+  });
+  console.log(cart);
   const price = product?.prices?.filter(
     (price) => price.weight === weightForPrice,
   );
   const originalPrice = product?.prices?.filter(
     (price) => price.weight === weightForPrice,
   );
-  const [, setCart] = useGlobalState<IProductCreate[]>({
-    key: "cart",
-    initialValue: [],
-  });
+  const badgeCount = useMemo(() => {
+    const productInCart = cart.find((item) => item.id === product.id);
+    return productInCart ? productInCart.quantity : 0;
+  }, [cart, product.id]);
 
   const addToCart = () => {
     let updatedCart;
@@ -71,54 +79,7 @@ const Product: React.FC<IProps> = ({ className, product }) => {
       console.error(err);
     }
   };
-  // const addToCart = () => {
-  //   try {
-  //     const key = "cart";
-  //     const getCart = localStorage.getItem(key);
-  //     const cart: any[] = getCart ? JSON.parse(getCart) : [];
 
-  //     const selectedWeight =
-  //       weightForPrice !== null
-  //         ? weightForPrice
-  //         : product.prices && product.prices.length
-  //         ? product.prices[0].weight
-  //         : undefined;
-
-  //     const selectedPriceObj =
-  //       product.prices?.find((p) => p.weight === selectedWeight) ??
-  //       product.prices?.[0];
-
-  //     if (!selectedPriceObj) {
-  //       console.error("No price information available for product", product.id);
-  //       return;
-  //     }
-
-  //     const existingItem = cart.find(
-  //       (item) => item.id === product.id && item.weight === selectedPriceObj.weight
-  //     );
-
-  //     if (existingItem) {
-  //       existingItem.quantity += 1;
-  //     } else {
-  //       const cartItem = {
-  //         id: product.id,
-  //         name: product.name,
-  //         img: product.img,
-  //         weight: selectedPriceObj.weight,
-  //         price: selectedPriceObj.price,
-  //         originalPrice: selectedPriceObj.originalPrice ?? null,
-  //         quantity: 1,
-  //         addedAt: new Date().toISOString(),
-  //       };
-  //       cart.push(cartItem);
-  //     }
-
-  //     localStorage.setItem(key, JSON.stringify(cart));
-  //     console.log("Product added to cart");
-  //   } catch (err) {
-  //     console.error("Failed to add product to cart", err);
-  //   }
-  // };
   return (
     <div
       key={product.id}
@@ -128,12 +89,6 @@ const Product: React.FC<IProps> = ({ className, product }) => {
       )}
     >
       <div className="relative bg-gray-100 h-48 flex items-center justify-center overflow-hidden rounded-t-lg">
-        {/* {product.discount && (
-                    <div className="absolute top-2 left-2 bg-red-600 text-white px-2 py-1 rounded text-xs font-bold">
-                    <div>{product.discount}%</div>
-                    <div>OFF</div>
-                    </div>
-                  )} */}
         <Image
           src={product.img}
           alt={product.name}
@@ -141,12 +96,15 @@ const Product: React.FC<IProps> = ({ className, product }) => {
           height={300}
           className="w-full h-full object-cover"
         />
-        <button
+        <Badge
           onClick={addToCart}
-          className="absolute bottom-2 right-2 bg-(--primary-color-800) text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-green-600 text-xl font-bold cursor-pointer"
+          count={badgeCount}
+          size="small"
+          offset={[-2, 2]}
+          className=" absolute! bottom-2! right-2!"
         >
-          +
-        </button>
+          <FaCirclePlus className="w-7 h-7 text-green-600 cursor-pointer " />
+        </Badge>
       </div>
       <div className="p-4 flex flex-col justify-between flex-1">
         <h3 className="font-semibold text-gray-800 mb-">{product.name}</h3>
