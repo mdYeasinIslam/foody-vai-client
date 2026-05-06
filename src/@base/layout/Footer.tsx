@@ -20,11 +20,10 @@ const USE_CASES_LINKS = ["Use Cases", "Web-designers", "Marketers", "Small Busin
 const RESOURCES_LINKS = ["Resources", "Academy", "Blog", "Themes", "Hosting", "Developers", "Support"];
 
 const COMPANY_LINKS = [
-  { label: "About Us", href: null },
-  { label: "Careers", href: null },
-  { label: "FAQs", href: null },
+  { label: "About Us", href: PathName.about },
+  { label: "FAQs", href: PathName.faq },
   { label: "Terms and Services", href: PathName["terms-and-services"] },
-  { label: "Contact Us", href: null },
+  { label: "Contact Us", href: PathName.contact },
 ];
 
 const Footer: React.FC = () => {

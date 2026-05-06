@@ -1,25 +1,62 @@
-import ComponentHeroBanner from "@/src/@base/components/ComponentHeroBanner";
-import { PathName } from "@/src/@libs/constant/_paths";
+import BaseComponentHeroBanner from "@/src/@base/components/BaseComponentHeroBanner";
 import cn from "@/src/@libs/utils/_cn";
-import Link from "next/link";
 import React from "react";
-import { FaHome } from "react-icons/fa";
-import { FaAngleLeft } from "react-icons/fa6";
+import { TbAlertTriangleFilled } from "react-icons/tb";
 import { ClassNameValue } from "tailwind-merge";
+
 interface IProps {
   className?: ClassNameValue;
 }
+
+// Notice items
+const NOTICE_ITEMS = [
+  {
+    id: 1,
+    text: "Customers are advised to read and understand our Privacy Policy carefully, as by accessing the website/app you agree to be bound by the terms and conditions of the Privacy Policy.",
+  },
+  {
+    id: 2,
+    text: "If you do not agree with our Privacy Policy, please do not use or access the website/app.",
+  },
+  {
+    id: 3,
+    text: "We recommend periodically reviewing our Privacy Policy as it may change without notice.",
+  },
+];
+
+// Information collection items
+const INFORMATION_ITEMS = [
+  { id: 1, text: "Identifiers (name, email, phone number, etc.)" },
+  { id: 2, text: "Protected classifications (gender, age)" },
+  { id: 3, text: "Commercial information (purchase history)" },
+  { id: 4, text: "Internet activity (browse/search history)" },
+  { id: 5, text: "Geo-location data" },
+  { id: 6, text: "Audio/visual information" },
+  { id: 7, text: "Inferences about preferences" },
+];
+
+// Permitted uses items
+const PERMITTED_USES = [
+  {
+    id: 1,
+    text: "Performing services and maintaining accounts",
+  },
+  { id: 2, text: "Processing payments and fulfilling orders" },
+  { id: 3, text: "Providing customer service and analytics" },
+  { id: 4, text: "Detecting security incidents and fraud" },
+  { id: 5, text: "Debugging and identifying errors" },
+  { id: 6, text: "Technological development and improvement" },
+  { id: 7, text: "Verifying quality and safety of services" },
+];
+
 const TermsAndServices: React.FC<IProps> = ({ className }) => {
   return (
     <section className={cn(className)}>
+        <BaseComponentHeroBanner bannerImg="/images/terms-condition/term-banner.webp" className='max-w-500 mx-auto'/>
       <div className="container bg-gray-50">
-        {/* Hero Section */}
-        <ComponentHeroBanner bannerImg="/images/terms-condition/term-banner.webp" />
 
-        {/* Content Section */}
-        <div className=" max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-          {/* Introduction */}
-          <section className="mb-12">
+        <div className=" max-w-7xl mx-auto py-12 sm:px-6 lg:px-8">
+          <div className="mb-12">
             <p className="text-xl font-semibold mb-5">
               Last updated: February 18, 2021
             </p>
@@ -37,130 +74,83 @@ const TermsAndServices: React.FC<IProps> = ({ className }) => {
               meanings given to them in the California Consumer Privacy Act of
               2018 ( &quot;CCPA&quot; ).
             </p>
-          </section>
+          </div>
 
-          {/* Important Notice */}
-          <section className="mb-12 bg-blue-50 border-l-4 border-blue-500 p-6 rounded">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+          {/*  notice  section*/}
+          <div className="mb-12 bg-(--primary-color-500) border-l-4 border-(--primary-color-800) p-2 md:p-6 rounded">
+            <h2 className="text-xl font-semibold text-gray-900 mb-2 md:mb-4">
               Important Notice
             </h2>
             <ul className="space-y-3 text-gray-700">
-              <li className="flex items-start">
-                <span className="text-blue-500 mr-3 font-bold">•</span>
-                <span>
-                  Customers are advised to read and understand our Privacy
-                  Policy carefully, as by accessing the website/app you agree to
-                  be bound by the terms and conditions of the Privacy Policy.
-                </span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-blue-500 mr-3 font-bold">•</span>
-                <span>
-                  If you do not agree with our Privacy Policy, please do not use
-                  or access the website/app.
-                </span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-blue-500 mr-3 font-bold">•</span>
-                <span>
-                  We recommend periodically reviewing our Privacy Policy as it
-                  may change without notice.
-                </span>
-              </li>
+              {NOTICE_ITEMS.map((item) => (
+                <li key={item.id} className="flex items-start">
+                  <span className="min-h-1 min-w-1 h-fit rounded-full bg-(--primary-color-800) mr-3 font-bold mt-2.5" />
+                  <span>{item.text}</span>
+                </li>
+              ))}
             </ul>
-          </section>
+          </div>
 
-          {/* Information Collection */}
-          <section className="mb-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+          {/* information collection section */}
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
               Collection, Storage and Use of Information
             </h2>
-            <p className="text-gray-700 leading-relaxed mb-6">
+            <p className="text-gray-700 leading-relaxed mb-2">
               We automatically track certain information about you based upon
               your behavior on the website to do internal research on our
               users&lsquo; demographics, interests, and behavior. This includes:
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              {[
-                "Identifiers (name, email, phone number, etc.)",
-                "Protected classifications (gender, age)",
-                "Commercial information (purchase history)",
-                "Internet activity (browse/search history)",
-                "Geo-location data",
-                "Audio/visual information",
-                "Inferences about preferences",
-              ].map((item, index) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 mb-6">
+              {INFORMATION_ITEMS.map((item) => (
                 <div
-                  key={index}
-                  className="flex items-start bg-white p-4 rounded border border-gray-200"
+                  key={item.id}
+                  className="flex items-start bg-white p-1 rounded border border-gray-200"
                 >
-                  <span className="text-green-500 mr-3 font-bold">✓</span>
-                  <span className="text-gray-700">{item}</span>
+                  <span className="min-h-1 min-w-1 h-fit rounded-full bg-(--primary-color-800) mr-3 font-bold mt-2.5" />
+                  <span className="text-gray-700">{item.text}</span>
                 </div>
               ))}
             </div>
-          </section>
+          </div>
 
-          {/* Data Protection */}
-          <section className="mb-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+          {/* data protection */}
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
               Data Protection & Security
             </h2>
-            <p className="text-gray-700 leading-relaxed mb-4">
+            <p className="text-gray-700 leading-relaxed mb-2">
               The Company has appropriate physical, electronic and managerial
               procedures to protect your information. However, transmissions
               over the Internet cannot be absolutely secure.
             </p>
-            <div className="bg-amber-50 border border-amber-200 p-6 rounded">
-              <p className="text-amber-900 font-semibold mb-2">
-                ⚠️ Security Alert
+            <div className="bg-amber-50 border border-amber-200 p-2 md:p-6 rounded">
+              <p className="flex items-center  gap-2 text-amber-900 font-semibold mb-2">
+                <TbAlertTriangleFilled className="text-2xl text-yellow-500" />
+                Security Alert
               </p>
               <p className="text-amber-800 text-sm">
                 The Company will never ask you to share sensitive data via email
                 or telephone. If you receive such a request, do not respond and
-                contact us at <strong>info@borobazar.com</strong>.
+                contact us at <strong>info@foodyVai.com</strong>.
               </p>
             </div>
-          </section>
+          </div>
 
-          {/* Permitted Uses */}
-          <section className="mb-12">
+          {/* permitted uses */}
+          <div className="mb-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
               Permitted Uses of Your Information
             </h2>
             <ul className="space-y-3 text-gray-700">
-              {[
-                "Performing services and maintaining accounts",
-                "Processing payments and fulfilling orders",
-                "Providing customer service and analytics",
-                "Detecting security incidents and fraud",
-                "Debugging and identifying errors",
-                "Technological development and improvement",
-                "Verifying quality and safety of services",
-              ].map((item, index) => (
-                <li key={index} className="flex items-start">
-                  <span className="text-indigo-600 mr-3 font-bold">→</span>
-                  <span>{item}</span>
+              {PERMITTED_USES.map((item) => (
+                <li key={item.id} className="flex sm:items-start ">
+                  <span className="min-h-1 min-w-1 h-fit rounded-full bg-(--primary-color-800) mr-3 font-bold mt-2.5" />
+                  <span>{item.text}</span>
                 </li>
               ))}
             </ul>
-          </section>
-
-          {/* Contact */}
-          <section className="bg-gray-100 p-8 rounded-lg text-center">
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              Questions About Our Terms?
-            </h3>
-            <p className="text-gray-700 mb-4">
-              Please contact us for any clarifications
-            </p>
-            <a
-              href="mailto:info@borobazar.com"
-              className="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition"
-            >
-              info@foodyVai.com
-            </a>
-          </section>
+          </div>
         </div>
       </div>
     </section>
