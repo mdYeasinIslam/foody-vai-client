@@ -1,7 +1,7 @@
 export const PathName = {
     root: '/',
     footer: '/footer',
-    'terms-and-condition': '/terms-and-condition',
+    'terms-and-services': '/terms-and-services',
     'privacy-policy': '/privacy-policy',
     checkout:'/checkout'
 

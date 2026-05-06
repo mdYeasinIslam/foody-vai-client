@@ -1,10 +1,10 @@
-import TermsAndServicesPage from '@/src/@modules/terms-and-condition/components/TermsAndCondition'
+import TermsAndServices from '@/src/@modules/terms-and-services/components/TermsAndServices'
 import React from 'react'
 
-const page = () => {
+const page:React.FC = () => {
   return (
       <>
-      <TermsAndServicesPage/>
+      <TermsAndServices/>
       </>
   )
 }

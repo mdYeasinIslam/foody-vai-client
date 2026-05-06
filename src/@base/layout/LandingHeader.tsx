@@ -37,7 +37,6 @@ const LandingHeader: React.FC<IProps> = () => {
     key: "cart",
     initialValue: [],
   });
-  console.log(cart)
   const handleAfterNavigateFn = () => {
     setOpenMenu(false);
   };

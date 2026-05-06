@@ -1,28 +1,35 @@
-const TermsAndServicesPage = () => {
+import ComponentHeroBanner from "@/src/@base/components/ComponentHeroBanner";
+import { PathName } from "@/src/@libs/constant/_paths";
+import cn from "@/src/@libs/utils/_cn";
+import Link from "next/link";
+import React from "react";
+import { FaHome } from "react-icons/fa";
+import { FaAngleLeft } from "react-icons/fa6";
+import { ClassNameValue } from "tailwind-merge";
+interface IProps {
+  className?: ClassNameValue;
+}
+const TermsAndServices: React.FC<IProps> = ({ className }) => {
   return (
-    <section>
+    <section className={cn(className)}>
       <div className="container bg-gray-50">
         {/* Hero Section */}
-        <div className="bg-cover bg-center bg-no-repeat border-b border-gray-200" style={{backgroundImage: "url('/images/terms-condition/term-banner.webp')"}}>
-          <div className=" px-4 py-12 sm:px-6 lg:px-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">
-              Terms and Services
-            </h1>
-            <p className="text-gray-600">Last updated: February 18, 2021</p>
-          </div>
-        </div>
+        <ComponentHeroBanner bannerImg="/images/terms-condition/term-banner.webp" />
 
         {/* Content Section */}
-        <div className=" max-w-6xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+        <div className=" max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
           {/* Introduction */}
           <section className="mb-12">
+            <p className="text-xl font-semibold mb-5">
+              Last updated: February 18, 2021
+            </p>
+
             <p className="text-gray-700 leading-relaxed mb-4">
-              <strong> &quot;KhucraBazar&quot;</strong> is a trademark of
-              FoodyVai Private Limited (&quot;Company&quot;), a company
-              incorporated under the Companies Act, 2013 with its registered and
-              corporate office at Plot 64H, Sector 18, Gudgeon 122001 in the
-              course of its business. The domain name grocers.com is owned by
-              the Company.
+              &quot;KhucraBazar&quot; is a trademark of FoodyVai Private Limited
+              (&quot;Company&quot;), a company incorporated under the Companies
+              Act, 2013 with its registered and corporate office at Plot 64H,
+              Sector 18, Gudgeon 122001 in the course of its business. The
+              domain name grocers.com is owned by the Company.
             </p>
             <p className="text-gray-700 leading-relaxed">
               If you are a California resident, the information below also
@@ -151,7 +158,7 @@ const TermsAndServicesPage = () => {
               href="mailto:info@borobazar.com"
               className="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition"
             >
-              info@borobazar.com
+              info@foodyVai.com
             </a>
           </section>
         </div>
@@ -160,4 +167,4 @@ const TermsAndServicesPage = () => {
   );
 };
 
-export default TermsAndServicesPage;
+export default TermsAndServices;
