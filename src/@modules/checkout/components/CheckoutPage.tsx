@@ -10,6 +10,7 @@ import { ClassNameValue } from "tailwind-merge";
 import { ICartItem } from "../../cart/libs/interfaces";
 import { Delivery_Charge } from "../libs/enums";
 import DeliveryAddressForm from "./DeliveryAddressForm";
+import Link from "next/link";
 interface IProps {
   className?: ClassNameValue;
 }
@@ -21,7 +22,7 @@ const CheckoutPage: React.FC<IProps> = () => {
     key: "cart",
     initialValue: [],
   });
-  console.log(paymentMethod)
+  console.log(paymentMethod);
   const subTotal = calculateTotal(cart);
   const deliveryCharge = Delivery_Charge.INSIDE_DHAKA;
   const isDiscount = false;
@@ -33,7 +34,7 @@ const CheckoutPage: React.FC<IProps> = () => {
           {/* Left Section */}
           <div className="lg:col-span-2 space-y-6">
             {/* Delivery Address */}
-            <DeliveryAddressForm/>
+            <DeliveryAddressForm />
 
             {/* Coupon Section */}
             <div className="border border-(--primary-color-500) rounded-lg ">
@@ -177,13 +178,13 @@ const CheckoutPage: React.FC<IProps> = () => {
                 ].map(({ label, value }) => (
                   <div
                     key={label}
-                    className="flex justify-between text-gray-700 border-b border-(--primary-color-500)"
+                    className="flex  text-sm justify-between font-medium border-b border-(--primary-color-500)"
                   >
-                    <span className="font-semibold">{label}</span>
+                    <span>{label}</span>
                     <span>৳ {value}</span>
                   </div>
                 ))}
-                <div className="flex justify-between text-lg font-semibold border-t border-gray-200 pt-3">
+                <div className="flex justify-between text-sm font-semibold border-t border-gray-200 pt-3">
                   <span>Total Payable</span>
                   <span>৳ {subTotal + deliveryCharge - calculateDiscount}</span>
                 </div>
@@ -193,22 +194,42 @@ const CheckoutPage: React.FC<IProps> = () => {
 
               <div className="space-y-3 mb-6">
                 {["cod", "online"].map((method) => (
-                  <label
-                    key={method}
-                    className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 has-checked:border-(--primary-color-800) has-checked:bg-(--primary-color-500)"
-                  >
-                    <input
-                      type="radio"
-                      name="payment"
-                      value={method}
-                      checked={paymentMethod === method}
-                      onChange={(e) => setPaymentMethod(e.target.value)}
-                      className="w-5 h-5 accent-green-600"
-                    />
-                    <span className="text-gray-700 font-medium">
-                      {method === "cod" ? "Cash on delivery" : "Pay Online"}
-                    </span>
-                  </label>
+                  <div key={method}>
+                    <label className="flex flex-col  gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 has-checked:border-(--primary-color-800)  hover:border-(--primary-color-800) transition-all duration-300">
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="radio"
+                          name="payment"
+                          value={method}
+                          checked={paymentMethod === method}
+                          onChange={(e) => setPaymentMethod(e.target.value)}
+                          className="w-5 h-5 accent-green-600"
+                        />
+                        <span className="text-gray-700 font-medium">
+                          {method === "cod" ? (
+                            "Cash on delivery"
+                          ) : (
+                            <span>
+                              Pay Online
+                              <span className="uppercase text-xs pl-3 text-gray-400">
+                                Verified by
+                              </span>
+                              <span className="bg-blue-900 text-white italic  text-xs ml-1 px-1 rounded">
+                                SSLCommerz
+                              </span>
+                            </span>
+                          )}
+                        </span>
+                      </div>
+                      {paymentMethod === method && (
+                        <p className="text-xs text-gray-600 bg-(--primary-color-500)  ml-8 p-2 rounded-lg">
+                          {method == "cod"
+                            ? " Please complete payment after you get your products and check the Delivery Policy before completing your  order."
+                            : "Please check the Delivery Policy before completing your order."}
+                        </p>
+                      )}
+                    </label>
+                  </div>
                 ))}
               </div>
 
@@ -219,14 +240,20 @@ const CheckoutPage: React.FC<IProps> = () => {
 
               {/* Terms */}
               <p className="text-gray-600 text-xs mt-4">
-                By placing your order, you agree to be bound by the Khaas Food{" "}
-                <a href="#" className="text-green-600 hover:underline">
+                By placing your order, you agree to be bound by the Khaas Food
+                <Link
+                  href="/terms-and-services"
+                  className="text-green-600 hover:underline"
+                >
                   Terms of Service
-                </a>{" "}
+                </Link>{" "}
                 and{" "}
-                <a href="#" className="text-green-600 hover:underline">
+                <Link
+                  href="/privacy"
+                  className="text-green-600 hover:underline"
+                >
                   Privacy
-                </a>
+                </Link>
                 . Your credit/debit card data will not be saved.
               </p>
             </div>

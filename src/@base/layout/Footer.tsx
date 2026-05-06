@@ -1,3 +1,5 @@
+import { PathName } from "@/src/@libs/constant/_paths";
+import Link from "next/link";
 import React from "react";
 
 // react icons
@@ -180,9 +182,9 @@ const Footer: React.FC = () => {
                 </a>
               </span>
               <span>
-                <a className="text-[0.9rem] text-(--secondary-color-800) cursor-pointer">
-                  Teams
-                </a>
+                <Link href={PathName["terms-and-condition"]} className="text-[0.9rem] text-(--secondary-color-800) cursor-pointer">
+                  Teams and Condition
+                </Link>
               </span>
               <span>
                 <a className="text-[0.9rem] text-(--secondary-color-800) cursor-pointer">
