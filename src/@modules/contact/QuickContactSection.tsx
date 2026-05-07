@@ -1,27 +1,29 @@
 'use client';
 
 
+import { PathName } from '@/src/@libs/constant/_paths';
+import cn from '@/src/@libs/utils/_cn';
 import { motion } from 'framer-motion';
 import React from 'react';
+import { FaWhatsappSquare } from 'react-icons/fa';
+import { TbMailBitcoin } from 'react-icons/tb';
 import QuickContactCard from './QuickContactCard';
-import { PathName } from '@/src/@libs/constant/_paths';
-import { TbMailBitcoin, TbMessageCircle } from 'react-icons/tb';
-import cn from '@/src/@libs/utils/_cn';
 
 interface IProps {
   className?: string;
 }
 const contactInfo = [
   {
-    icon: <TbMailBitcoin />,
+    icon: <TbMailBitcoin className='h-7 w-7 md:w-8 md:h-8 '/>,
     title: "Email",
     subTitle: PathName.social.email,
     description: "Reach out to us via email.",
     href: `mailto:${PathName.social.email}`,
   },
   {
-    icon: <TbMessageCircle />,
-    title: "Chat",
+    // icon: <TbMessageCircle />,
+    icon: <FaWhatsappSquare className='h-7 w-7 md:w-8 md:h-8 '/>,
+    title: "WhatsApp Now",
     subTitle: "Live chat support",
     description: "Chat with our support team.",
     href: `https://wa.me/${PathName.social.whatsApp}`,

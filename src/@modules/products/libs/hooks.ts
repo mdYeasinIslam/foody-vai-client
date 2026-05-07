@@ -1,6 +1,6 @@
 import { QueryConfig } from "@/src/@libs/config/react-query";
-import { IProductFilter } from "./interfaces";
 import { useQuery } from "@tanstack/react-query";
+import { IProductFilter } from "./interfaces";
 import { ProductsService } from "./services";
 
 type IUseProducts = {

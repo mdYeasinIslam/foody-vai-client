@@ -1,10 +1,15 @@
-import { Button, Form, Input, Modal, Select } from "antd";
+import BaseModal from "@/src/@base/components/BaseModal";
+import { Button, Form, Input, Select } from "antd";
 import { useState } from "react";
+import { useCountries } from "../libs/hooks";
+import BaseLoader from "@/src/@base/components/BaseLoader";
 
 const DeliveryAddressForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
-
+  const {data,isLoading,isPending,error} = useCountries()
+  console.log(data)
+  const countriesData=data?.data
   const handleAddNew = () => {
     setIsModalOpen(true);
   };
@@ -19,7 +24,12 @@ const DeliveryAddressForm = () => {
     setIsModalOpen(false);
     form.resetFields();
   };
-
+  if (isLoading || isPending) {
+    return <BaseLoader />;
+  }
+  if (error) {
+    return <div>{error.message}</div>
+  }
   return (
     <>
       <div className="border border-(--primary-color-500) rounded-lg ">
@@ -34,12 +44,19 @@ const DeliveryAddressForm = () => {
         </div>
         <p className="text-gray-500  px-4 py-2">No address found.</p>
       </div>
-
+      {/* 
       <Modal
         title="Add New Address"
         open={isModalOpen}
         onCancel={handleCancel}
         footer={null}
+      >
+       
+      </Modal> */}
+      <BaseModal
+        title="Add New Address"
+        open={isModalOpen}
+        onCancel={handleCancel}
       >
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <div className="grid grid-cols-2 gap-4">
@@ -103,7 +120,7 @@ const DeliveryAddressForm = () => {
             </Button>
           </Form.Item>
         </Form>
-      </Modal>
+      </BaseModal>
     </>
   );
 };

@@ -22,7 +22,6 @@ const CheckoutPage: React.FC<IProps> = () => {
     key: "cart",
     initialValue: [],
   });
-  console.log(paymentMethod);
   const subTotal = calculateTotal(cart);
   const deliveryCharge = Delivery_Charge.INSIDE_DHAKA;
   const isDiscount = false;
