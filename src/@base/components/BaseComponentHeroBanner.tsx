@@ -10,8 +10,13 @@ import { ClassNameValue } from "tailwind-merge";
 interface IProps {
   className?: ClassNameValue;
   bannerImg?: string;
+  title?: string;
 }
-const BaseComponentHeroBanner: React.FC<IProps> = ({ className, bannerImg }) => {
+const BaseComponentHeroBanner: React.FC<IProps> = ({
+  className,
+  bannerImg,
+  title,
+}) => {
   const path = usePathname().split("/")?.pop()?.split("-")?.join(" ");
   return (
     <div
@@ -27,7 +32,7 @@ const BaseComponentHeroBanner: React.FC<IProps> = ({ className, bannerImg }) => 
     >
       <div className="h-full flex flex-col items-center justify-center  text-white text-center  ">
         <h1 className="text-2xl md:text-4xl font-bold  mb-2 capitalize">
-          {path}
+          {title ? title : path}
         </h1>
         <p className="flex items-center gap-2 text-xs md:text-base">
           <Link

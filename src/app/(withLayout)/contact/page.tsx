@@ -1,6 +1,5 @@
-
+import BaseComponentHeroBanner from "@/src/@base/components/BaseComponentHeroBanner";
 import FormSection from "@/src/@modules/contact/FormSection";
-import HeroSection from "@/src/@modules/contact/HeroSection";
 import QuickContactSection from "@/src/@modules/contact/QuickContactSection";
 import React from "react";
 // const faqData = [
@@ -43,10 +42,10 @@ import React from "react";
 const page = () => {
   return (
     <React.Fragment>
-      <HeroSection className="bg-[#F7FEE7] py-14" />
-     <FormSection className="py-10 md:py-20 bg-[#FBF9F5]" />
+      {/* <HeroSection className="bg-[#F7FEE7] py-14" /> */}
+      <BaseComponentHeroBanner title="Contact Us" bannerImg="/images/terms-condition/term-banner.webp" />
+      <FormSection className="py-10 md:py-20 bg-[#FBF9F5]" />
       <QuickContactSection className="py-10 md:py-20 bg-[#FBF9F5]" />
-
     </React.Fragment>
   );
 };
