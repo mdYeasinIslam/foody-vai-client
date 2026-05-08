@@ -1,15 +1,18 @@
+import BaseLoader from "@/src/@base/components/BaseLoader";
 import BaseModal from "@/src/@base/components/BaseModal";
 import { Button, Form, Input, Select } from "antd";
 import { useState } from "react";
-import { useCountries } from "../libs/hooks";
-import BaseLoader from "@/src/@base/components/BaseLoader";
+import { useAreas, useCountries } from "../libs/hooks";
 
 const DeliveryAddressForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
-  const {data,isLoading,isPending,error} = useCountries()
-  console.log(data)
-  const countriesData=data?.data
+  const [districtId, setDistrictId] = useState<number | null>(null);
+  const { data, isLoading, isPending } = useCountries();
+  const {data: areaData} = useAreas(districtId || 1)
+  const districtsData = data?.data;
+  const areasData = areaData?.data;
+  // console.log(districtsData);
   const handleAddNew = () => {
     setIsModalOpen(true);
   };
@@ -18,17 +21,14 @@ const DeliveryAddressForm = () => {
     setIsModalOpen(false);
     form.resetFields();
   };
-
   const handleSubmit = (values: any) => {
     console.log("Form values:", values);
     setIsModalOpen(false);
     form.resetFields();
   };
-  if (isLoading || isPending) {
-    return <BaseLoader />;
-  }
-  if (error) {
-    return <div>{error.message}</div>
+
+  if (isModalOpen && (isLoading || isPending)) {
+    return <BaseLoader className="left-3/4 top-2" />;
   }
   return (
     <>
@@ -65,7 +65,14 @@ const DeliveryAddressForm = () => {
               name="district"
               rules={[{ required: true, message: "Please select district" }]}
             >
-              <Select placeholder="Type or select district" />
+              <Select
+                placeholder="Type or select district"
+                options={districtsData?.map((district) => ({
+                  label: district.name,
+                  value: district.id,
+                }))}
+                onChange={(e) => setDistrictId(e)}
+              />
             </Form.Item>
 
             <Form.Item
@@ -73,7 +80,13 @@ const DeliveryAddressForm = () => {
               name="area"
               rules={[{ required: true, message: "Please select area" }]}
             >
-              <Select placeholder="Select district first" />
+              <Select
+                placeholder="Select district first"
+                options={districtsData?.map((district) => ({
+                  label: district.name,
+                  value: district.id,
+                }))}
+              />
             </Form.Item>
           </div>
 
@@ -115,7 +128,12 @@ const DeliveryAddressForm = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" block>
+            <Button
+              type="primary"
+              htmlType="submit"
+              block
+              className="bg-(--primary-color-800)! font-semibold! py-5!"
+            >
               Add Address
             </Button>
           </Form.Item>

@@ -11,3 +11,9 @@ export const useCountries = () => {
         queryFn: () => CheckoutServices.findDistrict()
     })
 }
+export const useAreas = (id:number) => {
+    return useQuery({
+        queryKey: ["areas"],
+        queryFn: () => CheckoutServices.findAreas(id)
+    })
+}
