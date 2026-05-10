@@ -1,6 +1,11 @@
 import { ENV } from "@/environments";
 import { AxiosInstance } from "@/src/@libs/config/AxiosInstance";
-import { ICustomerAddress, IDistrictsAndZillasResponse } from "./interfaces";
+import {
+  ICustomerAddress,
+  ICustomerAddressesResponse,
+  ICustomerAddressResponse,
+  IDistrictsAndZillasResponse,
+} from "./interfaces";
 
 // const BD_API_END_POINT = "https://bdapis.vercel.app/geo/v2.0/districts";
 const END_POINT = "/customer-address";
@@ -29,10 +34,21 @@ export const CheckoutServices = {
     }
   },
   //Customer Address
-  createCustomerAddress: async (data: ICustomerAddress) => {
+  findAddress: async (): Promise<ICustomerAddressesResponse> => {
     try {
-      const res = AxiosInstance.post("/customer-address", data);
-      return Promise.resolve(res);
+      const res = await AxiosInstance.get(END_POINT);
+      return Promise.resolve(res.data);
+    } catch (error) {
+      throw error;
+    }
+  },
+  
+  createCustomerAddress: async (
+    payload: ICustomerAddress,
+  ): Promise<ICustomerAddressResponse> => {
+    try {
+      const res = await AxiosInstance.post(END_POINT, payload);
+      return Promise.resolve(res.data);
     } catch (error) {
       throw error;
     }
