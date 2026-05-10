@@ -46,7 +46,6 @@ export interface ICustomerAddressResponse {
   data: ICustomerAddress;
   success: boolean;
   message: string;
-  count: number;
 }
 
 export interface ICustomerAddressesResponse {

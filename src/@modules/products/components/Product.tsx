@@ -81,7 +81,7 @@ const Product: React.FC<IProps> = ({ className, product }) => {
 
   return (
     <div
-      key={product.id}
+      key={product._id}
       className={cn(
         className,
         "h-full flex flex-col  bg-white rounded-lg shadow hover:shadow-lg",
@@ -89,7 +89,7 @@ const Product: React.FC<IProps> = ({ className, product }) => {
     >
       <div className="relative bg-gray-100 h-48 flex items-center justify-center overflow-hidden rounded-t-lg">
         <Image
-          src={product.img}
+          src={product?.img}
           alt={product.name}
           width={300}
           height={300}

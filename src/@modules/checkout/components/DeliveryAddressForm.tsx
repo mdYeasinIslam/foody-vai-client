@@ -1,7 +1,7 @@
 import BaseModal from "@/src/@base/components/BaseModal";
 import { Button, Form, Input, Select } from "antd";
 import { useState } from "react";
-import { useAreas, useDistricts } from "../libs/hooks";
+import { useAreas, useCreateCustomerAddress, useDistricts } from "../libs/hooks";
 import toast from "react-hot-toast";
 
 const DeliveryAddressForm = () => {
@@ -12,6 +12,8 @@ const DeliveryAddressForm = () => {
   const { data: areaData } = useAreas(districtId || 1);
   const districtsData = data?.data;
   const areasData = areaData?.data;
+
+  const {mutate:createCustomerAddress} = useCreateCustomerAddress()
   // console.log(districtsData);
   const handleAddNew = () => {
     setIsModalOpen(true);
@@ -22,9 +24,12 @@ const DeliveryAddressForm = () => {
     form.resetFields();
   };
   const handleSubmit = (values: any) => {
+    console.log("Form values:", values);
     try {
-       console.log("Form values:", values);
-       setIsModalOpen(false);
+      const res = createCustomerAddress(values)
+      console.log(res)
+      toast.success("Address added successfully")
+      setIsModalOpen(false);
        form.resetFields();
     } catch (error) {
       console.log(error)

@@ -1,293 +1,269 @@
 [
     {
-        "id": "1",
         "name": "Premium Basmati Rice",
         "description": "Long grain aromatic basmati rice, perfect for biryani and pulao.",
         "prices": [
-            {"weight": 0.1, "price": 28, "originalPrice": 36},
-            {"weight": 0.25, "price": 71, "originalPrice": 90},
-            {"weight": 0.5, "price": 142, "originalPrice": 180}
+            {"weight": 0.1, "weightName": "kg", "price": 28, "originalPrice": 36, "currency": "BDT"},
+            {"weight": 0.25, "weightName": "kg", "price": 71, "originalPrice": 90, "currency": "BDT"},
+            {"weight": 0.5, "weightName": "kg", "price": 142, "originalPrice": 180, "currency": "BDT"}
         ],
         "category": "rice-pulse-grains",
         "subcategory": "rice",
-        "img": "/images/products/1.png"
+        "img": "https://ibb.co.com/jPv0SDj7"
     },
     {
-        "id": "2",
         "name": "Khaas Signature Lachsa Semai",
         "description": "Premium quality lachsa semai for desserts.",
         "prices": [
-            {"weight": 0.5, "price": 614, "originalPrice": 750},
-            {"weight": 1.0, "price": 1228, "originalPrice": 1500}
+            {"weight": 0.5, "weightName": "kg", "price": 614, "originalPrice": 750, "currency": "BDT"},
+            {"weight": 1.0, "weightName": "kg", "price": 1228, "originalPrice": 1500, "currency": "BDT"}
         ],
         "category": "poultry-meat",
         "subcategory": "meat",
-        "img": "/images/products/2.png"
+        "img": "https://ibb.co.com/jPv0SDj7"
     },
     {
-        "id": "3",
         "name": "IKO Muesli",
         "description": "Healthy breakfast cereal with grains and fruits.",
         "prices": [
-            {"weight": 0.4, "price": 365, "originalPrice": 450},
-            {"weight": 0.8, "price": 730, "originalPrice": 900}
+            {"weight": 0.4, "weightName": "kg", "price": 365, "originalPrice": 450, "currency": "BDT"},
+            {"weight": 0.8, "weightName": "kg", "price": 730, "originalPrice": 900, "currency": "BDT"}
         ],
         "category": "honey",
         "subcategory": "raw-honey",
-        "img": "/images/products/3.png"
+        "img": "https://ibb.co.com/jPv0SDj7"
     },
     {
-        "id": "4",
         "name": "Psyllium Husk (Isopguler Bhusi)",
         "description": "Natural fiber supplement for digestion.",
         "prices": [
-            {"weight": 0.2, "price": 89, "originalPrice": 112},
-            {"weight": 0.5, "price": 222, "originalPrice": 280},
-            {"weight": 1.0, "price": 444, "originalPrice": 560}
+            {"weight": 0.2, "weightName": "kg", "price": 89, "originalPrice": 112, "currency": "BDT"},
+            {"weight": 0.5, "weightName": "kg", "price": 222, "originalPrice": 280, "currency": "BDT"},
+            {"weight": 1.0, "weightName": "kg", "price": 444, "originalPrice": 560, "currency": "BDT"}
         ],
         "category": "Health",
         "subcategory": "supplements",
         "img": "/images/products/4.png"
     },
     {
-        "id": "5",
         "name": "Coriander Powder",
         "description": "Pure coriander powder for cooking.",
         "prices": [
-            {"weight": 0.1, "price": 23, "originalPrice": 34},
-            {"weight": 0.25, "price": 58, "originalPrice": 85}
+            {"weight": 0.1, "weightName": "kg", "price": 23, "originalPrice": 34, "currency": "BDT"},
+            {"weight": 0.25, "weightName": "kg", "price": 58, "originalPrice": 85, "currency": "BDT"}
         ],
         "category": "Spices",
         "subcategory": "spices",
         "img": "/images/products/5.png"
     },
     {
-        "id": "6",
         "name": "Blended Floral Honey",
         "description": "Natural blended floral honey.",
         "prices": [
-            {"weight": 0.5, "price": 187, "originalPrice": 240},
-            {"weight": 1.0, "price": 374, "originalPrice": 480}
+            {"weight": 0.5, "weightName": "kg", "price": 187, "originalPrice": 240, "currency": "BDT"},
+            {"weight": 1.0, "weightName": "kg", "price": 374, "originalPrice": 480, "currency": "BDT"}
         ],
         "category": "honey",
         "subcategory": "organic-honey",
         "img": "/images/products/6.png"
     },
     {
-        "id": "7",
         "name": "Farm Fresh Chicken",
         "description": "Fresh farm-raised chicken, cleaned and ready to cook.",
         "prices": [
-            {"weight": 1.0, "price": 418, "originalPrice": 520},
-            {"weight": 2.0, "price": 836, "originalPrice": 1040}
+            {"weight": 1.0, "weightName": "kg", "price": 418, "originalPrice": 520, "currency": "BDT"},
+            {"weight": 2.0, "weightName": "kg", "price": 836, "originalPrice": 1040, "currency": "BDT"}
         ],
         "category": "poultry-meat",
         "subcategory": "poultry",
         "img": "/images/products/7.png"
     },
     {
-        "id": "8",
         "name": "Grinded Three Myrobalan (Trifola)",
         "description": "Herbal powder made from three fruits.",
         "prices": [
-            {"weight": 0.1, "price": 27, "originalPrice": 38},
-            {"weight": 0.25, "price": 67, "originalPrice": 95}
+            {"weight": 0.1, "weightName": "kg", "price": 27, "originalPrice": 38, "currency": "BDT"},
+            {"weight": 0.25, "weightName": "kg", "price": 67, "originalPrice": 95, "currency": "BDT"}
         ],
         "category": "Herbal",
         "subcategory": "herbal",
         "img": "/images/products/8.png"
     },
     {
-        "id": "9",
         "name": "Black Pepper",
         "description": "Whole black pepper with strong flavor.",
         "prices": [
-            {"weight": 0.1, "price": 11, "originalPrice": 16},
-            {"weight": 0.25, "price": 27, "originalPrice": 40},
-            {"weight": 0.5, "price": 55, "originalPrice": 80}
+            {"weight": 0.1, "weightName": "kg", "price": 11, "originalPrice": 16, "currency": "BDT"},
+            {"weight": 0.25, "weightName": "kg", "price": 27, "originalPrice": 40, "currency": "BDT"},
+            {"weight": 0.5, "weightName": "kg", "price": 55, "originalPrice": 80, "currency": "BDT"}
         ],
         "category": "Spices",
         "subcategory": "spices",
         "img": "/images/products/9.png"
     },
     {
-        "id": "10",
         "name": "Almond",
         "description": "Premium quality almonds.",
         "prices": [
-            {"weight": 0.25, "price": 64, "originalPrice": 80},
-            {"weight": 0.5, "price": 129, "originalPrice": 160},
-            {"weight": 1.0, "price": 258, "originalPrice": 320}
+            {"weight": 0.25, "weightName": "kg", "price": 64, "originalPrice": 80, "currency": "BDT"},
+            {"weight": 0.5, "weightName": "kg", "price": 129, "originalPrice": 160, "currency": "BDT"},
+            {"weight": 1.0, "weightName": "kg", "price": 258, "originalPrice": 320, "currency": "BDT"}
         ],
         "category": "Nuts",
         "subcategory": "nuts",
         "img": "/images/products/10.png"
     },
     {
-        "id": "11",
         "name": "Honey with Nuts",
         "description": "Honey mixed with assorted nuts.",
         "prices": [
-            {"weight": 0.75, "price": 768, "originalPrice": 960},
-            {"weight": 1.5, "price": 1024, "originalPrice": 1280}
+            {"weight": 0.75, "weightName": "kg", "price": 768, "originalPrice": 960, "currency": "BDT"},
+            {"weight": 1.5, "weightName": "kg", "price": 1024, "originalPrice": 1280, "currency": "BDT"}
         ],
         "category": "honey",
         "subcategory": "organic-honey",
         "img": "/images/products/1.png"
     },
     {
-        "id": "12",
         "name": "Clove (Labonga)",
         "description": "Dried clove spice with strong aroma.",
         "prices": [
-            {"weight": 0.05, "price": 29, "originalPrice": 40},
-            {"weight": 0.1, "price": 58, "originalPrice": 80}
+            {"weight": 0.05, "weightName": "kg", "price": 29, "originalPrice": 40, "currency": "BDT"},
+            {"weight": 0.1, "weightName": "kg", "price": 58, "originalPrice": 80, "currency": "BDT"}
         ],
         "category": "Spices",
         "subcategory": "spices",
         "img": "/images/products/2.png"
     },
     {
-        "id": "13",
         "name": "Roasted Cashew Nuts (Nona Kazu Badam)",
         "description": "Salted roasted cashew nuts.",
         "prices": [
-            {"weight": 0.25, "price": 172, "originalPrice": 215},
-            {"weight": 0.5, "price": 345, "originalPrice": 430}
+            {"weight": 0.25, "weightName": "kg", "price": 172, "originalPrice": 215, "currency": "BDT"},
+            {"weight": 0.5, "weightName": "kg", "price": 345, "originalPrice": 430, "currency": "BDT"}
         ],
         "category": "Nuts",
         "subcategory": "nuts",
         "img": "/images/products/3.png"
     },
     {
-        "id": "14",
         "name": "Mixed Fruit Chutney",
         "description": "Sweet and tangy mixed fruit chutney.",
         "prices": [
-            {"weight": 0.35, "price": 120, "originalPrice": 160},
-            {"weight": 0.7, "price": 240, "originalPrice": 320}
+            {"weight": 0.35, "weightName": "kg", "price": 120, "originalPrice": 160, "currency": "BDT"},
+            {"weight": 0.7, "weightName": "kg", "price": 240, "originalPrice": 320, "currency": "BDT"}
         ],
         "category": "Condiments",
         "subcategory": "condiments",
         "img": "/images/products/4.png"
     },
     {
-        "id": "15",
         "name": "Olive Chutney",
         "description": "Delicious olive-based chutney.",
         "prices": [
-            {"weight": 0.35, "price": 129, "originalPrice": 165},
-            {"weight": 0.7, "price": 258, "originalPrice": 330}
+            {"weight": 0.35, "weightName": "kg", "price": 129, "originalPrice": 165, "currency": "BDT"},
+            {"weight": 0.7, "weightName": "kg", "price": 258, "originalPrice": 330, "currency": "BDT"}
         ],
         "category": "Condiments",
         "subcategory": "condiments",
         "img": "/images/products/5.png"
     },
     {
-        "id": "16",
         "name": "Aman Rice",
         "description": "High-quality aman rice.",
         "prices": [
-            {"weight": 1.0, "price": 87, "originalPrice": 120},
-            {"weight": 2.0, "price": 174, "originalPrice": 240},
-            {"weight": 5.0, "price": 435, "originalPrice": 600}
+            {"weight": 1.0, "weightName": "kg", "price": 87, "originalPrice": 120, "currency": "BDT"},
+            {"weight": 2.0, "weightName": "kg", "price": 174, "originalPrice": 240, "currency": "BDT"},
+            {"weight": 5.0, "weightName": "kg", "price": 435, "originalPrice": 600, "currency": "BDT"}
         ],
         "category": "rice-pulse-grains",
         "subcategory": "rice",
         "img": "/images/products/6.png"
     },
     {
-        "id": "17",
         "name": "Cardamom (Elach)",
         "description": "Premium aromatic cardamom.",
         "prices": [
-            {"weight": 0.05, "price": 49, "originalPrice": 65},
-            {"weight": 0.1, "price": 98, "originalPrice": 130}
+            {"weight": 0.05, "weightName": "kg", "price": 49, "originalPrice": 65, "currency": "BDT"},
+            {"weight": 0.1, "weightName": "kg", "price": 98, "originalPrice": 130, "currency": "BDT"}
         ],
         "category": "Spices",
         "subcategory": "spices",
         "img": "/images/products/7.png"
     },
     {
-        "id": "18",
         "name": "Garlic Pickle",
         "description": "Spicy and tangy garlic pickle.",
         "prices": [
-            {"weight": 0.4, "price": 218, "originalPrice": 290},
-            {"weight": 0.8, "price": 436, "originalPrice": 580}
+            {"weight": 0.4, "weightName": "kg", "price": 218, "originalPrice": 290, "currency": "BDT"},
+            {"weight": 0.8, "weightName": "kg", "price": 436, "originalPrice": 580, "currency": "BDT"}
         ],
         "category": "Pickle",
         "subcategory": "pickle",
         "img": "/images/products/8.png"
     },
     {
-        "id": "19",
         "name": "Peanut Butter (Diabatic)",
         "description": "Sugar-free peanut butter for diabetics.",
         "prices": [
-            {"weight": 0.5, "price": 280, "originalPrice": 360},
-            {"weight": 1.0, "price": 560, "originalPrice": 720}
+            {"weight": 0.5, "weightName": "kg", "price": 280, "originalPrice": 360, "currency": "BDT"},
+            {"weight": 1.0, "weightName": "kg", "price": 560, "originalPrice": 720, "currency": "BDT"}
         ],
         "category": "Healthy Food",
         "subcategory": "healthy-food",
         "img": "/images/products/9.png"
     },
     {
-        "id": "20",
         "name": "Churi Dry Fish",
         "description": "Dried fish with strong traditional flavor.",
         "prices": [
-            {"weight": 0.4, "price": 289, "originalPrice": 360},
-            {"weight": 0.8, "price": 578, "originalPrice": 720}
+            {"weight": 0.4, "weightName": "kg", "price": 289, "originalPrice": 360, "currency": "BDT"},
+            {"weight": 0.8, "weightName": "kg", "price": 578, "originalPrice": 720, "currency": "BDT"}
         ],
         "category": "Dry Fish",
         "subcategory": "dry-fish",
         "img": "/images/products/10.png"
     },
     {
-        "id": "21",
         "name": "Firni Mix",
         "description": "Instant firni dessert mix.",
         "prices": [
-            {"weight": 0.2, "price": 31, "originalPrice": 45},
-            {"weight": 0.5, "price": 62, "originalPrice": 90}
+            {"weight": 0.2, "weightName": "kg", "price": 31, "originalPrice": 45, "currency": "BDT"},
+            {"weight": 0.5, "weightName": "kg", "price": 62, "originalPrice": 90, "currency": "BDT"}
         ],
         "category": "Dessert",
         "subcategory": "dessert",
         "img": "/images/products/1.png"
     },
     {
-        "id": "22",
         "name": "Black Seed",
         "description": "Natural black seed (kalojira).",
         "prices": [
-            {"weight": 0.1, "price": 39, "originalPrice": 54},
-            {"weight": 0.25, "price": 98, "originalPrice": 135}
+            {"weight": 0.1, "weightName": "kg", "price": 39, "originalPrice": 54, "currency": "BDT"},
+            {"weight": 0.25, "weightName": "kg", "price": 98, "originalPrice": 135, "currency": "BDT"}
         ],
         "category": "Spices",
         "subcategory": "spices",
         "img": "/images/products/2.png"
     },
     {
-        "id": "23",
         "name": "Country Chicken (Deshi)",
         "description": "Free-range deshi chicken with rich flavor and tender meat.",
         "prices": [
-            {"weight": 0.8, "price": 320, "originalPrice": 400},
-            {"weight": 1.6, "price": 400, "originalPrice": 500}
+            {"weight": 0.8, "weightName": "kg", "price": 320, "originalPrice": 400, "currency": "BDT"},
+            {"weight": 1.6, "weightName": "kg", "price": 400, "originalPrice": 500, "currency": "BDT"}
         ],
         "category": "poultry-meat",
         "subcategory": "poultry",
         "img": "/images/products/3.png"
     },
     {
-        "id": "24",
         "name": "Red Lentil (Masoor Dal)",
         "description": "High protein red lentils, great for dal and soups.",
         "prices": [
-            {"weight": 0.5, "price": 53, "originalPrice": 75},
-            {"weight": 1.0, "price": 106, "originalPrice": 150},
-            {"weight": 2.0, "price": 212, "originalPrice": 300}
+            {"weight": 0.5, "weightName": "kg", "price": 53, "originalPrice": 75, "currency": "BDT"},
+            {"weight": 1.0, "weightName": "kg", "price": 106, "originalPrice": 150, "currency": "BDT"},
+            {"weight": 2.0, "weightName": "kg", "price": 212, "originalPrice": 300, "currency": "BDT"}
         ],
         "category": "rice-pulse-grains",
         "subcategory": "pulse",
