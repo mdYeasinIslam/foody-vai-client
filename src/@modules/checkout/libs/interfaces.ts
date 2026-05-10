@@ -23,3 +23,35 @@ export interface IDistrictsAndZillasResponse {
   message: string;
   count: number;
 }
+
+//customer address type
+export interface ICustomerAddressFilter {
+  districtId?: string;
+  areaId?: string;
+  contactName?: string;
+  phone?: string;
+  addressName?: string;
+}
+export interface ICustomerAddress {
+  districtId: string;
+  districtName?: string;
+  areaId: string;
+  areaName?: string;
+  contactName: string;
+  phone: string;
+  addressName: string;
+  address: string;
+}
+export interface ICustomerAddressResponse {
+  data: ICustomerAddress;
+  success: boolean;
+  message: string;
+  count: number;
+}
+
+export interface ICustomerAddressesResponse {
+  data: ICustomerAddress[];
+  success: boolean;
+  message: string;
+  count: number;
+}

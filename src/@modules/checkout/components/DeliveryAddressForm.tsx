@@ -1,15 +1,15 @@
-import BaseLoader from "@/src/@base/components/BaseLoader";
 import BaseModal from "@/src/@base/components/BaseModal";
 import { Button, Form, Input, Select } from "antd";
 import { useState } from "react";
-import { useAreas, useCountries } from "../libs/hooks";
+import { useAreas, useDistricts } from "../libs/hooks";
+import toast from "react-hot-toast";
 
 const DeliveryAddressForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
   const [districtId, setDistrictId] = useState<number | null>(null);
-  const { data, isLoading, isPending } = useCountries();
-  const {data: areaData} = useAreas(districtId || 1)
+  const { data, isLoading, isPending } = useDistricts();
+  const { data: areaData } = useAreas(districtId || 1);
   const districtsData = data?.data;
   const areasData = areaData?.data;
   // console.log(districtsData);
@@ -22,14 +22,16 @@ const DeliveryAddressForm = () => {
     form.resetFields();
   };
   const handleSubmit = (values: any) => {
-    console.log("Form values:", values);
-    setIsModalOpen(false);
-    form.resetFields();
+    try {
+       console.log("Form values:", values);
+       setIsModalOpen(false);
+       form.resetFields();
+    } catch (error) {
+      console.log(error)
+      toast.error(error instanceof Error ? error.message : "An error occurred")
+    }
+   
   };
-
-  if (isModalOpen && (isLoading || isPending)) {
-    return <BaseLoader className="left-3/4 top-2" />;
-  }
   return (
     <>
       <div className="border border-(--primary-color-500) rounded-lg ">
@@ -44,15 +46,6 @@ const DeliveryAddressForm = () => {
         </div>
         <p className="text-gray-500  px-4 py-2">No address found.</p>
       </div>
-      {/* 
-      <Modal
-        title="Add New Address"
-        open={isModalOpen}
-        onCancel={handleCancel}
-        footer={null}
-      >
-       
-      </Modal> */}
       <BaseModal
         title="Add New Address"
         open={isModalOpen}
@@ -62,7 +55,7 @@ const DeliveryAddressForm = () => {
           <div className="grid grid-cols-2 gap-4">
             <Form.Item
               label="District"
-              name="district"
+              name="districtId"
               rules={[{ required: true, message: "Please select district" }]}
             >
               <Select
@@ -72,20 +65,22 @@ const DeliveryAddressForm = () => {
                   value: district.id,
                 }))}
                 onChange={(e) => setDistrictId(e)}
+                loading={isLoading && isPending}
               />
             </Form.Item>
 
             <Form.Item
               label="Area"
-              name="area"
+              name="areaId"
               rules={[{ required: true, message: "Please select area" }]}
             >
               <Select
-                placeholder="Select district first"
-                options={districtsData?.map((district) => ({
-                  label: district.name,
-                  value: district.id,
-                }))}
+              placeholder="Select area first"
+              options={districtId ? areasData?.map((area) => ({
+                label: area.name,
+                value: area.id,
+              })) : []}
+              disabled={!districtId}
               />
             </Form.Item>
           </div>
@@ -108,13 +103,20 @@ const DeliveryAddressForm = () => {
             </Form.Item>
           </div>
 
-          <Form.Item
+            <Form.Item
             label="Address Name"
             name="addressName"
-            rules={[{ required: true, message: "Please enter address name" }]}
-          >
-            <Input placeholder="i.e. Home, Office" />
-          </Form.Item>
+            rules={[{ required: true, message: "Please select address name" }]}
+            >
+            <Select
+              placeholder="Select address type"
+              options={[
+              { label: "Home", value: "home" },
+              { label: "Office", value: "office" },
+              { label: "Other", value: "other" },
+              ]}
+            />
+            </Form.Item>
 
           <Form.Item
             label="Address"
