@@ -1,9 +1,12 @@
-
 import { AxiosInstance } from "@/src/@libs/config/AxiosInstance";
-import axios from "axios";
-import { ICartItemFilter, ICartItemResponse, ICartsItemResponse } from "./interfaces";
+import {
+  ICartItemCreate,
+  ICartItemFilter,
+  ICartItemResponse,
+  ICartsItemResponse,
+} from "./interfaces";
 
-const END_POINT: string = "/products.json";
+const END_POINT: string = "/cart";
 
 export const CartService = {
   Name: END_POINT,
@@ -17,7 +20,43 @@ export const CartService = {
   },
   async findById(id: string): Promise<ICartItemResponse> {
     try {
-      const res = await axios.get(`${END_POINT}/${id}`);
+      const res = await AxiosInstance.get(`${END_POINT}/${id}`);
+      return Promise.resolve(res?.data);
+    } catch (error) {
+      throw error;
+    }
+  },
+  async create(payload: ICartItemCreate): Promise<ICartItemResponse> {
+    try {
+      const res = await AxiosInstance.post(END_POINT, payload);
+      return Promise.resolve(res?.data);
+    } catch (error) {
+      throw error;
+    }
+  },
+  async delete(id: string) {
+    try {
+      const res = await AxiosInstance.delete(`${END_POINT}/${id}`);
+      return Promise.resolve(res?.data);
+    } catch (error) {
+      throw error;
+    }
+  },
+  async update(id: string, payload: any) {
+    try {
+      const res = await AxiosInstance.patch(
+        `${END_POINT}/${id}/quantity`,
+        payload,
+      );
+      return Promise.resolve(res?.data);
+    } catch (error) {
+      throw error;
+    }
+  },
+  //delete cart item
+  async deleteCart(id: string) {
+    try {
+      const res = await AxiosInstance.delete(`${END_POINT}/${id}`);
       return Promise.resolve(res?.data);
     } catch (error) {
       throw error;

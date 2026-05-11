@@ -9,18 +9,30 @@ export interface IProduct {
   _id: string;
   name: string;
   description?: string;
-  prices: { weight: number; price: number; originalPrice: number }[];
+  prices: {
+    weight: number;
+    price: number;
+    originalPrice: number;
+    weightName: string;
+    currency: string;
+  }[];
   category: string;
+  subcategory?: string;
   img: string;
 }
 export interface IProductCreate {
   id: string;
   name: string;
   description?: string;
-  price: number;
-  weight: number;
-  originalPrice: number;
+  price: {
+    weight: number;
+    price: number;
+    originalPrice: number;
+    weightName: string;
+    currency: string;
+  };
   category: string;
+  subcategory?: string;
   quantity: number;
   img: string;
 }

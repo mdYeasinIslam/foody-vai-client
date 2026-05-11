@@ -38,7 +38,6 @@ const AllProducts = () => {
       </section>
     );
   }
-console.log(productData)
   return (
     <section className="">
       <div className="container">

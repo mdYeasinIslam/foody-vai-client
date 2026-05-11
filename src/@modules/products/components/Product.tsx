@@ -8,6 +8,7 @@ import React, { useMemo, useState } from "react";
 import { FaCircleMinus, FaCirclePlus } from "react-icons/fa6";
 import { ClassNameValue } from "tailwind-merge";
 import { IProduct, IProductCreate } from "../libs/interfaces";
+import { useCreateCartProduct } from "../../cart/libs/hooks";
 interface IProps {
   className?: ClassNameValue;
   product: IProduct;
@@ -18,62 +19,80 @@ const Product: React.FC<IProps> = ({ className, product }) => {
     key: "cart",
     initialValue: [],
   });
-  console.log(cart);
-  const price = product?.prices?.filter(
+  const { mutate } = useCreateCartProduct();
+  const priceByWeight = product?.prices?.filter(
     (price) => price.weight === weightForPrice,
   );
-  const originalPrice = product?.prices?.filter(
+  const originalPriceByWeight = product?.prices?.filter(
     (price) => price.weight === weightForPrice,
   );
   const badgeCount = useMemo(() => {
     const productInCart = cart.find((item) => item.id === product.id);
     return productInCart ? productInCart.quantity : 0;
   }, [cart, product.id]);
-
   const addToCart = () => {
-    let updatedCart;
+    // let updatedCart;
     try {
-      const existingCart = LocalStorage.get<IProductCreate[]>("cart", []);
+      // const existingCart = LocalStorage.get<IProductCreate[]>("cart", []);
 
-      const selectedWeight = weightForPrice ?? product.prices?.[0]?.weight;
+      // const selectedWeight = weightForPrice ?? product.prices?.[0]?.weight;
 
-      const selectedPriceObj =
-        product.prices?.find((p) => p.weight === selectedWeight) ??
-        product.prices?.[0];
+      // const selectedPriceObj =
+      //   product.prices?.find((p) => p.weight === selectedWeight) ??
+      //   product.prices?.[0];
 
-      if (!selectedPriceObj) return;
+      // if (!selectedPriceObj) return;
 
-      const existingItem = existingCart.find(
-        (item: IProductCreate) =>
-          item?.id === product.id && item?.weight === selectedPriceObj.weight,
-      );
+      // const existingItem = existingCart.find(
+      //   (item: IProductCreate) =>
+      //     item?.id === product.id && item?.weight === selectedPriceObj.weight,
+      // );
 
-      if (existingItem) {
-        updatedCart = existingCart.map((item) =>
-          item.id === product.id && item.weight === selectedPriceObj.weight
-            ? { ...item, quantity: item.quantity + 1 }
-            : item,
-        );
-      } else {
-        const newItem = {
-          id: product.id,
-          name: product.name,
-          img: product.img,
-          weight: selectedPriceObj.weight,
-          price: selectedPriceObj.price,
-          originalPrice: selectedPriceObj.originalPrice ?? null,
-          quantity: 1,
-          category: product.category,
-          createdAt: new Date().toISOString(),
-        };
-        updatedCart = [...existingCart, newItem];
-      }
+      // if (existingItem) {
+      //   updatedCart = existingCart.map((item) =>
+      //     item.id === product._id && item.weight === selectedPriceObj.weight
+      //       ? { ...item, quantity: item.quantity + 1 }
+      //       : item,
+      //   );
+      // } else {
+      //   const newItem = {
+      //     productId: product._id,
+      //     name: product.name,
+      //     img: product.img,
+      //     // weight: selectedPriceObj.weight,
+      //     // price: selectedPriceObj.price,
+      //     // originalPrice: selectedPriceObj.originalPrice ?? null,
+      //     price: {
+      //       price: selectedPriceObj.price,
+      //       weight: selectedPriceObj.weight,
+      //       originalPrice: selectedPriceObj.originalPrice ?? null,
+      //     },
+      //     quantity: 1,
+      //     category: product.category,
+      //     createdAt: new Date().toISOString(),
+      //   };
+      //   updatedCart = [...existingCart, newItem];
+      // }
 
-      // ✅ Save to localStorage
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      // // ✅ Save to localStorage
+      // localStorage.setItem("cart", JSON.stringify(updatedCart));
 
-      // ✅ Update global state (THIS IS KEY)
-      setCart(updatedCart);
+      // // ✅ Update global state (THIS IS KEY)
+      // setCart(updatedCart);
+    console.log(product)
+      const newItem = {
+        productId: product._id,
+        name: product.name,
+        img: product.img,
+        // weight: selectedPriceObj!.weight,
+        // price: selectedPriceObj!.price,
+        // originalPrice: selectedPriceObj!.originalPrice ?? null,
+        quantity: 1,
+        category: product.category,
+
+        subCategory:product.subcategory,
+        createdAt: new Date().toISOString(),
+      };
     } catch (err) {
       console.error(err);
     }
@@ -107,7 +126,7 @@ const Product: React.FC<IProps> = ({ className, product }) => {
         {badgeCount > 0 && (
           <button
             onClick={() => {
-              // Handle remove from cart logic
+              // handle remove from cart logic
               const existingCart = LocalStorage.get<IProductCreate[]>(
                 "cart",
                 [],
@@ -135,13 +154,13 @@ const Product: React.FC<IProps> = ({ className, product }) => {
         <div className="mt-0">
           <div className="flex items-center  gap-2 mb-">
             <span className="text-lg font-bold text-green-600">
-              ৳{price[0]?.price ? price[0]?.price : product.prices[0].price}
+              ৳{priceByWeight[0]?.price ? priceByWeight[0]?.price : product.prices[0].price}
             </span>
-            {originalPrice && (
+            {originalPriceByWeight && (
               <span className="text-sm text-gray-500 line-through">
                 ৳
-                {originalPrice[0]?.price
-                  ? originalPrice[0]?.originalPrice
+                {originalPriceByWeight[0]?.price
+                  ? originalPriceByWeight[0]?.originalPrice
                   : product.prices[0].originalPrice}
               </span>
             )}
