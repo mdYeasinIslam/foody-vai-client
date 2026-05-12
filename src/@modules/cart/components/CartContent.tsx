@@ -1,12 +1,12 @@
 import useGlobalState from "@/src/@libs/hooks/useGlobalState";
 import cn from "@/src/@libs/utils/_cn";
+import { calculateTotal } from "@/src/@libs/utils/helperFunction";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
 import { ClassNameValue } from "tailwind-merge";
-import { ICartItem, ICartItemCreate } from "../libs/interfaces";
-import Link from "next/link";
-import { calculateTotal } from "@/src/@libs/utils/helperFunction";
+import { ICartItem } from "../libs/interfaces";
 
 interface IProps {
   className?: ClassNameValue;
@@ -72,8 +72,8 @@ const CartContent: React.FC<IProps> = ({
         {cartItems.length === 0 ? (
           <p className="text-center text-gray-500 py-8">Cart is empty</p>
         ) : (
-          cartItems.map((item) => (
-            <div key={item._id} className="flex justify-between border-b pb-1">
+          cartItems.map((item,idx) => (
+            <div key={idx} className="flex justify-between border-b pb-1">
               <div className="flex items-center gap-3">
                 {/* Product Image */}
                 <div className="w-16 h-16 bg-gray-200 rounded shrink-0">

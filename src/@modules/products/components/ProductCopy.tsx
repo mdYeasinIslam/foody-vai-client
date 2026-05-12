@@ -45,13 +45,16 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
             data?.message || "Failed to add product to the cart",
           );
           return;
+        } else if (data?.success && data?.alreadyExist) {
+          messageApi.success(data?.message);
+        } else {
+          setCart((prev) => [...prev, data?.data]);
+          messageApi.success("Product added to the cart successfully");
         }
-        setCart((prev) => [...prev, data?.data]);
-        messageApi.success("Product added to the cart successfully");
       },
     },
   });
-console.log(cart)
+  console.log(cart);
   const selectedPriceObj = useMemo(
     () =>
       product.prices?.find((p) => p.weight === selectedWeight) ??
