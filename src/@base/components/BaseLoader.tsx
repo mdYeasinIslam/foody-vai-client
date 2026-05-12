@@ -18,22 +18,23 @@ const BaseLoader: React.FC<IProps> = ({ className }) => {
   };
 
   return (
-    <div className={cn(className, "relative w-[22.4px] h-[22.4px] ")}>
-      <div
-        style={{
-          ...sharedStyle,
-          animation:
-            "spinner 0.5s backwards, spinner-rotate 1.25s 0.5s infinite ease",
-        }}
-      />
-      <div
-        style={{
-          ...sharedStyle,
-          animationDelay: "0s, 1.25s",
-        }}
-      />
-      <style>
-        {`
+    <div className={cn(className)}>
+      <div className={cn("relative w-[22.4px] h-[22.4px] ")}>
+        <div
+          style={{
+            ...sharedStyle,
+            animation:
+              "spinner 0.5s backwards, spinner-rotate 1.25s 0.5s infinite ease",
+          }}
+        />
+        <div
+          style={{
+            ...sharedStyle,
+            animationDelay: "0s, 1.25s",
+          }}
+        />
+        <style>
+          {`
           @keyframes spinner {
             from {
               box-shadow: 0 0 0 -5.6px #474bff;
@@ -46,7 +47,8 @@ const BaseLoader: React.FC<IProps> = ({ className }) => {
             }
           }
         `}
-      </style>
+        </style>
+      </div>
     </div>
   );
 };

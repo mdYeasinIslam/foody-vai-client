@@ -1,19 +1,69 @@
 "use client";
 import useGlobalState from "@/src/@libs/hooks/useGlobalState";
-import { useProducts } from "../libs/hooks";
-import Product from "./Product";
-import ProductCopy from "./ProductCopy";
 import { ICartItemCreate } from "../../cart/libs/interfaces";
+import { useProducts } from "../libs/hooks";
+import ProductCopy from "./ProductCopy";
+import {
+  useCreateCartProduct,
+  useUpdateCartProduct,
+} from "../../cart/libs/hooks";
+import { message } from "antd";
 
 const AllProducts = () => {
   const { data, isLoading, error } = useProducts({});
   const productData = data?.data;
-const [cart, setCart] = useGlobalState<ICartItemCreate[]>({
-  key: "cart",
-  initialValue: [],
-});
-    console.log(cart);
-  
+  const [messageApi, contextHolder] = message.useMessage();
+  // const { mutate: createMutate, isPending: isPendingInCreateTime } =
+  //   useCreateCartProduct({
+  //     config: {
+  //       onSuccess: async (data) => {
+  //         if (!data?.alreadyExist && data?.success) {
+  //           setCart((prev) => [...prev, data?.data]);
+  //           messageApi.success("Product added to the cart successfully");
+  //           return;
+  //         } else if (data?.alreadyExist && data?.success) {
+  //           setCart((prev) =>
+  //             prev.map((item) =>
+  //               item.productId === product._id &&
+  //               item.price?.weight === selectedWeight
+  //                 ? { ...item, quantity: item.quantity + 1 }
+  //                 : item,
+  //             ),
+  //           );
+  //           messageApi.success(data?.message || "Product quantity updated");
+  //         } else {
+  //           messageApi.error(
+  //             data?.message || "Failed to add product to the cart",
+  //           );
+  //         }
+  //       },
+  //     },
+  //   });
+  // const { mutate: updateMutate, isPending: isPendingInUpdateTime } =
+  //   useUpdateCartProduct({
+  //     config: {
+  //       onSuccess: (data) => {
+  //         if (data?.success && !data?.deleted) {
+  //           setCart((prev) =>
+  //             prev.map((item) =>
+  //               item.productId === product._id &&
+  //               item.price?.weight === selectedWeight
+  //                 ? { ...item, quantity: data.data.quantity }
+  //                 : item,
+  //             ),
+  //           );
+  //           messageApi.success(data?.message || "Quantity updated");
+  //         } else if (data?.deleted) {
+  //           setCart((prev) =>
+  //             prev.filter((item) => item?._id !== data.cartItemId),
+  //           );
+  //           messageApi.success(data?.message || "Product removed from cart");
+  //         } else {
+  //           messageApi.error(data?.message || "Failed to update quantity");
+  //         }
+  //       },
+  //     },
+  //   });
   if (isLoading) {
     return (
       <section className="py-12 px-4">
@@ -52,7 +102,10 @@ const [cart, setCart] = useGlobalState<ICartItemCreate[]>({
         <h2 className="text-2xl font-bold mt-8">All Products</h2>
         <div className="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
           {productData?.map((product) => (
-            <ProductCopy key={product._id} product={product} cart={cart} setCart={setCart} />
+            <ProductCopy
+              key={product._id}
+              product={product}
+            />
           ))}
         </div>
       </div>
