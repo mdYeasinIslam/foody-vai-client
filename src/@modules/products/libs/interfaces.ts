@@ -21,7 +21,7 @@ export interface IProduct {
   img: string;
 }
 export interface IProductCreate {
-  id: string;
+  _id: string;
   name: string;
   description?: string;
   price: {

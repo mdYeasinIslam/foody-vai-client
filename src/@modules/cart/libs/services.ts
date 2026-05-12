@@ -28,7 +28,7 @@ export const CartService = {
   },
   async create(payload: ICartItemCreate): Promise<ICartItemResponse> {
     try {
-      const res = await AxiosInstance.post(END_POINT, payload);
+      const res = await AxiosInstance.post(`${END_POINT}/add-product`, payload);
       return Promise.resolve(res?.data);
     } catch (error) {
       throw error;

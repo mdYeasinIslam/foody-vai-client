@@ -1,11 +1,10 @@
-import { ICartItem } from "@/src/@modules/cart/libs/interfaces";
+import { ICartItem, ICartItemCreate } from "@/src/@modules/cart/libs/interfaces";
 
-interface ValueType extends ICartItem {
-  price: number;
-  quantity: number;
+interface ValueType extends ICartItemCreate {
+
   [key: string]: any;
 }
 export const calculateTotal = (arrayCart: ValueType[]) => {
   return arrayCart
-    .reduce((sum, item) => sum + item?.price * item?.quantity, 0);
+    .reduce((sum, item) => sum + item?.price.price * item?.quantity, 0);
 };

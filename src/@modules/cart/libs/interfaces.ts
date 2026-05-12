@@ -4,19 +4,7 @@ export interface ICartItemFilter {
   maxPrice?: number;
   search?: string;
 }
-
-export interface ICartItem {
-  id: string;
-  name: string;
-  description?: string;
-  price: number;
-  weight: number;
-  originalPrice: number;
-  category: string;
-  quantity: number;
-  img: string;
-}
-export interface IPrice {
+ interface IPrice {
   weight: number;
   price: number;
   originalPrice: number;
@@ -24,8 +12,19 @@ export interface IPrice {
   currency: string;
 }
 
+export interface ICartItem {
+  _id: string;
+  productId: string;
+  name: string;
+  description?: string;
+  price: IPrice;
+  category: string;
+  quantity: number;
+  img: string;
+}
+
 export interface ICartItemCreate {
-  id: string;
+  productId: string;
   name: string;
   description?: string;
   price: IPrice;
@@ -35,7 +34,9 @@ export interface ICartItemCreate {
 }
 export type ICartItemResponse = {
   success: boolean;
+  alreadyExist?: boolean;
   message: string;
-  data: ICartItem;
+  data: ICartItemCreate;
+  cartItemId?: string;
 };
 export type ICartsItemResponse = ICartItem[];

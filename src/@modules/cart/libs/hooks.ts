@@ -54,6 +54,7 @@ export const useUpdateCartProduct = ({
     mutationFn: (payload: any) => CartService.update(id, payload),
   });
 };
+
 //delete cart item
 export const useDeleteCartProduct = (id: string) => {
   return useMutation({

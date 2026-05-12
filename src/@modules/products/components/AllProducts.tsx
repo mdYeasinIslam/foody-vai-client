@@ -1,6 +1,7 @@
 "use client";
 import { useProducts } from "../libs/hooks";
 import Product from "./Product";
+import ProductCopy from "./ProductCopy";
 
 const AllProducts = () => {
   const { data, isLoading, error } = useProducts({});
@@ -44,7 +45,7 @@ const AllProducts = () => {
         <h2 className="text-2xl font-bold mt-8">All Products</h2>
         <div className="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
           {productData?.map((product) => (
-            <Product key={product._id} product={product} />
+            <ProductCopy key={product._id} product={product} />
           ))}
         </div>
       </div>
