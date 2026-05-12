@@ -32,11 +32,22 @@ export interface ICartItemCreate {
   quantity: number;
   img: string;
 }
+export interface ICartItemUpdate {
+  productId: string;
+  name: string;
+  action: string;
+  description?: string;
+  price: IPrice;
+  category: string;
+  quantity: number;
+  img: string;
+}
 export type ICartItemResponse = {
   success: boolean;
   alreadyExist?: boolean;
   message: string;
   data: ICartItemCreate;
   cartItemId?: string;
+  error?:any
 };
 export type ICartsItemResponse = ICartItem[];

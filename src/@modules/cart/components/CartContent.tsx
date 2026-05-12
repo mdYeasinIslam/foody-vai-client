@@ -103,14 +103,14 @@ const CartContent: React.FC<IProps> = ({
               {/* Actions */}
               <div className="flex flex-col items-end justify-between">
                 <button
-                  onClick={() => handleDeleteItem(item._id)}
+                  onClick={() => handleDeleteItem(item?._id)}
                   className="text-gray-400 hover:text-red-500 transition cursor-pointer"
                 >
                   <FiTrash2 size={18} />
                 </button>
                 <div className="flex items-center gap-2 border border-(--primary-color-800) rounded">
                   <button
-                    onClick={() => handleQuantityChange(item._id, -1)}
+                    onClick={() => handleQuantityChange(item?._id, -1)}
                     className="p-1 hover:bg-(--primary-color-600) transition cursor-pointer"
                   >
                     <FiMinus size={16} />
@@ -119,7 +119,7 @@ const CartContent: React.FC<IProps> = ({
                     {item.quantity}
                   </span>
                   <button
-                    onClick={() => handleQuantityChange(item._id, 1)}
+                    onClick={() => handleQuantityChange(item?._id, 1)}
                     className="p-1 hover:bg-(--primary-color-600) transition cursor-pointer"
                   >
                     <FiPlus size={16} />

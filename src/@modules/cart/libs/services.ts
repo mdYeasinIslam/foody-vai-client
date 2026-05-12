@@ -1,8 +1,10 @@
 import { AxiosInstance } from "@/src/@libs/config/AxiosInstance";
 import {
+  ICartItem,
   ICartItemCreate,
   ICartItemFilter,
   ICartItemResponse,
+  ICartItemUpdate,
   ICartsItemResponse,
 } from "./interfaces";
 
@@ -42,10 +44,10 @@ export const CartService = {
       throw error;
     }
   },
-  async update(id: string, payload: any) {
+  async update(payload: ICartItemUpdate): Promise<ICartItemResponse> {
     try {
       const res = await AxiosInstance.patch(
-        `${END_POINT}/${id}/quantity`,
+        `${END_POINT}/${payload.productId}/quantity`,
         payload,
       );
       return Promise.resolve(res?.data);

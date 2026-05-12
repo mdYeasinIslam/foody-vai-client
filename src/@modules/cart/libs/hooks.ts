@@ -1,7 +1,7 @@
 import { MutationConfig, QueryConfig } from "@/src/@libs/config/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { CartService } from "./services";
-import { ICartItemFilter } from "./interfaces";
+import { ICartItem, ICartItemFilter } from "./interfaces";
 
 type IUseCarts = {
   options?: ICartItemFilter;
@@ -42,16 +42,12 @@ export const useCreateCartProduct = ({
 
 //update car item quantity
 type IUpdateCartProductProps = {
-  id: string;
   config?: MutationConfig<typeof CartService.update>;
 };
-export const useUpdateCartProduct = ({
-  id,
-  config,
-}: IUpdateCartProductProps) => {
+export const useUpdateCartProduct = ({ config }: IUpdateCartProductProps) => {
   return useMutation({
     ...config,
-    mutationFn: (payload: any) => CartService.update(id, payload),
+    mutationFn: CartService.update,
   });
 };
 

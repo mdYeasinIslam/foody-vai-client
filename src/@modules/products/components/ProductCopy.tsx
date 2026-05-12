@@ -7,7 +7,10 @@ import Image from "next/image";
 import React, { useMemo, useState } from "react";
 import { FaCircleMinus, FaCirclePlus } from "react-icons/fa6";
 import { ClassNameValue } from "tailwind-merge";
-import { useCreateCartProduct } from "../../cart/libs/hooks";
+import {
+  useCreateCartProduct,
+  useUpdateCartProduct,
+} from "../../cart/libs/hooks";
 import { ICartItemCreate } from "../../cart/libs/interfaces";
 import { IProduct } from "../libs/interfaces";
 interface IProps {
@@ -54,6 +57,25 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
       },
     },
   });
+  const { mutate: updateMutate } = useUpdateCartProduct({
+    config: {
+      onSuccess: (data) => {
+        if (data?.success) {
+          setCart((prev) =>
+            prev.map((item) =>
+              item.productId === product._id &&
+              item.price?.weight === selectedWeight
+                ? { ...item, quantity: data.data.quantity }
+                : item,
+            ),
+          );
+          messageApi.success(data?.message || "Quantity updated");
+        } else {
+          messageApi.error(data?.message || "Failed to update quantity");
+        }
+      },
+    },
+  });
   console.log(cart);
   const selectedPriceObj = useMemo(
     () =>
@@ -92,6 +114,22 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
   };
   const handleRemoveFn = async () => {
     console.log("remove");
+    try {
+      const payload = {
+        productId: product._id,
+        action: "decrement",
+        name: product.name,
+        description: product.description,
+        img: product.img,
+        price: selectedPriceObj,
+        quantity: 1,
+        category: product.category,
+        subCategory: product.subcategory,
+      };
+      updateMutate(payload);
+    } catch (err) {
+      console.error(err);
+    }
   };
   return (
     <div
