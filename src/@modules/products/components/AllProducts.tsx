@@ -1,12 +1,19 @@
 "use client";
+import useGlobalState from "@/src/@libs/hooks/useGlobalState";
 import { useProducts } from "../libs/hooks";
 import Product from "./Product";
 import ProductCopy from "./ProductCopy";
+import { ICartItemCreate } from "../../cart/libs/interfaces";
 
 const AllProducts = () => {
   const { data, isLoading, error } = useProducts({});
   const productData = data?.data;
-
+const [cart, setCart] = useGlobalState<ICartItemCreate[]>({
+  key: "cart",
+  initialValue: [],
+});
+    console.log(cart);
+  
   if (isLoading) {
     return (
       <section className="py-12 px-4">
@@ -45,7 +52,7 @@ const AllProducts = () => {
         <h2 className="text-2xl font-bold mt-8">All Products</h2>
         <div className="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
           {productData?.map((product) => (
-            <ProductCopy key={product._id} product={product} />
+            <ProductCopy key={product._id} product={product} cart={cart} setCart={setCart} />
           ))}
         </div>
       </div>

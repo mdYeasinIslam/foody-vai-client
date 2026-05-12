@@ -24,6 +24,7 @@ export interface ICartItem {
 }
 
 export interface ICartItemCreate {
+  _id?: string;
   productId: string;
   name: string;
   description?: string;
@@ -48,6 +49,7 @@ export type ICartItemResponse = {
   message: string;
   data: ICartItemCreate;
   cartItemId?: string;
-  error?:any
+  error?: any;
+  deleted?: boolean;
 };
 export type ICartsItemResponse = ICartItem[];

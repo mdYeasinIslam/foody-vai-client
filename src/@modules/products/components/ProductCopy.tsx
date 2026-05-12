@@ -16,30 +16,21 @@ import { IProduct } from "../libs/interfaces";
 interface IProps {
   className?: ClassNameValue;
   product: IProduct;
+  cart: ICartItemCreate[];
+  setCart: (
+    value: ICartItemCreate[] | ((val: ICartItemCreate[]) => ICartItemCreate[]),
+  ) => void;
 }
-async function apiUpdateQuantity(
-  cartItemId: string,
-  action: "increment" | "decrement",
-) {
-  const res = await fetch(`${AxiosInstance}/${cartItemId}/quantity`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ action }),
-  });
-  return res.json();
-}
-const ProductCopy: React.FC<IProps> = ({ className, product }) => {
+const ProductCopy: React.FC<IProps> = ({
+  className,
+  product,
+  cart,
+  setCart,
+}) => {
   const [selectedWeight, setSelectedWeight] = useState<number>(
     product.prices?.[0]?.weight ?? 0,
   );
   const [messageApi, contextHolder] = message.useMessage();
-  const [loading, setLoading] = useState(false);
-
-  const [cart, setCart] = useGlobalState<ICartItemCreate[]>({
-    key: "cart",
-    initialValue: [],
-  });
-  // const { mutate: updateMutate } = useUpdateCartProduct();
   const { mutate } = useCreateCartProduct({
     config: {
       onSuccess: async (data) => {
@@ -49,7 +40,15 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
           );
           return;
         } else if (data?.success && data?.alreadyExist) {
-          messageApi.success(data?.message);
+          setCart((prev) =>
+            prev.map((item) =>
+              item.productId === product._id &&
+              item.price?.weight === selectedWeight
+            ? { ...item, quantity: item.quantity + 1 }
+            : item,
+            ),
+          );
+          messageApi.success(data?.message || "Product quantity updated");
         } else {
           setCart((prev) => [...prev, data?.data]);
           messageApi.success("Product added to the cart successfully");
@@ -59,8 +58,9 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
   });
   const { mutate: updateMutate } = useUpdateCartProduct({
     config: {
-      onSuccess: (data) => {
-        if (data?.success) {
+          onSuccess: (data) => {
+            
+        if (data?.success && !data?.deleted) {
           setCart((prev) =>
             prev.map((item) =>
               item.productId === product._id &&
@@ -70,13 +70,17 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
             ),
           );
           messageApi.success(data?.message || "Quantity updated");
+        } else if (data?.deleted) {
+          setCart((prev) =>
+            prev.filter((item) => item?._id !== data.cartItemId),
+          );
+          messageApi.success(data?.message || "Product removed from cart");
         } else {
           messageApi.error(data?.message || "Failed to update quantity");
         }
       },
     },
   });
-  console.log(cart);
   const selectedPriceObj = useMemo(
     () =>
       product.prices?.find((p) => p.weight === selectedWeight) ??
@@ -113,7 +117,6 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
     }
   };
   const handleRemoveFn = async () => {
-    console.log("remove");
     try {
       const payload = {
         productId: product._id,
@@ -126,6 +129,7 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
         category: product.category,
         subCategory: product.subcategory,
       };
+      console.log(payload);
       updateMutate(payload);
     } catch (err) {
       console.error(err);
@@ -178,7 +182,6 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
             //   setCart(updatedCart);
             // }}
             onClick={handleRemoveFn}
-            disabled={loading}
             className="absolute bottom-2 left-2"
           >
             <FaCircleMinus className="w-7 h-7 text-red-600 cursor-pointer" />

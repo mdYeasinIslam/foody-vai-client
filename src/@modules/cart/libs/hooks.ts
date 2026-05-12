@@ -52,8 +52,21 @@ export const useUpdateCartProduct = ({ config }: IUpdateCartProductProps) => {
 };
 
 //delete cart item
-export const useDeleteCartProduct = (id: string) => {
+type IDeleteCartProductProps = {
+  config?: MutationConfig<typeof CartService.delete>;
+};
+export const useDeleteCartProduct = ({config}:IDeleteCartProductProps = {}) => {
   return useMutation({
-    mutationFn: () => CartService.delete(id),
+    ...config,
+    mutationFn: CartService.delete,
+  });
+};
+type IDeleteAllCartProductsProps = {
+  config?: MutationConfig<typeof CartService.deleteAll>;
+};
+export const useDeleteAllCartProducts = ({ config }: IDeleteAllCartProductsProps = {}) => {
+  return useMutation({
+    ...config,
+    mutationFn: CartService.deleteAll,
   });
 };
