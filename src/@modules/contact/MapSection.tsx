@@ -1,5 +1,4 @@
 'use client';
-import SectionIntro from '@base/components/SectionIntro';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import React from 'react';
@@ -55,11 +54,11 @@ const MapSection: React.FC<IProps> = ({ className }) => {
 
       <div className="container">
         <div>
-          <SectionIntro
+          {/* <SectionIntro
             titlePrefix="Who We Help"
             title="Built for Everyone in the Hiring Ecosystem"
             className="text-center mb-16 max-w-md xl:max-w-xl mx-auto"
-          />
+          /> */}
         </div>
         <div className="wrapper max-w-7xl mx-auto  grid grid-cols-1 lg:grid-cols-2  gap-y-10 lg:gap-y-0">
           <div className="   content_wrapper  ">

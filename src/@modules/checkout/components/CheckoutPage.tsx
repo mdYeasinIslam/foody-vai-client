@@ -130,7 +130,7 @@ const CheckoutPage: React.FC<IProps> = () => {
                 ) : (
                   cart.map((item) => (
                     <div
-                      key={item.id}
+                      key={item._id}
                       className="flex justify-between items-center border-b border-gray-200"
                     >
                       <div className="flex-1 flex items-center gap-3">
@@ -152,7 +152,7 @@ const CheckoutPage: React.FC<IProps> = () => {
                           <h3 className="font-semibold text-sm">
                             {item.name} -
                             <span className="text-gray-500">
-                              {item.weight} kg
+                              {item?.price?.weight} kg
                             </span>
                           </h3>
                           <p className="text-xs text-gray-500">
@@ -162,7 +162,7 @@ const CheckoutPage: React.FC<IProps> = () => {
                       </div>
 
                       {/* Actions */}
-                      <p className="">৳ {item.price}</p>
+                      <p className="">৳ {item?.price?.price}</p>
                     </div>
                   ))
                 )}
