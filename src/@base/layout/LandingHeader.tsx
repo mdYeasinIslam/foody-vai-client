@@ -4,13 +4,16 @@ import useGlobalState from "@/src/@libs/hooks/useGlobalState";
 import cn from "@/src/@libs/utils/_cn";
 import CartContent from "@/src/@modules/cart/components/CartContent";
 import CartDrawer from "@/src/@modules/cart/components/CartDrawer";
+import {
+  useDeleteAllCartProducts
+} from "@/src/@modules/cart/libs/hooks";
 import MenuItems from "@/src/@modules/home/components/MenuItems";
 import {
   DownOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
 } from "@ant-design/icons";
-import { Badge, Dropdown, Input, MenuProps } from "antd";
+import { Badge, Dropdown, Input, MenuProps, message } from "antd";
 import Link from "next/link";
 import React, { useState } from "react";
 import { IoMenu } from "react-icons/io5";
@@ -33,11 +36,25 @@ const LandingHeader: React.FC<IProps> = () => {
   const [searchValue, setSearchValue] = useState("");
   const [openMenu, setOpenMenu] = useState(false);
   const [open, setOpen] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
   const [cart, setCart] = useGlobalState({
     key: "cart",
     initialValue: [],
   });
-  console.log(cart)
+  const { mutate: deleteMutate } = useDeleteAllCartProducts({
+    config: {
+      onSuccess:  (data) => {
+        console.log(data)
+        if (!data?.success) {
+          messageApi.error(data?.message || "Failed to clear cart");
+          return;
+        }
+        console.log('delete all')
+        setCart([]);
+        messageApi.success("Cart cleared successfully");
+      },
+    },
+  });
   const handleAfterNavigateFn = () => {
     setOpenMenu(false);
   };
@@ -46,6 +63,7 @@ const LandingHeader: React.FC<IProps> = () => {
   };
   return (
     <nav className="relative w-full bg-green-700 shadow-md">
+      {contextHolder}
       <div className="container flex items-center justify-between gap-2  h-16 md:h-20  ">
         {/* Logo */}
         <div className="flex items-center gap-1 shrink-0 cursor-pointer">
@@ -127,18 +145,6 @@ const LandingHeader: React.FC<IProps> = () => {
 
         {/* Actions */}
         <div className="flex items-center gap-1 md:gap-2 shrink-0">
-          {/* <Badge
-            count={notifCount}
-            size="small"
-            offset={[-2, 2]}
-            className="hidden! md:block!"
-          >
-            <span
-              className="md:p-2.5 p-1.5 rounded-full flex items-center justify-center bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-colors"
-            >
-              <BellOutlined style={{ fontSize: 18 }} />
-            </span>
-          </Badge> */}
 
           <div className="hidden md:block w-px h-7 bg-white/20 mx-1" />
 
@@ -176,11 +182,14 @@ const LandingHeader: React.FC<IProps> = () => {
           open={open}
           onClose={handleOnCloseAfterCheckoutFn}
           handleClearCart={() => {
-            setCart([]);
+            deleteMutate(undefined);
           }}
           content={
             <>
-              <CartContent cartItems={cart} handleOnCloseAfterCheckoutFn={handleOnCloseAfterCheckoutFn} />
+              <CartContent
+                cartItems={cart}
+                handleOnCloseAfterCheckoutFn={handleOnCloseAfterCheckoutFn}
+              />
             </>
           }
         />

@@ -1,29 +1,49 @@
 export interface IProductFilter {
-    category?: string;
-    minPrice?: number;
-    maxPrice?: number;
-    search?: string;
+  category?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  search?: string;
 }
 
 export interface IProduct {
-  id: string;
+  _id: string;
   name: string;
   description?: string;
-  prices: { weight: number, price: number, originalPrice: number }[];
+  prices: {
+    weight: number;
+    price: number;
+    originalPrice: number;
+    weightName: string;
+    currency: string;
+  }[];
   category: string;
+  subcategory?: string;
   img: string;
 }
 export interface IProductCreate {
-  id: string;
+  _id: string;
   name: string;
   description?: string;
-  price: number;
-  weight: number;
-  originalPrice: number;
+  price: {
+    weight: number;
+    price: number;
+    originalPrice: number;
+    weightName: string;
+    currency: string;
+  };
   category: string;
+  subcategory?: string;
   quantity: number;
   img: string;
 }
-export type IProductResponse = IProduct;
-export type IProductsResponse = IProduct[];
-
+export interface IProductResponse {
+  success: boolean;
+  message: string;
+  data: IProduct;
+}
+export interface IProductsResponse {
+  success: boolean;
+  message: string;
+  data: IProduct[];
+  count: number;
+}

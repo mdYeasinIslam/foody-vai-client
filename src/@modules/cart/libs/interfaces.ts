@@ -1,32 +1,55 @@
 export interface ICartItemFilter {
-    category?: string;
-    minPrice?: number;
-    maxPrice?: number;
-    search?: string;
+  category?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  search?: string;
+}
+ interface IPrice {
+  weight: number;
+  price: number;
+  originalPrice: number;
+  weightName: string;
+  currency: string;
 }
 
 export interface ICartItem {
-  id: string;
+  _id: string;
+  productId: string;
   name: string;
   description?: string;
-  price: number;
-  weight: number;
-  originalPrice: number;
+  price: IPrice;
   category: string;
   quantity: number;
   img: string;
 }
-export interface ICartItemCreate {
-  id: string;
-  name: string;
-  description?: string;
-  price: number;
-  weight: number;
-  originalPrice: number;
-  category: string;
-  quantity: number;
-  img: string;
-}
-export type ICartItemResponse = ICartItem;
-export type ICartsItemResponse = ICartItem[];
 
+export interface ICartItemCreate {
+  _id?: string;
+  productId: string;
+  name: string;
+  description?: string;
+  price: IPrice;
+  category: string;
+  quantity: number;
+  img: string;
+}
+export interface ICartItemUpdate {
+  productId: string;
+  name: string;
+  action: string;
+  description?: string;
+  price: IPrice;
+  category: string;
+  quantity: number;
+  img: string;
+}
+export type ICartItemResponse = {
+  success: boolean;
+  alreadyExist?: boolean;
+  message: string;
+  data: ICartItemCreate;
+  cartItemId?: string;
+  error?: any;
+  deleted?: boolean;
+};
+export type ICartsItemResponse = ICartItem[];

@@ -1,13 +1,13 @@
-import { QueryConfig } from "@/src/@libs/config/react-query";
-import { useQuery } from "@tanstack/react-query";
+import { MutationConfig, QueryConfig } from "@/src/@libs/config/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { CartService } from "./services";
-import { ICartItemFilter } from "./interfaces";
+import { ICartItem, ICartItemFilter } from "./interfaces";
 
 type IUseCarts = {
   options?: ICartItemFilter;
   config?: QueryConfig<typeof CartService.find>;
 };
-export const useCarts = ({ config }: IUseCarts) => {
+export const useCartProducts = ({ config }: IUseCarts) => {
   return useQuery({
     ...config,
     queryKey: ["cart"],
@@ -19,10 +19,54 @@ type IUseCart = {
   id: string;
   config: QueryConfig<typeof CartService.findById>;
 };
-export const useCart = ({ id, config }: IUseCart) => {
+export const useCartProduct = ({ id, config }: IUseCart) => {
   return useQuery({
     ...config,
     queryKey: ["cart", id],
     queryFn: () => CartService.findById(id),
+  });
+};
+
+// add product to the cart
+type ICreateCartProductProps = {
+  config?: MutationConfig<typeof CartService.create>;
+};
+export const useCreateCartProduct = ({
+  config,
+}: ICreateCartProductProps = {}) => {
+  return useMutation({
+    ...config,
+    mutationFn: CartService.create,
+  });
+};
+
+//update car item quantity
+type IUpdateCartProductProps = {
+  config?: MutationConfig<typeof CartService.update>;
+};
+export const useUpdateCartProduct = ({ config }: IUpdateCartProductProps) => {
+  return useMutation({
+    ...config,
+    mutationFn: CartService.update,
+  });
+};
+
+//delete cart item
+type IDeleteCartProductProps = {
+  config?: MutationConfig<typeof CartService.delete>;
+};
+export const useDeleteCartProduct = ({config}:IDeleteCartProductProps = {}) => {
+  return useMutation({
+    ...config,
+    mutationFn: CartService.delete,
+  });
+};
+type IDeleteAllCartProductsProps = {
+  config?: MutationConfig<typeof CartService.deleteAll>;
+};
+export const useDeleteAllCartProducts = ({ config }: IDeleteAllCartProductsProps = {}) => {
+  return useMutation({
+    ...config,
+    mutationFn: CartService.deleteAll,
   });
 };

@@ -1,0 +1,251 @@
+"use client";
+import BaseLoader from "@/src/@base/components/BaseLoader";
+import { useCartState } from "@/src/@libs/hooks/useCartState";
+import cn from "@/src/@libs/utils/_cn";
+import { Badge } from "antd";
+import Image from "next/image";
+import React, { useMemo, useState } from "react";
+import { FaCircleMinus, FaCirclePlus } from "react-icons/fa6";
+import { ClassNameValue } from "tailwind-merge";
+import { ICartItemCreate } from "../../cart/libs/interfaces";
+import { IProduct } from "../libs/interfaces";
+interface IProps {
+  className?: ClassNameValue;
+  product: IProduct;
+  cart?: ICartItemCreate[];
+  setCart?: (
+    value: ICartItemCreate[] | ((val: ICartItemCreate[]) => ICartItemCreate[]),
+  ) => void;
+}
+const ProductCopy: React.FC<IProps> = ({
+  className,
+  product,
+}) => {
+  const [selectedWeight, setSelectedWeight] = useState<number>(
+    product.prices?.[0]?.weight ?? 0,
+  );
+  const { cart, addToCart, removeFromCart, isLoading, contextHolder } =
+    useCartState();
+
+//   const { mutate: createMutate, isPending: isPendingInCreateTime } =
+//     useCreateCartProduct({
+//       config: {
+//         onSuccess: async (data) => {
+//           if (!data?.alreadyExist && data?.success) {
+//             setCart((prev) => [...prev, data?.data]);
+//             messageApi.success("Product added to the cart successfully");
+//             return;
+//           } else if (data?.alreadyExist && data?.success) {
+//             setCart((prev) =>
+//               prev.map((item) =>
+//                 item.productId === product._id &&
+//                 item.price?.weight === selectedWeight
+//                   ? { ...item, quantity: item.quantity + 1 }
+//                   : item,
+//               ),
+//             );
+//             messageApi.success(data?.message || "Product quantity updated");
+//           } else {
+//             messageApi.error(
+//               data?.message || "Failed to add product to the cart",
+//             );
+//           }
+//         },
+//       },
+//     });
+//   const { mutate: updateMutate, isPending: isPendingInUpdateTime } =
+//     useUpdateCartProduct({
+//       config: {
+//         onSuccess: (data) => {
+//           if (data?.success && !data?.deleted) {
+//             setCart((prev) =>
+//               prev.map((item) =>
+//                 item.productId === product._id &&
+//                 item.price?.weight === selectedWeight
+//                   ? { ...item, quantity: data.data.quantity }
+//                   : item,
+//               ),
+//             );
+//             messageApi.success(data?.message || "Quantity updated");
+//           } else if (data?.deleted) {
+//             setCart((prev) =>
+//               prev.filter((item) => item?._id !== data.cartItemId),
+//             );
+//             messageApi.success(data?.message || "Product removed from cart");
+//           } else {
+//             messageApi.error(data?.message || "Failed to update quantity");
+//           }
+//         },
+//       },
+//     });
+  const selectedPriceObj = useMemo(
+    () =>
+      product.prices?.find((p) => p.weight === selectedWeight) ??
+      product.prices?.[0],
+    [product.prices, selectedWeight],
+  );
+  // ---------------------------------------------------------------------
+  const priceByWeight = product?.prices?.filter(
+    (price) => price.weight === selectedWeight,
+  );
+  const originalPriceByWeight = product?.prices?.filter(
+    (price) => price.weight === selectedWeight,
+  );
+  //   const badgeCount = useMemo(() => {
+  //     const productInCart = cart.find((item) => item?.productId === product._id);
+  //     return productInCart ? productInCart.quantity : 0;
+  //   }, [cart, product._id]);
+  const badgeCount = useMemo(() => {
+    const item = cart.find(
+      (i) => i.productId === product._id && i.price?.weight === selectedWeight,
+    );
+    return item?.quantity ?? 0;
+  }, [cart, product._id, selectedWeight]);
+  const handleAddToCartFn = async () => {
+    try {
+      const payload = {
+        productId: product._id,
+        name: product.name,
+        description: product.description,
+        img: product.img,
+        price: selectedPriceObj,
+        quantity: 1,
+        category: product.category,
+        subCategory: product.subcategory,
+      };
+      addToCart(payload);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const handleRemoveFn = async () => {
+    try {
+      const payload = {
+        productId: product._id,
+        action: "decrement",
+        name: product.name,
+        description: product.description,
+        img: product.img,
+        price: selectedPriceObj,
+        quantity: 1,
+        category: product.category,
+        subCategory: product.subcategory,
+      };
+      console.log(payload);
+      removeFromCart(payload);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+//   if (isLoading) {
+//     return <BaseLoader className="absolute top-10" />;
+//   }
+  return (
+    <div
+      key={product._id}
+      className={cn(
+        className,
+        "h-full flex flex-col  bg-white rounded-lg shadow hover:shadow-lg",
+      )}
+    >
+      {contextHolder}
+      <div className="relative bg-gray-100 h-48 flex items-center justify-center overflow-hidden rounded-t-lg">
+        <Image
+          src={product?.img}
+          alt={product.name}
+          width={300}
+          height={300}
+          className="w-full h-full object-cover"
+        />
+        <Badge
+          count={badgeCount}
+          size="small"
+          offset={[-2, 2]}
+          className=" absolute! bottom-2! right-2!"
+        >
+          <button onClick={handleAddToCartFn} disabled={isLoading}>
+            <FaCirclePlus
+              className={cn("w-7 h-7 cursor-pointer", {
+                "text-green-300": isLoading,
+                "text-green-600 ": !isLoading,
+              })}
+            />
+          </button>
+        </Badge>
+        {badgeCount > 0 && (
+          <button
+            // onClick={() => {
+            //   // handle remove from cart logic
+            //   const existingCart = LocalStorage.get<IProductCreate[]>(
+            //     "cart",
+            //     [],
+            //   );
+            //   // const selectedWeight =
+            //   //   selectedWeight ?? product.prices?.[0]?.weight;
+            //   const updatedCart = existingCart
+            //     .map((item) =>
+            //       item._id === product._id && item?.price?.weight === selectedWeight
+            //         ? { ...item, quantity: item.quantity - 1 }
+            //         : item,
+            //     )
+            //     .filter((item) => item.quantity > 0);
+            //   localStorage.setItem("cart", JSON.stringify(updatedCart));
+            //   setCart(updatedCart);
+            // }}
+            onClick={handleRemoveFn}
+            className="absolute bottom-2 left-2"
+          >
+            <FaCircleMinus
+                          className={cn("w-7 h-7 text-red-600 cursor-pointer", {
+                  'text-red-300': isLoading,
+              })}
+            />
+          </button>
+        )}
+      </div>
+      <div className="p-4 flex flex-col justify-between flex-1">
+        <h3 className="font-semibold text-gray-800 mb-">{product.name}</h3>
+        <div className="mt-0">
+          <div className="flex items-center  gap-2 mb-">
+            <span className="text-lg font-bold text-green-600">
+              ৳
+              {priceByWeight[0]?.price
+                ? priceByWeight[0]?.price
+                : product.prices[0].price}
+            </span>
+            {originalPriceByWeight && (
+              <span className="text-sm text-gray-500 line-through">
+                ৳
+                {originalPriceByWeight[0]?.price
+                  ? originalPriceByWeight[0]?.originalPrice
+                  : product.prices[0].originalPrice}
+              </span>
+            )}
+          </div>
+          {product?.prices && (
+            <div className="flex gap-2">
+              {product?.prices?.map((w, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setSelectedWeight(w.weight)}
+                  className={cn(
+                    "text-xs border border-(--primary-color-800) text-black px-3 py-1 rounded hover:bg-green-50 cursor-pointer",
+                    {
+                      "bg-(--primary-color-600) text-(--primary-color-800) ":
+                        (selectedWeight === null && idx == 0) ||
+                        selectedWeight === w.weight,
+                    },
+                  )}
+                >
+                  {w.weight}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProductCopy;

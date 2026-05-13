@@ -1,13 +1,16 @@
-
 import { AxiosInstance } from "@/src/@libs/config/AxiosInstance";
-import axios from "axios";
-import { ICartItemFilter, ICartItemResponse, ICartsItemResponse } from "./interfaces";
+import {
+  ICartItemCreate,
+  ICartItemResponse,
+  ICartItemUpdate,
+  ICartsItemResponse
+} from "./interfaces";
 
-const END_POINT: string = "/products.json";
+const END_POINT: string = "/cart";
 
 export const CartService = {
   Name: END_POINT,
-  async find(query?: ICartItemFilter): Promise<ICartsItemResponse> {
+  async find(): Promise<ICartsItemResponse> {
     try {
       const res = await AxiosInstance.get(END_POINT);
       return Promise.resolve(res?.data);
@@ -17,7 +20,52 @@ export const CartService = {
   },
   async findById(id: string): Promise<ICartItemResponse> {
     try {
-      const res = await axios.get(`${END_POINT}/${id}`);
+      const res = await AxiosInstance.get(`${END_POINT}/${id}`);
+      return Promise.resolve(res?.data);
+    } catch (error) {
+      throw error;
+    }
+  },
+  async create(payload: ICartItemCreate): Promise<ICartItemResponse> {
+    try {
+      const res = await AxiosInstance.post(`${END_POINT}/add-product`, payload);
+      return Promise.resolve(res?.data);
+    } catch (error) {
+      throw error;
+    }
+  },
+  async delete(id: string): Promise<ICartItemResponse> {
+    try {
+      const res = await AxiosInstance.delete(`${END_POINT}/${id}`);
+      return Promise.resolve(res?.data);
+    } catch (error) {
+      throw error;
+    }
+  },
+  async deleteAll(): Promise<ICartItemResponse> {
+    try {
+      const res = await AxiosInstance.delete(`${END_POINT}`);
+      return Promise.resolve(res?.data);
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async update(payload: ICartItemUpdate): Promise<ICartItemResponse> {
+    try {
+      const res = await AxiosInstance.patch(
+        `${END_POINT}/${payload.productId}/quantity`,
+        payload,
+      );
+      return Promise.resolve(res?.data);
+    } catch (error) {
+      throw error;
+    }
+  },
+  //delete cart item
+  async deleteCart(id: string) {
+    try {
+      const res = await AxiosInstance.delete(`${END_POINT}/${id}`);
       return Promise.resolve(res?.data);
     } catch (error) {
       throw error;

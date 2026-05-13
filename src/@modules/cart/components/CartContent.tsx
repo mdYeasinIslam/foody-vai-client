@@ -1,12 +1,12 @@
 import useGlobalState from "@/src/@libs/hooks/useGlobalState";
 import cn from "@/src/@libs/utils/_cn";
+import { calculateTotal } from "@/src/@libs/utils/helperFunction";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
 import { ClassNameValue } from "tailwind-merge";
 import { ICartItem } from "../libs/interfaces";
-import Link from "next/link";
-import { calculateTotal } from "@/src/@libs/utils/helperFunction";
 
 interface IProps {
   className?: ClassNameValue;
@@ -30,14 +30,14 @@ const CartContent: React.FC<IProps> = ({
 
   const calculateSaved = () => {
     return cartItems.reduce(
-      (sum, item) => sum + (item.originalPrice - item.price) * item.quantity,
+      (sum, item) => sum + (item?.price?.originalPrice - item.price?.price) * item.quantity,
       0,
     );
   };
 
   const handleQuantityChange = (itemId: string, delta: number) => {
     const updatedCart = cartItems.map((item) =>
-      item.id === itemId
+      item._id === itemId
         ? { ...item, quantity: Math.max(1, item.quantity + delta) }
         : item,
     );
@@ -45,7 +45,7 @@ const CartContent: React.FC<IProps> = ({
   };
 
   const handleDeleteItem = (itemId: string) => {
-    const updatedCart = cartItems.filter((item) => item.id !== itemId);
+    const updatedCart = cartItems.filter((item) => item._id !== itemId);
     setCart(updatedCart);
   };
 
@@ -72,8 +72,8 @@ const CartContent: React.FC<IProps> = ({
         {cartItems.length === 0 ? (
           <p className="text-center text-gray-500 py-8">Cart is empty</p>
         ) : (
-          cartItems.map((item) => (
-            <div key={item.id} className="flex justify-between border-b pb-1">
+          cartItems.map((item,idx) => (
+            <div key={idx} className="flex justify-between border-b pb-1">
               <div className="flex items-center gap-3">
                 {/* Product Image */}
                 <div className="w-16 h-16 bg-gray-200 rounded shrink-0">
@@ -93,9 +93,9 @@ const CartContent: React.FC<IProps> = ({
                   <h3 className="font-semibold text-sm">{item.name}</h3>
                   <p className="flex items-center gap-2">
                     <span className="text-green-600 font-bold">
-                      ৳ {item.price}
+                      ৳ {item?.price?.price}
                     </span>
-                    |<span className="text-gray-500">{item.weight} kg</span>
+                    |<span className="text-gray-500">{item?.price?.weight} kg</span>
                   </p>
                 </div>
               </div>
@@ -103,14 +103,14 @@ const CartContent: React.FC<IProps> = ({
               {/* Actions */}
               <div className="flex flex-col items-end justify-between">
                 <button
-                  onClick={() => handleDeleteItem(item.id)}
+                  onClick={() => handleDeleteItem(item?._id)}
                   className="text-gray-400 hover:text-red-500 transition cursor-pointer"
                 >
                   <FiTrash2 size={18} />
                 </button>
                 <div className="flex items-center gap-2 border border-(--primary-color-800) rounded">
                   <button
-                    onClick={() => handleQuantityChange(item.id, -1)}
+                    onClick={() => handleQuantityChange(item?._id, -1)}
                     className="p-1 hover:bg-(--primary-color-600) transition cursor-pointer"
                   >
                     <FiMinus size={16} />
@@ -119,7 +119,7 @@ const CartContent: React.FC<IProps> = ({
                     {item.quantity}
                   </span>
                   <button
-                    onClick={() => handleQuantityChange(item.id, 1)}
+                    onClick={() => handleQuantityChange(item?._id, 1)}
                     className="p-1 hover:bg-(--primary-color-600) transition cursor-pointer"
                   >
                     <FiPlus size={16} />

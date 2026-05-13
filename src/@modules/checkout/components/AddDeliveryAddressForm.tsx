@@ -3,18 +3,15 @@ import BaseAntForm from "@/src/@base/components/BaseAntForm";
 import { Form, Input, Select } from "antd";
 import React, { useState } from "react";
 
-// ── types ──────────────────────────────────────────────────────────────────
 interface IArea {
   value: string;
   label: string;
 }
-
 interface IDistrict {
   value: string;
   label: string;
   areas: IArea[];
 }
-
 export interface IDeliveryAddressFormValues {
   district: string;
   area: string;
