@@ -1,18 +1,12 @@
 "use client";
-import useGlobalState from "@/src/@libs/hooks/useGlobalState";
-import { ICartItemCreate } from "../../cart/libs/interfaces";
+import BaseLoader from "@/src/@base/components/BaseLoader";
 import { useProducts } from "../libs/hooks";
 import ProductCopy from "./ProductCopy";
-import {
-  useCreateCartProduct,
-  useUpdateCartProduct,
-} from "../../cart/libs/hooks";
-import { message } from "antd";
 
 const AllProducts = () => {
   const { data, isLoading, error } = useProducts({});
   const productData = data?.data;
-  const [messageApi, contextHolder] = message.useMessage();
+  console.log(productData)
   // const { mutate: createMutate, isPending: isPendingInCreateTime } =
   //   useCreateCartProduct({
   //     config: {
@@ -65,14 +59,7 @@ const AllProducts = () => {
   //     },
   //   });
   if (isLoading) {
-    return (
-      <section className="py-12 px-4">
-        <h2 className="text-3xl font-bold mb-8">All Products</h2>
-        <div className="flex justify-center items-center h-64">
-          <p className="text-gray-500">Loading products...</p>
-        </div>
-      </section>
-    );
+    return <BaseLoader className='relative top-10 left-1/2'/>
   }
 
   if (error) {

@@ -145,7 +145,6 @@ const LandingHeader: React.FC<IProps> = () => {
 
         {/* Actions */}
         <div className="flex items-center gap-1 md:gap-2 shrink-0">
-
           <div className="hidden md:block w-px h-7 bg-white/20 mx-1" />
 
           <Dropdown menu={{ items: accountItems }} trigger={["click"]}>
@@ -163,13 +162,11 @@ const LandingHeader: React.FC<IProps> = () => {
             </button>
           </Dropdown>
 
-          <Badge
-            onClick={() => setOpen(true)}
-            count={cart?.length}
-            size="small"
-            offset={[-2, 2]}
-          >
-            <span className="p-1 md:p-2.5 rounded-full flex items-center justify-center bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer">
+          <Badge count={cart?.length} size="small" offset={[-2, 2]}>
+            <span
+              onClick={() => setOpen(true)}
+              className="p-1 md:p-2.5 rounded-full flex items-center justify-center bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer"
+            >
               <ShoppingCartOutlined style={{ fontSize: 18 }} />
             </span>
           </Badge>
