@@ -1,5 +1,14 @@
-import { useCartProducts, useCreateCartProduct, useUpdateCartProduct } from "@/src/@modules/cart/libs/hooks";
-import { ICartItemCreate, ICartItemResponse, ICartItemUpdate } from "@/src/@modules/cart/libs/interfaces";
+import {
+  useCartProducts,
+  useCreateCartProduct,
+  useDeleteCartProduct,
+  useUpdateCartProduct,
+} from "@/src/@modules/cart/libs/hooks";
+import {
+  ICartItemCreate,
+  ICartItemResponse,
+  ICartItemUpdate,
+} from "@/src/@modules/cart/libs/interfaces";
 import { message } from "antd";
 import useGlobalState from "./useGlobalState";
 
@@ -12,7 +21,7 @@ export const useCartState = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const { data } = useCartProducts({});
   const cartProducts = data?.data;
-
+  //create (add to cart)
   const {
     mutate: createMutate,
     isPending: isCreating,
@@ -41,7 +50,7 @@ export const useCartState = () => {
       },
     },
   });
-
+  //update
   const {
     mutate: updateMutate,
     isPending: isUpdating,
@@ -70,6 +79,22 @@ export const useCartState = () => {
       },
     },
   });
+  //delete
+  const { mutate: deleteMutateSingleItem } = useDeleteCartProduct({
+    config: {
+      onSuccess: (data) => {
+        console.log(data);
+        if (!data?.success) {
+          messageApi.error(data?.message || "Failed to clear cart");
+          return;
+        }
+        console.log("delete product", data);
+        // setCart(cartItems.filter((item) => item._id !== data.cartItemId));
+        setCart((prev) => prev.filter((item) => item._id !== data.cartItemId));
+        messageApi.success("Cart item deleted successfully");
+      },
+    },
+  });
 
   const addToCart = (payload: Omit<ICartItemCreate, "_id">) => {
     createMutate(payload);
@@ -78,7 +103,12 @@ export const useCartState = () => {
   const removeFromCart = (payload: Omit<ICartItemUpdate, "_id">) => {
     updateMutate({ ...payload, action: "decrement" });
   };
-
+  // const clearCart = () => {
+  //   deleteMutateSingleItem();
+  // };
+  const removeSingleItem = (id: string) => {
+    deleteMutateSingleItem(id);
+  };
   // ✅ expose variables so each card can check if IT is loading
   return {
     cart,
@@ -88,6 +118,7 @@ export const useCartState = () => {
     updateVariables, // { productId, price.weight, ... } of in-flight update
     addToCart,
     removeFromCart,
+    removeSingleItem,
     contextHolder,
     cartProducts,
   };

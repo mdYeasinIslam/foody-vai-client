@@ -1,12 +1,15 @@
 import useGlobalState from "@/src/@libs/hooks/useGlobalState";
 import cn from "@/src/@libs/utils/_cn";
 import { calculateTotal } from "@/src/@libs/utils/helperFunction";
+import { message } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
 import { ClassNameValue } from "tailwind-merge";
+import { useDeleteCartProduct } from "../libs/hooks";
 import { ICartItem } from "../libs/interfaces";
+import { useCartState } from "@/src/@libs/hooks/useCartState";
 
 interface IProps {
   className?: ClassNameValue;
@@ -19,18 +22,41 @@ const CartContent: React.FC<IProps> = ({
   cartItems,
   handleOnCloseAfterCheckoutFn,
 }) => {
+
   const [, setCart] = useGlobalState<ICartItem[]>({
     key: "cart",
     initialValue: [],
   });
-
+  const {
+    cart,
+    addToCart,
+    removeFromCart,
+    removeSingleItem,
+    contextHolder,
+  } = useCartState();
+  // const { mutate: removeSingleItem } = useDeleteCartProduct({
+  //   config: {
+  //     onSuccess: (data) => {
+  //       console.log(data);
+  //       if (!data?.success) {
+  //         messageApi.error(data?.message || "Failed to clear cart");
+  //         return;
+  //       }
+  //       console.log("delete product", data);
+  //       // setCart(cartItems.filter((item) => item._id !== data.cartItemId));
+  //       setCart((prev) => prev.filter((item) => item._id !== data.cartItemId));
+  //       messageApi.success("Cart item deleted successfully");
+  //     },
+  //   },
+  // });
   // const calculateTotal = () => {
   //   return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   // };
 
   const calculateSaved = () => {
     return cartItems.reduce(
-      (sum, item) => sum + (item?.price?.originalPrice - item.price?.price) * item.quantity,
+      (sum, item) =>
+        sum + (item?.price?.originalPrice - item.price?.price) * item.quantity,
       0,
     );
   };
@@ -47,13 +73,27 @@ const CartContent: React.FC<IProps> = ({
   const handleDeleteItem = (itemId: string) => {
     const updatedCart = cartItems.filter((item) => item._id !== itemId);
     setCart(updatedCart);
+    removeSingleItem(itemId);
   };
-
+  // const handleQuantityUpdateFn = async (id: string) => {
+  //   try {
+  //     const payload = {
+  //       productId: id,
+  //       action: "decrement",
+  //       price: selectedPriceObj,
+  //       quantity: 1,
+  //     };
+  //     removeFromCart(payload);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
   const total = calculateTotal(cartItems);
   const saved = calculateSaved();
 
   return (
     <div className={cn("flex flex-col h-full bg-white", className)}>
+      {contextHolder}
       {/* Header */}
       {/* <div className="flex justify-between items-center p-4 border-b">
         <h2 className="text-xl font-bold">Shopping Cart</h2>
@@ -72,7 +112,7 @@ const CartContent: React.FC<IProps> = ({
         {cartItems.length === 0 ? (
           <p className="text-center text-gray-500 py-8">Cart is empty</p>
         ) : (
-          cartItems.map((item,idx) => (
+          cartItems.map((item, idx) => (
             <div key={idx} className="flex justify-between border-b pb-1">
               <div className="flex items-center gap-3">
                 {/* Product Image */}
@@ -87,7 +127,6 @@ const CartContent: React.FC<IProps> = ({
                     />
                   )}
                 </div>
-
                 {/* Product Details */}
                 <div className="flex-1">
                   <h3 className="font-semibold text-sm">{item.name}</h3>
@@ -95,7 +134,10 @@ const CartContent: React.FC<IProps> = ({
                     <span className="text-green-600 font-bold">
                       ৳ {item?.price?.price}
                     </span>
-                    |<span className="text-gray-500">{item?.price?.weight} kg</span>
+                    |
+                    <span className="text-gray-500">
+                      {item?.price?.weight} kg
+                    </span>
                   </p>
                 </div>
               </div>
