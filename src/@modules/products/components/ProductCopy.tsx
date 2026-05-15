@@ -23,7 +23,7 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
   const {
     cart,
     addToCart,
-    removeFromCart,
+    updateCartItemQuantity,
     isCreating,
     isUpdating,
     createVariables,
@@ -39,10 +39,10 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
     (isUpdating &&
       updateVariables?.productId === product._id &&
       updateVariables?.price?.weight === selectedWeight);
+
   const selectedPriceObj =
     product.prices?.find((p) => p.weight === selectedWeight) ??
     product.prices?.[0];
-  // ---------------------------------------------------------------------
   const priceByWeight = product?.prices?.filter(
     (price) => price.weight === selectedWeight,
   );
@@ -78,7 +78,7 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
         price: selectedPriceObj,
         quantity: 1,
       };
-      removeFromCart(payload);
+      updateCartItemQuantity(payload,'decrement');
       console.log(cart);
     } catch (err) {
       console.error(err);

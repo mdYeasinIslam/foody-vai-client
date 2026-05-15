@@ -47,7 +47,7 @@ export type ICartItemResponse = {
   success: boolean;
   alreadyExist?: boolean;
   message: string;
-  data: ICartItemCreate;
+  data: ICartItem;
   cartItemId?: string;
   error?: any;
   deleted?: boolean;

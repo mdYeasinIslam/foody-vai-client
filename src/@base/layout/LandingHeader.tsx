@@ -1,19 +1,16 @@
 "use client";
 
-import useGlobalState from "@/src/@libs/hooks/useGlobalState";
+import { useCartState } from "@/src/@libs/hooks/useCartState";
 import cn from "@/src/@libs/utils/_cn";
 import CartContent from "@/src/@modules/cart/components/CartContent";
 import CartDrawer from "@/src/@modules/cart/components/CartDrawer";
-import {
-  useDeleteAllCartProducts
-} from "@/src/@modules/cart/libs/hooks";
 import MenuItems from "@/src/@modules/home/components/MenuItems";
 import {
   DownOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
 } from "@ant-design/icons";
-import { Badge, Dropdown, Input, MenuProps, message } from "antd";
+import { Badge, Dropdown, Input, MenuProps } from "antd";
 import Link from "next/link";
 import React, { useState } from "react";
 import { IoMenu } from "react-icons/io5";
@@ -36,25 +33,7 @@ const LandingHeader: React.FC<IProps> = () => {
   const [searchValue, setSearchValue] = useState("");
   const [openMenu, setOpenMenu] = useState(false);
   const [open, setOpen] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
-  const [cart, setCart] = useGlobalState({
-    key: "cart",
-    initialValue: [],
-  });
-  const { mutate: deleteMutate } = useDeleteAllCartProducts({
-    config: {
-      onSuccess:  (data) => {
-        console.log(data)
-        if (!data?.success) {
-          messageApi.error(data?.message || "Failed to clear cart");
-          return;
-        }
-        console.log('delete all')
-        setCart([]);
-        messageApi.success("Cart cleared successfully");
-      },
-    },
-  });
+  const { cart, contextHolder, clearCart } = useCartState();
   const handleAfterNavigateFn = () => {
     setOpenMenu(false);
   };
@@ -179,7 +158,7 @@ const LandingHeader: React.FC<IProps> = () => {
           open={open}
           onClose={handleOnCloseAfterCheckoutFn}
           handleClearCart={() => {
-            deleteMutate(undefined);
+            clearCart();
           }}
           content={
             <>

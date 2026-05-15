@@ -1,15 +1,13 @@
+import { useCartState } from "@/src/@libs/hooks/useCartState";
 import useGlobalState from "@/src/@libs/hooks/useGlobalState";
 import cn from "@/src/@libs/utils/_cn";
 import { calculateTotal } from "@/src/@libs/utils/helperFunction";
-import { message } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
 import { ClassNameValue } from "tailwind-merge";
-import { useDeleteCartProduct } from "../libs/hooks";
 import { ICartItem } from "../libs/interfaces";
-import { useCartState } from "@/src/@libs/hooks/useCartState";
 
 interface IProps {
   className?: ClassNameValue;
@@ -22,37 +20,12 @@ const CartContent: React.FC<IProps> = ({
   cartItems,
   handleOnCloseAfterCheckoutFn,
 }) => {
-
   const [, setCart] = useGlobalState<ICartItem[]>({
     key: "cart",
     initialValue: [],
   });
-  const {
-    cart,
-    addToCart,
-    removeFromCart,
-    removeSingleItem,
-    contextHolder,
-  } = useCartState();
-  // const { mutate: removeSingleItem } = useDeleteCartProduct({
-  //   config: {
-  //     onSuccess: (data) => {
-  //       console.log(data);
-  //       if (!data?.success) {
-  //         messageApi.error(data?.message || "Failed to clear cart");
-  //         return;
-  //       }
-  //       console.log("delete product", data);
-  //       // setCart(cartItems.filter((item) => item._id !== data.cartItemId));
-  //       setCart((prev) => prev.filter((item) => item._id !== data.cartItemId));
-  //       messageApi.success("Cart item deleted successfully");
-  //     },
-  //   },
-  // });
-  // const calculateTotal = () => {
-  //   return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  // };
-
+  const { updateCartItemQuantity, removeSingleItem, contextHolder } =
+    useCartState();
   const calculateSaved = () => {
     return cartItems.reduce(
       (sum, item) =>
@@ -61,13 +34,24 @@ const CartContent: React.FC<IProps> = ({
     );
   };
 
-  const handleQuantityChange = (itemId: string, delta: number) => {
-    const updatedCart = cartItems.map((item) =>
-      item._id === itemId
-        ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-        : item,
-    );
-    setCart(updatedCart);
+  const handleQuantityChange = (itemId: string, action: string) => {
+    const findItem = cartItems.find((item) => item._id === itemId);
+    try {
+      if (findItem) {
+        const payload = {
+          productId: findItem.productId,
+          action: action,
+          price: findItem?.price,
+          quantity: 1,
+        };
+        updateCartItemQuantity(payload, action);
+      } else {
+        console.log("item not found");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    // setCart(updatedCart);
   };
 
   const handleDeleteItem = (itemId: string) => {
@@ -76,14 +60,17 @@ const CartContent: React.FC<IProps> = ({
     removeSingleItem(itemId);
   };
   // const handleQuantityUpdateFn = async (id: string) => {
+  //   const updatedCart = cartItems.filter((item) => item._id !== id);
+  //   console.log(updatedCart);
+
   //   try {
   //     const payload = {
   //       productId: id,
   //       action: "decrement",
-  //       price: selectedPriceObj,
+  //       // price: selectedPriceObj,
   //       quantity: 1,
   //     };
-  //     removeFromCart(payload);
+  //     updateCartItemQuantity(payload);
   //   } catch (err) {
   //     console.error(err);
   //   }
@@ -152,7 +139,7 @@ const CartContent: React.FC<IProps> = ({
                 </button>
                 <div className="flex items-center gap-2 border border-(--primary-color-800) rounded">
                   <button
-                    onClick={() => handleQuantityChange(item?._id, -1)}
+                    onClick={() => handleQuantityChange(item?._id, 'decrement')}
                     className="p-1 hover:bg-(--primary-color-600) transition cursor-pointer"
                   >
                     <FiMinus size={16} />
@@ -161,7 +148,7 @@ const CartContent: React.FC<IProps> = ({
                     {item.quantity}
                   </span>
                   <button
-                    onClick={() => handleQuantityChange(item?._id, 1)}
+                    onClick={() => handleQuantityChange(item?._id, 'increment')}
                     className="p-1 hover:bg-(--primary-color-600) transition cursor-pointer"
                   >
                     <FiPlus size={16} />

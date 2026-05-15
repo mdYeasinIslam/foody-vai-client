@@ -1,10 +1,12 @@
 import {
   useCartProducts,
   useCreateCartProduct,
+  useDeleteAllCartProducts,
   useDeleteCartProduct,
   useUpdateCartProduct,
 } from "@/src/@modules/cart/libs/hooks";
 import {
+  ICartItem,
   ICartItemCreate,
   ICartItemResponse,
   ICartItemUpdate,
@@ -14,7 +16,7 @@ import useGlobalState from "./useGlobalState";
 
 // useCartState.ts
 export const useCartState = () => {
-  const [cart, setCart] = useGlobalState<ICartItemCreate[]>({
+  const [cart, setCart] = useGlobalState<ICartItem[]>({
     key: "cart",
     initialValue: [],
   });
@@ -79,7 +81,7 @@ export const useCartState = () => {
       },
     },
   });
-  //delete
+  //delete single item
   const { mutate: deleteMutateSingleItem } = useDeleteCartProduct({
     config: {
       onSuccess: (data) => {
@@ -95,19 +97,34 @@ export const useCartState = () => {
       },
     },
   });
-
+  // delete all item
+  const { mutate: deleteMutate } = useDeleteAllCartProducts({
+    config: {
+      onSuccess: (data) => {
+        console.log(data);
+        if (!data?.success) {
+          messageApi.error(data?.message || "Failed to clear cart");
+          return;
+        }
+        console.log("delete all");
+        setCart([]);
+        messageApi.success("Cart cleared successfully");
+      },
+    },
+  });
   const addToCart = (payload: Omit<ICartItemCreate, "_id">) => {
     createMutate(payload);
   };
 
-  const removeFromCart = (payload: Omit<ICartItemUpdate, "_id">) => {
-    updateMutate({ ...payload, action: "decrement" });
+  const updateCartItemQuantity = (payload: Omit<ICartItemUpdate, "_id">,action:string) => {
+    updateMutate({ ...payload, action: action });
   };
-  // const clearCart = () => {
-  //   deleteMutateSingleItem();
-  // };
+
   const removeSingleItem = (id: string) => {
     deleteMutateSingleItem(id);
+  };
+  const clearCart = () => {
+    deleteMutate(undefined);
   };
   // ✅ expose variables so each card can check if IT is loading
   return {
@@ -117,9 +134,10 @@ export const useCartState = () => {
     createVariables, // { productId, price.weight, ... } of in-flight create
     updateVariables, // { productId, price.weight, ... } of in-flight update
     addToCart,
-    removeFromCart,
+    updateCartItemQuantity,
     removeSingleItem,
+    clearCart,
     contextHolder,
     cartProducts,
   };
-};
+};;
