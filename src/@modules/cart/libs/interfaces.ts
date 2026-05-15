@@ -35,13 +35,13 @@ export interface ICartItemCreate {
 }
 export interface ICartItemUpdate {
   productId: string;
-  name: string;
+  name?: string;
   action: string;
   description?: string;
   price: IPrice;
-  category: string;
+  category?: string;
   quantity: number;
-  img: string;
+  img?: string;
 }
 export type ICartItemResponse = {
   success: boolean;

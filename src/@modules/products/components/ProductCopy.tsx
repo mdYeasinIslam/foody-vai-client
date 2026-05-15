@@ -1,5 +1,4 @@
 "use client";
-import BaseLoader from "@/src/@base/components/BaseLoader";
 import { useCartState } from "@/src/@libs/hooks/useCartState";
 import cn from "@/src/@libs/utils/_cn";
 import { Badge } from "antd";
@@ -17,67 +16,13 @@ interface IProps {
     value: ICartItemCreate[] | ((val: ICartItemCreate[]) => ICartItemCreate[]),
   ) => void;
 }
-const ProductCopy: React.FC<IProps> = ({
-  className,
-  product,
-}) => {
+const ProductCopy: React.FC<IProps> = ({ className, product }) => {
   const [selectedWeight, setSelectedWeight] = useState<number>(
     product.prices?.[0]?.weight ?? 0,
   );
   const { cart, addToCart, removeFromCart, isLoading, contextHolder } =
     useCartState();
 
-//   const { mutate: createMutate, isPending: isPendingInCreateTime } =
-//     useCreateCartProduct({
-//       config: {
-//         onSuccess: async (data) => {
-//           if (!data?.alreadyExist && data?.success) {
-//             setCart((prev) => [...prev, data?.data]);
-//             messageApi.success("Product added to the cart successfully");
-//             return;
-//           } else if (data?.alreadyExist && data?.success) {
-//             setCart((prev) =>
-//               prev.map((item) =>
-//                 item.productId === product._id &&
-//                 item.price?.weight === selectedWeight
-//                   ? { ...item, quantity: item.quantity + 1 }
-//                   : item,
-//               ),
-//             );
-//             messageApi.success(data?.message || "Product quantity updated");
-//           } else {
-//             messageApi.error(
-//               data?.message || "Failed to add product to the cart",
-//             );
-//           }
-//         },
-//       },
-//     });
-//   const { mutate: updateMutate, isPending: isPendingInUpdateTime } =
-//     useUpdateCartProduct({
-//       config: {
-//         onSuccess: (data) => {
-//           if (data?.success && !data?.deleted) {
-//             setCart((prev) =>
-//               prev.map((item) =>
-//                 item.productId === product._id &&
-//                 item.price?.weight === selectedWeight
-//                   ? { ...item, quantity: data.data.quantity }
-//                   : item,
-//               ),
-//             );
-//             messageApi.success(data?.message || "Quantity updated");
-//           } else if (data?.deleted) {
-//             setCart((prev) =>
-//               prev.filter((item) => item?._id !== data.cartItemId),
-//             );
-//             messageApi.success(data?.message || "Product removed from cart");
-//           } else {
-//             messageApi.error(data?.message || "Failed to update quantity");
-//           }
-//         },
-//       },
-//     });
   const selectedPriceObj = useMemo(
     () =>
       product.prices?.find((p) => p.weight === selectedWeight) ??
@@ -91,13 +36,10 @@ const ProductCopy: React.FC<IProps> = ({
   const originalPriceByWeight = product?.prices?.filter(
     (price) => price.weight === selectedWeight,
   );
-  //   const badgeCount = useMemo(() => {
-  //     const productInCart = cart.find((item) => item?.productId === product._id);
-  //     return productInCart ? productInCart.quantity : 0;
-  //   }, [cart, product._id]);
   const badgeCount = useMemo(() => {
     const item = cart.find(
-      (i) => i.productId === product._id && i.price?.weight === selectedWeight,
+      (i) =>
+        i?.productId === product?._id && i.price?.weight === selectedWeight,
     );
     return item?.quantity ?? 0;
   }, [cart, product._id, selectedWeight]);
@@ -118,28 +60,24 @@ const ProductCopy: React.FC<IProps> = ({
       console.error(err);
     }
   };
-  const handleRemoveFn = async () => {
+  console.log(cart);
+  const handleQuantityUpdateFn = async () => {
     try {
       const payload = {
         productId: product._id,
         action: "decrement",
-        name: product.name,
-        description: product.description,
-        img: product.img,
         price: selectedPriceObj,
         quantity: 1,
-        category: product.category,
-        subCategory: product.subcategory,
       };
-      console.log(payload);
       removeFromCart(payload);
+      console.log(cart);
     } catch (err) {
       console.error(err);
     }
   };
-//   if (isLoading) {
-//     return <BaseLoader className="absolute top-10" />;
-//   }
+  //   if (isLoading) {
+  //     return <BaseLoader className="absolute top-10" />;
+  //   }
   return (
     <div
       key={product._id}
@@ -192,12 +130,12 @@ const ProductCopy: React.FC<IProps> = ({
             //   localStorage.setItem("cart", JSON.stringify(updatedCart));
             //   setCart(updatedCart);
             // }}
-            onClick={handleRemoveFn}
+            onClick={handleQuantityUpdateFn}
             className="absolute bottom-2 left-2"
           >
             <FaCircleMinus
-                          className={cn("w-7 h-7 text-red-600 cursor-pointer", {
-                  'text-red-300': isLoading,
+              className={cn("w-7 h-7 text-red-600 cursor-pointer", {
+                "text-red-300": isLoading,
               })}
             />
           </button>

@@ -6,7 +6,6 @@ import ProductCopy from "./ProductCopy";
 const AllProducts = () => {
   const { data, isLoading, error } = useProducts({});
   const productData = data?.data;
-  console.log(productData)
   // const { mutate: createMutate, isPending: isPendingInCreateTime } =
   //   useCreateCartProduct({
   //     config: {
@@ -59,7 +58,7 @@ const AllProducts = () => {
   //     },
   //   });
   if (isLoading) {
-    return <BaseLoader className='relative top-10 left-1/2'/>
+    return <BaseLoader className='flex justify-center my-10'/>
   }
 
   if (error) {
@@ -87,7 +86,9 @@ const AllProducts = () => {
     <section className="">
       <div className="container">
         <h2 className="text-2xl font-bold mt-8">All Products</h2>
+
         <div className="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+          
           {productData?.map((product) => (
             <ProductCopy
               key={product._id}

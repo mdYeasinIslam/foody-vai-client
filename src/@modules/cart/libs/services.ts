@@ -57,6 +57,7 @@ export const CartService = {
         `${END_POINT}/${payload.productId}/quantity`,
         payload,
       );
+      console.log(res.data)
       return Promise.resolve(res?.data);
     } catch (error) {
       throw error;

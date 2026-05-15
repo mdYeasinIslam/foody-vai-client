@@ -1,7 +1,7 @@
 // src/features/cart/libs/useCartState.ts
 import useGlobalState from "@/src/@libs/hooks/useGlobalState";
 import { message } from "antd";
-import { ICartItemCreate, ICartItemResponse } from "@/src/@modules/cart/libs/interfaces";
+import { ICartItemCreate, ICartItemResponse, ICartItemUpdate } from "@/src/@modules/cart/libs/interfaces";
 import { useCreateCartProduct, useUpdateCartProduct } from "@/src/@modules/cart/libs/hooks";
 
 export const useCartState = () => {
@@ -65,7 +65,7 @@ export const useCartState = () => {
     createMutate(payload);
   };
 
-  const removeFromCart = (payload: Omit<ICartItemCreate, "_id">) => {
+  const removeFromCart = (payload: Omit<ICartItemUpdate, "_id">) => {
     updateMutate({ ...payload, action: "decrement" });
   };
 
