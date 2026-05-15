@@ -52,4 +52,12 @@ export type ICartItemResponse = {
   error?: any;
   deleted?: boolean;
 };
-export type ICartsItemResponse = ICartItem[];
+export type ICartsItemResponse = {
+  success: boolean;
+  alreadyExist?: boolean;
+  message: string;
+  data: ICartItem[];
+  cartItemId?: string;
+  error?: any;
+  deleted?: boolean;
+};;

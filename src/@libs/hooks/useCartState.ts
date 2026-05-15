@@ -1,17 +1,23 @@
-// src/features/cart/libs/useCartState.ts
-import useGlobalState from "@/src/@libs/hooks/useGlobalState";
-import { message } from "antd";
+import { useCartProducts, useCreateCartProduct, useUpdateCartProduct } from "@/src/@modules/cart/libs/hooks";
 import { ICartItemCreate, ICartItemResponse, ICartItemUpdate } from "@/src/@modules/cart/libs/interfaces";
-import { useCreateCartProduct, useUpdateCartProduct } from "@/src/@modules/cart/libs/hooks";
+import { message } from "antd";
+import useGlobalState from "./useGlobalState";
 
+// useCartState.ts
 export const useCartState = () => {
   const [cart, setCart] = useGlobalState<ICartItemCreate[]>({
     key: "cart",
     initialValue: [],
   });
   const [messageApi, contextHolder] = message.useMessage();
+  const { data } = useCartProducts({});
+  const cartProducts = data?.data;
 
-  const { mutate: createMutate, isPending: isCreating } = useCreateCartProduct({
+  const {
+    mutate: createMutate,
+    isPending: isCreating,
+    variables: createVariables,
+  } = useCreateCartProduct({
     config: {
       onSuccess: async (data) => {
         if (!data?.alreadyExist && data?.success) {
@@ -36,9 +42,13 @@ export const useCartState = () => {
     },
   });
 
-  const { mutate: updateMutate, isPending: isUpdating } = useUpdateCartProduct({
+  const {
+    mutate: updateMutate,
+    isPending: isUpdating,
+    variables: updateVariables,
+  } = useUpdateCartProduct({
     config: {
-      onSuccess: (data:ICartItemResponse) => {
+      onSuccess: (data: ICartItemResponse) => {
         if (data?.success && !data?.deleted) {
           setCart((prev) =>
             prev.map((item) =>
@@ -69,11 +79,16 @@ export const useCartState = () => {
     updateMutate({ ...payload, action: "decrement" });
   };
 
+  // ✅ expose variables so each card can check if IT is loading
   return {
     cart,
-    isLoading: isCreating || isUpdating,
+    isCreating,
+    isUpdating,
+    createVariables, // { productId, price.weight, ... } of in-flight create
+    updateVariables, // { productId, price.weight, ... } of in-flight update
     addToCart,
     removeFromCart,
-    contextHolder, 
+    contextHolder,
+    cartProducts,
   };
 };

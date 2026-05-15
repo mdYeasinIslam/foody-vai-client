@@ -3,7 +3,7 @@ import { useCartState } from "@/src/@libs/hooks/useCartState";
 import cn from "@/src/@libs/utils/_cn";
 import { Badge } from "antd";
 import Image from "next/image";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { FaCircleMinus, FaCirclePlus } from "react-icons/fa6";
 import { ClassNameValue } from "tailwind-merge";
 import { ICartItemCreate } from "../../cart/libs/interfaces";
@@ -20,15 +20,28 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
   const [selectedWeight, setSelectedWeight] = useState<number>(
     product.prices?.[0]?.weight ?? 0,
   );
-  const { cart, addToCart, removeFromCart, isLoading, contextHolder } =
-    useCartState();
+  const {
+    cart,
+    addToCart,
+    removeFromCart,
+    isCreating,
+    isUpdating,
+    createVariables,
+    updateVariables,
+    contextHolder,
+  } = useCartState();
 
-  const selectedPriceObj = useMemo(
-    () =>
-      product.prices?.find((p) => p.weight === selectedWeight) ??
-      product.prices?.[0],
-    [product.prices, selectedWeight],
-  );
+  // ✅ Only THIS card is loading — not all cards
+  const isCardLoading =
+    (isCreating &&
+      createVariables?.productId === product._id &&
+      createVariables?.price?.weight === selectedWeight) ||
+    (isUpdating &&
+      updateVariables?.productId === product._id &&
+      updateVariables?.price?.weight === selectedWeight);
+  const selectedPriceObj =
+    product.prices?.find((p) => p.weight === selectedWeight) ??
+    product.prices?.[0];
   // ---------------------------------------------------------------------
   const priceByWeight = product?.prices?.filter(
     (price) => price.weight === selectedWeight,
@@ -36,13 +49,10 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
   const originalPriceByWeight = product?.prices?.filter(
     (price) => price.weight === selectedWeight,
   );
-  const badgeCount = useMemo(() => {
-    const item = cart.find(
-      (i) =>
-        i?.productId === product?._id && i.price?.weight === selectedWeight,
-    );
-    return item?.quantity ?? 0;
-  }, [cart, product._id, selectedWeight]);
+  const item = cart?.find(
+    (i) => i?.productId === product?._id && i.price?.weight === selectedWeight,
+  );
+  const badgeCount = item?.quantity ?? 0;
   const handleAddToCartFn = async () => {
     try {
       const payload = {
@@ -60,7 +70,6 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
       console.error(err);
     }
   };
-  console.log(cart);
   const handleQuantityUpdateFn = async () => {
     try {
       const payload = {
@@ -101,11 +110,11 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
           offset={[-2, 2]}
           className=" absolute! bottom-2! right-2!"
         >
-          <button onClick={handleAddToCartFn} disabled={isLoading}>
+          <button onClick={handleAddToCartFn} disabled={isCardLoading}>
             <FaCirclePlus
               className={cn("w-7 h-7 cursor-pointer", {
-                "text-green-300": isLoading,
-                "text-green-600 ": !isLoading,
+                "text-green-300": isCardLoading,
+                "text-green-600 ": !isCardLoading,
               })}
             />
           </button>
@@ -135,7 +144,7 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
           >
             <FaCircleMinus
               className={cn("w-7 h-7 text-red-600 cursor-pointer", {
-                "text-red-300": isLoading,
+                "text-red-300": isCardLoading,
               })}
             />
           </button>
