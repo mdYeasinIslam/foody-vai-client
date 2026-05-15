@@ -1,5 +1,5 @@
 "use client";
-import { useCartState } from "@/src/@libs/hooks/useCartState";
+import { useCartState } from "@/src/@modules/cart/libs/hooks/useCartState";
 import cn from "@/src/@libs/utils/_cn";
 import { Badge } from "antd";
 import Image from "next/image";
@@ -31,7 +31,7 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
     contextHolder,
   } = useCartState();
 
-  // ✅ Only THIS card is loading — not all cards
+  // Only clicked card is loading — not all cards
   const isCardLoading =
     (isCreating &&
       createVariables?.productId === product._id &&
@@ -78,7 +78,7 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
         price: selectedPriceObj,
         quantity: 1,
       };
-      updateCartItemQuantity(payload,'decrement');
+      updateCartItemQuantity(payload, "decrement");
       console.log(cart);
     } catch (err) {
       console.error(err);
@@ -121,24 +121,6 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
         </Badge>
         {badgeCount > 0 && (
           <button
-            // onClick={() => {
-            //   // handle remove from cart logic
-            //   const existingCart = LocalStorage.get<IProductCreate[]>(
-            //     "cart",
-            //     [],
-            //   );
-            //   // const selectedWeight =
-            //   //   selectedWeight ?? product.prices?.[0]?.weight;
-            //   const updatedCart = existingCart
-            //     .map((item) =>
-            //       item._id === product._id && item?.price?.weight === selectedWeight
-            //         ? { ...item, quantity: item.quantity - 1 }
-            //         : item,
-            //     )
-            //     .filter((item) => item.quantity > 0);
-            //   localStorage.setItem("cart", JSON.stringify(updatedCart));
-            //   setCart(updatedCart);
-            // }}
             onClick={handleQuantityUpdateFn}
             className="absolute bottom-2 left-2"
           >

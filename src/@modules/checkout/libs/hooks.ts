@@ -1,11 +1,8 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { IDistrictsFilter } from "./interfaces";
-import { CheckoutServices } from "./services";
 import { MutationConfig } from "@/src/@libs/config/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { CheckoutServices } from "./services";
 
-interface IDistrictProps {
-  options?: IDistrictsFilter[];
-}
+
 export const useDistricts = () => {
   return useQuery({
     queryKey: ["districts"],
@@ -18,7 +15,7 @@ export const useAreas = (id: number) => {
     queryFn: () => CheckoutServices.findAreas(id),
   });
 };
-
+// -------------hooks for address related services--------------------
 type ICreateCustomerAddressProps = {
   config?: MutationConfig<typeof CheckoutServices.createCustomerAddress>;
 };

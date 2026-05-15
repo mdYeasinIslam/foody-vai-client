@@ -1,4 +1,4 @@
-import { useCartState } from "@/src/@libs/hooks/useCartState";
+import { useCartState } from "@/src/@modules/cart/libs/hooks/useCartState";
 import useGlobalState from "@/src/@libs/hooks/useGlobalState";
 import cn from "@/src/@libs/utils/_cn";
 import { calculateTotal } from "@/src/@libs/utils/helperFunction";
@@ -139,7 +139,7 @@ const CartContent: React.FC<IProps> = ({
                 </button>
                 <div className="flex items-center gap-2 border border-(--primary-color-800) rounded">
                   <button
-                    onClick={() => handleQuantityChange(item?._id, 'decrement')}
+                    onClick={() => handleQuantityChange(item?._id, "decrement")}
                     className="p-1 hover:bg-(--primary-color-600) transition cursor-pointer"
                   >
                     <FiMinus size={16} />
@@ -148,7 +148,7 @@ const CartContent: React.FC<IProps> = ({
                     {item.quantity}
                   </span>
                   <button
-                    onClick={() => handleQuantityChange(item?._id, 'increment')}
+                    onClick={() => handleQuantityChange(item?._id, "increment")}
                     className="p-1 hover:bg-(--primary-color-600) transition cursor-pointer"
                   >
                     <FiPlus size={16} />

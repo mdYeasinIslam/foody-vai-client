@@ -33,7 +33,9 @@ export const CheckoutServices = {
       throw error;
     }
   },
-  //Customer Address
+
+
+  //--------------actual service of Customer Address------------
   findAddress: async (): Promise<ICustomerAddressesResponse> => {
     try {
       const res = await AxiosInstance.get(END_POINT);
@@ -53,6 +55,28 @@ export const CheckoutServices = {
       throw error;
     }
   },
-
-  
+  updateAddressInfo: async (id: string, payload: ICustomerAddress) => {
+  try {
+    const res = await AxiosInstance.put(`${END_POINT}/${id}`, payload);
+    return Promise.resolve(res.data);
+  } catch (error) {
+    throw error
+  }
+},
+  deleteCustomerAddress: async (id: string) => {
+    try {
+      const res = await AxiosInstance.delete(`${END_POINT}/${id}`);
+      return Promise.resolve(res.data);
+    } catch (error) {
+      throw error
+    }
+  },
+  deleteAllCustomerAddress: async () => {
+try {
+  const res = await AxiosInstance.delete(END_POINT);
+  return Promise.resolve(res.data);
+} catch (error) {
+  throw error
+}
+  }
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCartState } from "@/src/@libs/hooks/useCartState";
+import { useCartState } from "@/src/@modules/cart/libs/hooks/useCartState";
 import cn from "@/src/@libs/utils/_cn";
 import CartContent from "@/src/@modules/cart/components/CartContent";
 import CartDrawer from "@/src/@modules/cart/components/CartDrawer";

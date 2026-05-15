@@ -12,7 +12,7 @@ import {
   ICartItemUpdate,
 } from "@/src/@modules/cart/libs/interfaces";
 import { message } from "antd";
-import useGlobalState from "./useGlobalState";
+import useGlobalState from "../../../../@libs/hooks/useGlobalState";
 
 // useCartState.ts
 export const useCartState = () => {
@@ -116,7 +116,10 @@ export const useCartState = () => {
     createMutate(payload);
   };
 
-  const updateCartItemQuantity = (payload: Omit<ICartItemUpdate, "_id">,action:string) => {
+  const updateCartItemQuantity = (
+    payload: Omit<ICartItemUpdate, "_id">,
+    action: string,
+  ) => {
     updateMutate({ ...payload, action: action });
   };
 
@@ -140,4 +143,4 @@ export const useCartState = () => {
     contextHolder,
     cartProducts,
   };
-};;
+};
