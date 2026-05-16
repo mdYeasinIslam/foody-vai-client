@@ -3,7 +3,7 @@ import { AxiosInstance } from "@/src/@libs/config/AxiosInstance";
 import axios from "axios";
 import { IProductFilter, IProductResponse, IProductsResponse } from "./interfaces";
 
-const END_POINT: string = "/products";
+const END_POINT: string = "products";
 
 export const ProductsService = {
   Name: END_POINT,

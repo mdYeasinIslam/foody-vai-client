@@ -6,7 +6,7 @@ import {
   ICartsItemResponse
 } from "./interfaces";
 
-const END_POINT: string = "/cart";
+const END_POINT: string = "cart";
 
 export const CartService = {
   Name: END_POINT,

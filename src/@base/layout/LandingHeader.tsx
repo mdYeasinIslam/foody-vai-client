@@ -1,16 +1,17 @@
 "use client";
 
-import { useCartState } from "@/src/@modules/cart/libs/hooks/useCartState";
 import cn from "@/src/@libs/utils/_cn";
+import { useAuthState } from "@/src/@modules/auth/libs/hooks/useAuthState";
 import CartContent from "@/src/@modules/cart/components/CartContent";
 import CartDrawer from "@/src/@modules/cart/components/CartDrawer";
+import { useCartState } from "@/src/@modules/cart/libs/hooks/useCartState";
 import MenuItems from "@/src/@modules/home/components/MenuItems";
 import {
   DownOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
 } from "@ant-design/icons";
-import { Badge, Dropdown, Input, MenuProps } from "antd";
+import { Badge, Dropdown, Input, MenuProps, message } from "antd";
 import Link from "next/link";
 import React, { useState } from "react";
 import { IoMenu } from "react-icons/io5";
@@ -31,18 +32,28 @@ const accountItems: MenuProps["items"] = [
 
 const LandingHeader: React.FC<IProps> = () => {
   const [searchValue, setSearchValue] = useState("");
+  const [messageApi, messageHolder] = message.useMessage();
   const [openMenu, setOpenMenu] = useState(false);
   const [open, setOpen] = useState(false);
   const { cart, contextHolder, clearCart } = useCartState();
+  const { user, clearAuthUser } = useAuthState();
   const handleAfterNavigateFn = () => {
     setOpenMenu(false);
   };
   const handleOnCloseAfterCheckoutFn = () => {
     setOpen(false);
   };
+  const handleLogout = ({ key }: { key: string }) => {
+    console.log(key);
+    if (key === "logout") {
+      clearAuthUser();
+      messageApi.success("Log out successfully");
+    }
+  };
   return (
     <nav className="relative w-full bg-green-700 shadow-md">
       {contextHolder}
+      {messageHolder}
       <div className="container flex items-center justify-between gap-2  h-16 md:h-20  ">
         {/* Logo */}
         <div className="flex items-center gap-1 shrink-0 cursor-pointer">
@@ -125,21 +136,35 @@ const LandingHeader: React.FC<IProps> = () => {
         {/* Actions */}
         <div className="flex items-center gap-1 md:gap-2 shrink-0">
           <div className="hidden md:block w-px h-7 bg-white/20 mx-1" />
-
-          <Dropdown menu={{ items: accountItems }} trigger={["click"]}>
-            <button
-              type="button"
-              className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-1 py-1 mg:px-3 md:py-1.5 text-white hover:bg-white/20 transition-colors"
+          {user && user.email ? (
+            <Dropdown
+              menu={{
+                items: accountItems,
+                onClick: handleLogout,
+              }}
+              trigger={["click"]}
             >
-              <div className="w-5 h-5 md:w-7 md:h-7 rounded-full bg-yellow-300 flex items-center justify-center text-green-800 font-bold text-sm select-none">
-                Y
-              </div>
-              <span className="hidden md:block text-sm font-semibold">
-                Account
-              </span>
-              <DownOutlined style={{ fontSize: 10 }} />
-            </button>
-          </Dropdown>
+              <button
+                type="button"
+                className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-1 py-1 mg:px-3 md:py-1.5 text-white hover:bg-white/20 transition-colors"
+              >
+                <div className="w-5 h-5 md:w-7 md:h-7 rounded-full bg-yellow-300 flex items-center justify-center text-green-800 font-bold text-sm select-none">
+                  Y
+                </div>
+                <span className="hidden md:block text-sm font-semibold">
+                  Account
+                </span>
+                <DownOutlined style={{ fontSize: 10 }} />
+              </button>
+            </Dropdown>
+          ) : (
+            <Link
+              href="/signIn"
+              className="px-2 md:px-6 md:py-1 rounded-md border border-(--primary-color-800) relative before:absolute overflow-hidden before:translate-x-50 hover:before:translate-x-0 before:-translate-y-12 dark:text-slate-200 dark:border-white dark:z-0 dark:before:bg-(--primary-color-900) hover:before:translate-y-0 before:z-[-1] before:transition before:duration-300 hover:text-secondary  before:w-full before:h-full before:bg-primary before:top-0 before:left-0"
+            >
+              Sign In
+            </Link>
+          )}
 
           <Badge count={cart?.length} size="small" offset={[-2, 2]}>
             <span

@@ -1,24 +1,25 @@
-export interface ISignIn {
+
+export interface IAuthUser {
+  _id?: string;
+  userName: string;
+  email: string;
+  password?: string;
+  role?: "user" | "admin";
+  createdAt?: string;
+  updateAt?: string;
+}
+export interface IAuthSignIn{
   email: string;
   password: string;
 }
-
-export interface ISignUp extends ISignIn {
-    userName: string;
-    role?:string
+export interface IAuthState {
+  user: IAuthUser | null;
+  token: string | null;
 }
-
 export interface IAuthResponse {
   status: number;
   success: boolean;
-  user: {
-    userName: string;
-    email: string;
-    password: string;
-    role?: string;
-    createdAt: string;
-    updateAt: string;
-  };
-  token: string;
+  user: IAuthUser;
+  token: string ;
   message: string;
 }

@@ -8,7 +8,7 @@ import {
 } from "./interfaces";
 
 // const BD_API_END_POINT = "https://bdapis.vercel.app/geo/v2.0/districts";
-const END_POINT = "/customer-address";
+const END_POINT = "customer-address";
 const BD_API_FOR_DISTRICT_AND_AREAS = ENV.bdApi;
 export const CheckoutServices = {
   Name: END_POINT,

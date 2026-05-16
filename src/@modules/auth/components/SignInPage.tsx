@@ -5,6 +5,8 @@ import { Button, Form, FormProps, Input, message } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
+import { useSignIn } from "../libs/hooks";
+import { useAuthState } from "../libs/hooks/useAuthState";
 
 type FieldType = {
   email: string;
@@ -12,29 +14,34 @@ type FieldType = {
   remember?: string;
 };
 const SignInPage = () => {
-  const [messageApi, messageHolder] = message.useMessage();
+    const [messageApi, messageHolder] = message.useMessage();
+  const { setAuthUser } = useAuthState();
+
   const route = useRouter();
-  // const signInFn = useSignIn({
-  //   config: {
-  //     onSuccess(data) {
-  //       if (!data) return;
-  //       console.log(data.user)
-  //       storage.setData("token", data?.token);
-  //       messageApi.loading('Welcome to Bazaryo', 1).then(() => {
-  //         if (data?.user?.role === 'admin') {
-  //          return route.push('/admin')
-  //         }
-  //         route.push('/')
-  //       })
-  //     },
-  //     onError(error) {
-  //        messageApi.error(`${error.message}`, 1)
-  //     },
-  //   },
-  // });
+  const { mutate: signInMutate } = useSignIn({
+    config: {
+          onSuccess(data) {
+            console.log(data)
+        if (!data?.success) return;
+        console.log(data.user);
+            // storage.setData("token", data?.token);
+        setAuthUser(data?.user,data.token);
+        messageApi.loading("Welcome to FoodyVai", 1).then(() => {
+          if (data?.user?.role === "admin") {
+            return route.push("/admin");
+          }
+          route.push("/");
+        });
+      },
+          onError(error) {
+          console.log(error)
+        messageApi.error(`${error.message}`, 1);
+      },
+    },
+  });
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     const { email, password } = values;
-    // signInFn.mutate({ email, password });
+    signInMutate({ email, password });
   };
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (error) => {
     console.log(error);

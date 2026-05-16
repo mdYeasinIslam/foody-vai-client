@@ -1,11 +1,11 @@
 import axios from "axios";
-import { ISignIn, IAuthResponse, ISignUp } from "./interface";
+import { IAuthResponse, IAuthSignIn, IAuthUser,  } from "./interface";
 import { AxiosInstance } from "@/src/@libs/config/AxiosInstance";
 
 const END_POINT = "auth";
 export const AuthServices = {
   NAME: END_POINT,
-  signIn: async (payload: ISignIn): Promise<IAuthResponse> => {
+  signIn: async (payload: IAuthSignIn): Promise<IAuthResponse> => {
     try {
       // const response = await axios.post(
       //   `${paths?.apiRoute}/${END_POINT}/signIn`,
@@ -28,7 +28,7 @@ export const AuthServices = {
       throw error;
     }
   },
-  signUp: async (payload: ISignUp) => {
+  signUp: async (payload: IAuthUser) => {
     try {
       // const res = await axios.post(
       //   `${paths?.apiRoute}/${END_POINT}/create-user`,

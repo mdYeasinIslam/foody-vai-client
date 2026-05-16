@@ -3,17 +3,33 @@ import { Button, Form, FormProps, Input, message } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
+import { useSignUp } from "../libs/hooks";
 
 type FieldType = {
   userName: string;
   email: string;
   password: string;
+  confirmPassword: string;
   remember?: string;
 };
 const SignUpPage = () => {
   const router = useRouter();
   const [messageApi, messageHolder] = message.useMessage();
-
+  const { mutate: singUpMutate } = useSignUp({
+    config: {
+      onSuccess: (data) => {
+        console.log(data);
+        if (!data) return;
+        messageApi
+          .loading("User created successfully")
+          .then(() => router.push("/signIn"));
+      },
+      onError: (error) => {
+        console.log(error);
+        messageApi.error(`${error.message}`, 1);
+      },
+    },
+  });
   // const signUpFn = useSignUp({
   //   config: {
   //     onSuccess(data) {
@@ -30,12 +46,10 @@ const SignUpPage = () => {
   //   },
   // });
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
-    const { userName, email, password } = values;
-    if (email.toLowerCase().includes('admin')) {
-      // signUpFn.mutate({ userName, email, password, role: "admin" });
-    } else {
-      // signUpFn.mutate({ userName, email, password });
-    }
+    const { userName, email, confirmPassword } = values;
+    console.log(values);
+    const payload = { userName, email, password: confirmPassword };
+    singUpMutate(payload);
   };
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (error) => {
     console.log(error);
@@ -59,11 +73,9 @@ const SignUpPage = () => {
             rootClassName="[&_.ant-form-item-label]:p-0! "
           >
             <Form.Item<FieldType>
-              label="UserName"
+              label="User Name"
               name="userName"
-              rules={[
-                { required: true, message: "Please input your username!" },
-              ]}
+              rules={[{ required: true, message: "Please enter your name!" }]}
               className="m-0! "
             >
               <Input />
@@ -78,7 +90,7 @@ const SignUpPage = () => {
                 },
                 {
                   required: true,
-                  message: "Please input your E-mail!",
+                  message: "Please write your E-mail correctly!",
                 },
               ]}
               className="m-0!"
@@ -92,10 +104,30 @@ const SignUpPage = () => {
               rules={[
                 {
                   required: true,
-                  message: "Please input your password!",
+                  message: "Please enter password!",
                 },
               ]}
-              // hasFeedback
+              className="m-0!"
+            >
+              <Input.Password />
+            </Form.Item>
+            <Form.Item
+              name="confirmPassword"
+              label="Confirm Password"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter confirm password!",
+                },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue("password") === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error("Passwords do not match!"));
+                  },
+                }),
+              ]}
               className="m-0!"
             >
               <Input.Password />
@@ -103,7 +135,7 @@ const SignUpPage = () => {
             <Form.Item>
               <Button
                 type="default"
-                className="bg-(--primary-color-800)! text-white! w-full mt-3 border! border-(--primary-color-800)!"
+                className="bg-(--primary-color-700)! hover:bg-(--primary-color-800)!  text-white! w-full mt-3 border! border-(--primary-color-800)!"
                 htmlType="submit"
                 size="large"
               >
@@ -115,7 +147,7 @@ const SignUpPage = () => {
           <div className="w-full flex flex-col max-w-md">
             <button
               type="button"
-              className="flex items-center justify-center gap-2 bg-white border border-green-900 hover:bg-(--primary-color-700) text-gray-500 font-semibold rounded py-3 hover:text-white transition"
+              className="flex items-center justify-center gap-2 bg-white border border-green-900 hover:bg-(--primary-color-700) text-gray-500 font-semibold rounded py-3 hover:text-black transition"
             >
               <FcGoogle className="text-xl" />
               <span className="text-sm">Sign in with Google</span>
