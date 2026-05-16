@@ -8,7 +8,7 @@ export interface ISignUp extends ISignIn {
     role?:string
 }
 
-export interface ISignInResponse {
+export interface IAuthResponse {
   status: number;
   success: boolean;
   user: {

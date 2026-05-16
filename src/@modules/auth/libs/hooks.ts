@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query"
 import { AuthServices } from "./service"
-import { MutationConfig } from "@/@libs/config/reactQuery"
+import { MutationConfig } from "@/src/@libs/config/react-query";
 
 // ---------------------Sign up hook-----------------------------------
 type ISignUpProps={
