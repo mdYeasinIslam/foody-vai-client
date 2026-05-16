@@ -45,7 +45,7 @@ export const CheckoutServices = {
     }
   },
   
-  createCustomerAddress: async (
+  create: async (
     payload: ICustomerAddress,
   ): Promise<ICustomerAddressResponse> => {
     try {
@@ -55,7 +55,7 @@ export const CheckoutServices = {
       throw error;
     }
   },
-  updateAddressInfo: async (id: string, payload: ICustomerAddress) => {
+  update: async (id: string, payload: ICustomerAddress) => {
   try {
     const res = await AxiosInstance.put(`${END_POINT}/${id}`, payload);
     return Promise.resolve(res.data);
@@ -63,7 +63,7 @@ export const CheckoutServices = {
     throw error
   }
 },
-  deleteCustomerAddress: async (id: string) => {
+  deleteOne: async (id: string) => {
     try {
       const res = await AxiosInstance.delete(`${END_POINT}/${id}`);
       return Promise.resolve(res.data);
@@ -71,7 +71,7 @@ export const CheckoutServices = {
       throw error
     }
   },
-  deleteAllCustomerAddress: async () => {
+  deleteAll: async () => {
 try {
   const res = await AxiosInstance.delete(END_POINT);
   return Promise.resolve(res.data);

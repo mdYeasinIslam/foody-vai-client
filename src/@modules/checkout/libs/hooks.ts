@@ -17,13 +17,14 @@ export const useAreas = (id: number) => {
 };
 // -------------hooks for address related services--------------------
 type ICreateCustomerAddressProps = {
-  config?: MutationConfig<typeof CheckoutServices.createCustomerAddress>;
+  config?: MutationConfig<typeof CheckoutServices.create>;
 };
 export const useCreateCustomerAddress = ({
   config,
 }: ICreateCustomerAddressProps = {}) => {
   return useMutation({
     ...config,
-    mutationFn: CheckoutServices.createCustomerAddress,
+    mutationFn: CheckoutServices.create,
   });
 };
+
