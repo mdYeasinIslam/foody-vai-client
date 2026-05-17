@@ -1,7 +1,7 @@
 "use client";
 import { useCartState } from "@/src/@modules/cart/libs/hooks/useCartState";
 import cn from "@/src/@libs/utils/_cn";
-import { Badge } from "antd";
+import { Badge, message } from "antd";
 import Image from "next/image";
 import React, { useState } from "react";
 import { FaCircleMinus, FaCirclePlus } from "react-icons/fa6";
@@ -20,6 +20,7 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
   const [selectedWeight, setSelectedWeight] = useState<number>(
     product.prices?.[0]?.weight ?? 0,
   );
+  const [messageApi, contextHolder] = message.useMessage()
   const {
     cart,
     addToCart,
@@ -28,8 +29,7 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
     isUpdating,
     createVariables,
     updateVariables,
-    contextHolder,
-  } = useCartState();
+  } = useCartState(messageApi);
 
   // Only clicked card is loading — not all cards
   const isCardLoading =

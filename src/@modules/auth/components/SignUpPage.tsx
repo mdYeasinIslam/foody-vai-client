@@ -18,7 +18,6 @@ const SignUpPage = () => {
   const { mutate: singUpMutate } = useSignUp({
     config: {
       onSuccess: (data) => {
-        console.log(data);
         if (!data) return;
         messageApi
           .loading("User created successfully")
@@ -47,7 +46,6 @@ const SignUpPage = () => {
   // });
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     const { userName, email, confirmPassword } = values;
-    console.log(values);
     const payload = { userName, email, password: confirmPassword };
     singUpMutate(payload);
   };

@@ -14,18 +14,15 @@ type FieldType = {
   remember?: string;
 };
 const SignInPage = () => {
-    const [messageApi, messageHolder] = message.useMessage();
+  const [messageApi, messageHolder] = message.useMessage();
   const { setAuthUser } = useAuthState();
 
   const route = useRouter();
   const { mutate: signInMutate } = useSignIn({
     config: {
-          onSuccess(data) {
-            console.log(data)
+      onSuccess(data) {
         if (!data?.success) return;
-        console.log(data.user);
-            // storage.setData("token", data?.token);
-        setAuthUser(data?.user,data.token);
+        setAuthUser(data?.user, data.token);
         messageApi.loading("Welcome to FoodyVai", 1).then(() => {
           if (data?.user?.role === "admin") {
             return route.push("/admin");
@@ -33,8 +30,8 @@ const SignInPage = () => {
           route.push("/");
         });
       },
-          onError(error) {
-          console.log(error)
+      onError(error) {
+        console.log(error);
         messageApi.error(`${error.message}`, 1);
       },
     },

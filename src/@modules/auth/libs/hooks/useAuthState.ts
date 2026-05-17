@@ -1,10 +1,11 @@
 import useGlobalState from "@/src/@libs/hooks/useGlobalState";
 import { IAuthState, IAuthUser } from "../interface";
+import { MessageInstance } from "antd/es/message/interface";
+import Cookies from "js-cookie";
 
-
-const AUTH_KEY = "auth"; 
-
-export const useAuthState = () => {
+const AUTH_KEY = "auth";
+const TOKEN_COOKIE = "auth_token";
+export const useAuthState = (messageApi?: MessageInstance) => {
   const [auth, setAuth, clearAuth] = useGlobalState<IAuthState>({
     key: AUTH_KEY,
     initialValue: { user: null, token: null },
@@ -14,10 +15,19 @@ export const useAuthState = () => {
 
   const setAuthUser = (user: IAuthUser, token: string) => {
     setAuth({ user, token });
+    //  cookie — for middleware (new)
+    Cookies.set(TOKEN_COOKIE, token, {
+      expires: 1 / 288,
+      sameSite: "strict",
+      // httpOnly: false — js-cookie can't set httpOnly, only server can
+      // but middleware just needs to READ it, so this is fine
+    });
   };
 
   const clearAuthUser = () => {
     clearAuth();
+    Cookies.remove(TOKEN_COOKIE);
+    messageApi?.success("Logged out successfully");
   };
 
   // ── Derived helpers ──────────────────────────────────────────────────────────
@@ -34,5 +44,6 @@ export const useAuthState = () => {
     isUser, // boolean
     setAuthUser, // call on signIn/signUp success
     clearAuthUser, // call on signOut
+    messageApi,
   };
 };

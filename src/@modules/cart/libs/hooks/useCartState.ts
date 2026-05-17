@@ -11,16 +11,15 @@ import {
   ICartItemResponse,
   ICartItemUpdate,
 } from "@/src/@modules/cart/libs/interfaces";
-import { message } from "antd";
+import { MessageInstance } from "antd/es/message/interface";
 import useGlobalState from "../../../../@libs/hooks/useGlobalState";
 
 // useCartState.ts
-export const useCartState = () => {
+export const useCartState = (messageApi?:MessageInstance) => {
   const [cart, setCart] = useGlobalState<ICartItem[]>({
     key: "cart",
     initialValue: [],
   });
-  const [messageApi, contextHolder] = message.useMessage();
   const { data } = useCartProducts({});
   const cartProducts = data?.data;
   //create (add to cart)
@@ -33,7 +32,7 @@ export const useCartState = () => {
       onSuccess: async (data) => {
         if (!data?.alreadyExist && data?.success) {
           setCart((prev) => [...prev, data?.data]);
-          messageApi.success("Product added to the cart successfully");
+          messageApi?.success("Product added to the cart successfully");
         } else if (data?.alreadyExist && data?.success) {
           setCart((prev) =>
             prev.map((item) =>
@@ -43,9 +42,9 @@ export const useCartState = () => {
                 : item,
             ),
           );
-          messageApi.success(data?.message || "Product quantity updated");
+          messageApi?.success(data?.message || "Product quantity updated");
         } else {
-          messageApi.error(
+          messageApi?.error(
             data?.message || "Failed to add product to the cart",
           );
         }
@@ -69,14 +68,14 @@ export const useCartState = () => {
                 : item,
             ),
           );
-          messageApi.success(data?.message || "Quantity updated");
+          messageApi?.success(data?.message || "Quantity updated");
         } else if (data?.deleted) {
           setCart((prev) =>
             prev.filter((item) => item?._id !== data.cartItemId),
           );
-          messageApi.success(data?.message || "Product removed from cart");
+          messageApi?.success(data?.message || "Product removed from cart");
         } else {
-          messageApi.error(data?.message || "Failed to update quantity");
+          messageApi?.error(data?.message || "Failed to update quantity");
         }
       },
     },
@@ -87,13 +86,13 @@ export const useCartState = () => {
       onSuccess: (data) => {
         console.log(data);
         if (!data?.success) {
-          messageApi.error(data?.message || "Failed to clear cart");
+          messageApi?.error(data?.message || "Failed to clear cart");
           return;
         }
         console.log("delete product", data);
         // setCart(cartItems.filter((item) => item._id !== data.cartItemId));
         setCart((prev) => prev.filter((item) => item._id !== data.cartItemId));
-        messageApi.success("Cart item deleted successfully");
+        messageApi?.success("Cart item deleted successfully");
       },
     },
   });
@@ -103,12 +102,12 @@ export const useCartState = () => {
       onSuccess: (data) => {
         console.log(data);
         if (!data?.success) {
-          messageApi.error(data?.message || "Failed to clear cart");
+          messageApi?.error(data?.message || "Failed to clear cart");
           return;
         }
         console.log("delete all");
         setCart([]);
-        messageApi.success("Cart cleared successfully");
+        messageApi?.success("Cart cleared successfully");
       },
     },
   });
@@ -140,7 +139,6 @@ export const useCartState = () => {
     updateCartItemQuantity,
     removeSingleItem,
     clearCart,
-    contextHolder,
     cartProducts,
   };
 };

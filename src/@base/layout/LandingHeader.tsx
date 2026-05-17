@@ -13,6 +13,7 @@ import {
 } from "@ant-design/icons";
 import { Badge, Dropdown, Input, MenuProps, message } from "antd";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { IoMenu } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
@@ -32,11 +33,12 @@ const accountItems: MenuProps["items"] = [
 
 const LandingHeader: React.FC<IProps> = () => {
   const [searchValue, setSearchValue] = useState("");
-  const [messageApi, messageHolder] = message.useMessage();
   const [openMenu, setOpenMenu] = useState(false);
+  const router =useRouter()
+  const [messageApi, contextHolder] = message.useMessage();
   const [open, setOpen] = useState(false);
-  const { cart, contextHolder, clearCart } = useCartState();
-  const { user, clearAuthUser } = useAuthState();
+  const { cart, clearCart } = useCartState(messageApi);
+  const { user, clearAuthUser } = useAuthState(messageApi);
   const handleAfterNavigateFn = () => {
     setOpenMenu(false);
   };
@@ -44,16 +46,15 @@ const LandingHeader: React.FC<IProps> = () => {
     setOpen(false);
   };
   const handleLogout = ({ key }: { key: string }) => {
-    console.log(key);
     if (key === "logout") {
       clearAuthUser();
-      messageApi.success("Log out successfully");
+     router.push('/signIn')
     }
   };
   return (
     <nav className="relative w-full bg-green-700 shadow-md">
       {contextHolder}
-      {messageHolder}
+      {/* {contextHolderAuth} */}
       <div className="container flex items-center justify-between gap-2  h-16 md:h-20  ">
         {/* Logo */}
         <div className="flex items-center gap-1 shrink-0 cursor-pointer">
@@ -125,11 +126,6 @@ const LandingHeader: React.FC<IProps> = () => {
             //     </Dropdown>
             //   }
             className="rounded-full border-white/30 bg-white/15 text-white placeholder-white/60 hover:border-white/50 focus-within:border-white/60 md:py-2!"
-            //   style={{
-            //     backgroundColor: "rgba(255,255,255,0.15)",
-            //     borderColor: "rgba(255,255,255,0.3)",
-            //     color: "#fff",
-            //   }}
           />
         </div>
 

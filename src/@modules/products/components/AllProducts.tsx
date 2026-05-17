@@ -6,57 +6,6 @@ import ProductCopy from "./ProductCopy";
 const AllProducts = () => {
   const { data, isLoading, error } = useProducts({});
   const productData = data?.data;
-  // const { mutate: createMutate, isPending: isPendingInCreateTime } =
-  //   useCreateCartProduct({
-  //     config: {
-  //       onSuccess: async (data) => {
-  //         if (!data?.alreadyExist && data?.success) {
-  //           setCart((prev) => [...prev, data?.data]);
-  //           messageApi.success("Product added to the cart successfully");
-  //           return;
-  //         } else if (data?.alreadyExist && data?.success) {
-  //           setCart((prev) =>
-  //             prev.map((item) =>
-  //               item.productId === product._id &&
-  //               item.price?.weight === selectedWeight
-  //                 ? { ...item, quantity: item.quantity + 1 }
-  //                 : item,
-  //             ),
-  //           );
-  //           messageApi.success(data?.message || "Product quantity updated");
-  //         } else {
-  //           messageApi.error(
-  //             data?.message || "Failed to add product to the cart",
-  //           );
-  //         }
-  //       },
-  //     },
-  //   });
-  // const { mutate: updateMutate, isPending: isPendingInUpdateTime } =
-  //   useUpdateCartProduct({
-  //     config: {
-  //       onSuccess: (data) => {
-  //         if (data?.success && !data?.deleted) {
-  //           setCart((prev) =>
-  //             prev.map((item) =>
-  //               item.productId === product._id &&
-  //               item.price?.weight === selectedWeight
-  //                 ? { ...item, quantity: data.data.quantity }
-  //                 : item,
-  //             ),
-  //           );
-  //           messageApi.success(data?.message || "Quantity updated");
-  //         } else if (data?.deleted) {
-  //           setCart((prev) =>
-  //             prev.filter((item) => item?._id !== data.cartItemId),
-  //           );
-  //           messageApi.success(data?.message || "Product removed from cart");
-  //         } else {
-  //           messageApi.error(data?.message || "Failed to update quantity");
-  //         }
-  //       },
-  //     },
-  //   });
   if (isLoading) {
     return <BaseLoader className='flex justify-center my-10'/>
   }

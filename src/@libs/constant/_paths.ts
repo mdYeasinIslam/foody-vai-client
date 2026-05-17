@@ -14,5 +14,12 @@ export const PathName = {
   auth: {
     signIn:'/singIn',
     signUp:'/signUp'
+  },
+  private: {
+    checkout: '/checkout',
+    profile:'/profile',
+    orders: '/orders',
+    admin: '/admin',
+    dashboard:'/dashboard'
   }
 };
