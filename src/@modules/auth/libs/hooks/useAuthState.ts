@@ -2,6 +2,8 @@ import useGlobalState from "@/src/@libs/hooks/useGlobalState";
 import { IAuthState, IAuthUser } from "../interface";
 import { MessageInstance } from "antd/es/message/interface";
 import Cookies from "js-cookie";
+import { useEffect } from "react";
+import { getAccessToken } from "@/src/@libs/utils/auth.token";
 
 const AUTH_KEY = "auth";
 const TOKEN_COOKIE = "auth_token";
@@ -11,7 +13,16 @@ export const useAuthState = (messageApi?: MessageInstance) => {
     initialValue: { user: null, token: null },
   });
 
-  // ── Setters ──────────────────────────────────────────────────────────────────
+  // auto-sync: if cookie expired but localStorage still has data → clear it ──
+  useEffect(() => {
+    const cookie = getAccessToken()
+    const hasLocalStorageData = !!auth?.token && !!auth?.user;
+
+    if (!cookie && hasLocalStorageData) {
+      clearAuth();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth?.token]);
 
   const setAuthUser = (user: IAuthUser, token: string) => {
     setAuth({ user, token });
