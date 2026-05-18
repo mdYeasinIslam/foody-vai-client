@@ -6,7 +6,6 @@ import {
   useCreateCustomerAddress,
   useDistricts,
 } from "../libs/hooks";
-import toast from "react-hot-toast";
 
 const DeliveryAddressForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,15 +40,15 @@ const DeliveryAddressForm = () => {
     form.resetFields();
   };
   const handleSubmit = (values: any) => {
-    console.log("Form values:", values);
     try {
       createCustomerAddress(values);
-      toast.success("Address added successfully");
       setIsModalOpen(false);
       form.resetFields();
     } catch (error) {
       console.log(error);
-      toast.error(error instanceof Error ? error.message : "An error occurred");
+      messageApi.error(
+        error instanceof Error ? error.message : "An error occurred",
+      );
     }
   };
   return (
