@@ -12,7 +12,7 @@ export const PathName = {
     whatsApp: "01764078605",
   },
   auth: {
-    signIn:'/singIn',
+    signIn:'/signIn',
     signUp:'/signUp'
   },
   private: {

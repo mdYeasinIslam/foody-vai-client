@@ -1,4 +1,4 @@
-import { ICartItem, ICartItemCreate } from "@/src/@modules/cart/libs/interfaces";
+import { ICartItemCreate } from "@/src/@modules/cart/libs/interfaces";
 
 interface ValueType extends ICartItemCreate {
 

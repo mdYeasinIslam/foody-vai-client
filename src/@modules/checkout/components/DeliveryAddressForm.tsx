@@ -1,7 +1,11 @@
 import BaseModal from "@/src/@base/components/BaseModal";
-import { Button, Form, Input, Select } from "antd";
+import { Button, Form, Input, message, Select } from "antd";
 import { useState } from "react";
-import { useAreas, useCreateCustomerAddress, useDistricts } from "../libs/hooks";
+import {
+  useAreas,
+  useCreateCustomerAddress,
+  useDistricts,
+} from "../libs/hooks";
 import toast from "react-hot-toast";
 
 const DeliveryAddressForm = () => {
@@ -12,8 +16,21 @@ const DeliveryAddressForm = () => {
   const { data: areaData } = useAreas(districtId || 1);
   const districtsData = data?.data;
   const areasData = areaData?.data;
+  const [messageApi, contextHolder] = message.useMessage();
 
-  const {mutate:createCustomerAddress} = useCreateCustomerAddress()
+  const { mutate: createCustomerAddress } = useCreateCustomerAddress({
+    config: {
+      onSuccess: (data) => {
+        if (!data) return;
+        messageApi.success("Address added successfully");
+      },
+      onError: (error) => {
+        messageApi.error(
+          error instanceof Error ? error.message : "An error occurred",
+        );
+      },
+    },
+  });
   // console.log(districtsData);
   const handleAddNew = () => {
     setIsModalOpen(true);
@@ -26,19 +43,18 @@ const DeliveryAddressForm = () => {
   const handleSubmit = (values: any) => {
     console.log("Form values:", values);
     try {
-      const res = createCustomerAddress(values)
-      console.log(res)
-      toast.success("Address added successfully")
+      createCustomerAddress(values);
+      toast.success("Address added successfully");
       setIsModalOpen(false);
-       form.resetFields();
+      form.resetFields();
     } catch (error) {
-      console.log(error)
-      toast.error(error instanceof Error ? error.message : "An error occurred")
+      console.log(error);
+      toast.error(error instanceof Error ? error.message : "An error occurred");
     }
-   
   };
   return (
     <>
+      {contextHolder}
       <div className="border border-(--primary-color-500) rounded-lg ">
         <div className="flex justify-between items-center bg-(--primary-color-600) px-4 py-2 ">
           <h3 className="text-base font-semibold ">Delivery address</h3>
@@ -80,12 +96,16 @@ const DeliveryAddressForm = () => {
               rules={[{ required: true, message: "Please select area" }]}
             >
               <Select
-              placeholder="Select area first"
-              options={districtId ? areasData?.map((area) => ({
-                label: area.name,
-                value: area.id,
-              })) : []}
-              disabled={!districtId}
+                placeholder="Select area first"
+                options={
+                  districtId
+                    ? areasData?.map((area) => ({
+                        label: area.name,
+                        value: area.id,
+                      }))
+                    : []
+                }
+                disabled={!districtId}
               />
             </Form.Item>
           </div>
@@ -108,20 +128,20 @@ const DeliveryAddressForm = () => {
             </Form.Item>
           </div>
 
-            <Form.Item
+          <Form.Item
             label="Address Name"
             name="addressName"
             rules={[{ required: true, message: "Please select address name" }]}
-            >
+          >
             <Select
               placeholder="Select address type"
               options={[
-              { label: "Home", value: "home" },
-              { label: "Office", value: "office" },
-              { label: "Other", value: "other" },
+                { label: "Home", value: "home" },
+                { label: "Office", value: "office" },
+                { label: "Other", value: "other" },
               ]}
             />
-            </Form.Item>
+          </Form.Item>
 
           <Form.Item
             label="Address"

@@ -1,6 +1,5 @@
 import axios from "axios";
-import { getAccessToken } from "../utils/auth.token";
-import { unauthorized } from "next/navigation";
+import { getAccessToken, removeAccessToken } from "../utils/auth.token";
 
 export const AxiosInstance = axios.create({
   baseURL: "http://localhost:5000/",
@@ -12,7 +11,7 @@ AxiosInstance.interceptors.request.use(
   (config) => {
     const token = getAccessToken();
     if (token) {
-      config.headers.Authorization = `Barer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
@@ -27,7 +26,10 @@ AxiosInstance.interceptors.response.use(
   },
   (error) => {
     if (error.response.status === 401) {
-      console.log(unauthorized);
+      console.log("unauthorized");
+      removeAccessToken();
+      localStorage.removeItem("auth");
+      window.location.href = "/signIn";
     }
     return Promise.reject(error);
   },

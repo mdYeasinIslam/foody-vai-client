@@ -39,6 +39,7 @@ const LandingHeader: React.FC<IProps> = ({ className }) => {
   const [open, setOpen] = useState(false);
   const { cart, clearCart } = useCartState(messageApi);
   const { user, clearAuthUser } = useAuthState(messageApi);
+  console.log(user);
   const handleAfterNavigateFn = () => {
     setOpenMenu(false);
   };
@@ -51,7 +52,6 @@ const LandingHeader: React.FC<IProps> = ({ className }) => {
       router.push("/signIn");
     }
   };
-  console.log(user);
   return (
     <nav className={cn(className, "relative w-full bg-green-700 shadow-md")}>
       {contextHolder}
