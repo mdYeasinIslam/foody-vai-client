@@ -31,10 +31,10 @@ const accountItems: MenuProps["items"] = [
   { key: "logout", label: "Logout" },
 ];
 
-const LandingHeader: React.FC<IProps> = () => {
+const LandingHeader: React.FC<IProps> = ({ className }) => {
   const [searchValue, setSearchValue] = useState("");
   const [openMenu, setOpenMenu] = useState(false);
-  const router =useRouter()
+  const router = useRouter();
   const [messageApi, contextHolder] = message.useMessage();
   const [open, setOpen] = useState(false);
   const { cart, clearCart } = useCartState(messageApi);
@@ -48,13 +48,13 @@ const LandingHeader: React.FC<IProps> = () => {
   const handleLogout = ({ key }: { key: string }) => {
     if (key === "logout") {
       clearAuthUser();
-     router.push('/signIn')
+      router.push("/signIn");
     }
   };
+  console.log(user);
   return (
-    <nav className="relative w-full bg-green-700 shadow-md">
+    <nav className={cn(className, "relative w-full bg-green-700 shadow-md")}>
       {contextHolder}
-      {/* {contextHolderAuth} */}
       <div className="container flex items-center justify-between gap-2  h-16 md:h-20  ">
         {/* Logo */}
         <div className="flex items-center gap-1 shrink-0 cursor-pointer">
@@ -142,7 +142,7 @@ const LandingHeader: React.FC<IProps> = () => {
             >
               <button
                 type="button"
-                className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-1 py-1 mg:px-3 md:py-1.5 text-white hover:bg-white/20 transition-colors"
+                className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-1 py-1 mg:px-3 md:py-1.5 text-white hover:bg-white/20 transition-colors cursor-pointer"
               >
                 <div className="w-5 h-5 md:w-7 md:h-7 rounded-full bg-yellow-300 flex items-center justify-center text-green-800 font-bold text-sm select-none">
                   Y

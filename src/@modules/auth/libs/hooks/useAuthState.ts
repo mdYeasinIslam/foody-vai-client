@@ -17,7 +17,7 @@ export const useAuthState = (messageApi?: MessageInstance) => {
     setAuth({ user, token });
     //  cookie — for middleware (new)
     Cookies.set(TOKEN_COOKIE, token, {
-      expires: 1 / 288,
+      expires: 7,
       sameSite: "strict",
       // httpOnly: false — js-cookie can't set httpOnly, only server can
       // but middleware just needs to READ it, so this is fine

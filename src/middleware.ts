@@ -1,25 +1,13 @@
-// middleware.ts  ← must be at project root (same level as app/)
 import { NextRequest, NextResponse } from "next/server";
-import { jwtVerify } from "jose"; // ✅ use jose, NOT jsonwebtoken (edge compatible)
+import { jwtVerify } from "jose"; //use jose, NOT jsonwebtoken (edge compatible)
 
-// ── Constants ──────────────────────────────────────────────────────────────────
-
-const JWT_SECRET = new TextEncoder().encode(
-  "8092756075433f6193bd9a6b1ebd9edd5282ccdd50b3f55388ff545e82506f23",
-);
+const JWT_SECRET = new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET);
 
 const COOKIE_NAME = "auth_token";
 
-// ── Route definitions ──────────────────────────────────────────────────────────
-
 const ROUTES = {
-  // accessible by logged-in users only
   protected: ["/checkout", "/profile", "/orders"],
-
-  // accessible by admin only
   admin: ["/admin", "/dashboard"],
-
-  // accessible by guests only (redirect if already logged in)
   guestOnly: ["/signIn", "/signUp"],
 };
 
@@ -45,8 +33,6 @@ const verifyToken = async (token: string): Promise<JWTPayload | null> => {
     return null;
   }
 };
-
-// ── Middleware ─────────────────────────────────────────────────────────────────
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
