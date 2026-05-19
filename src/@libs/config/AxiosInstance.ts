@@ -26,7 +26,6 @@ AxiosInstance.interceptors.response.use(
   },
   (error) => {
     if (error.response.status === 401) {
-      console.log("unauthorized");
       removeAccessToken();
       localStorage.removeItem("auth");
       window.location.href = "/signIn";

@@ -139,7 +139,7 @@ const SignInPage = () => {
             <Form.Item>
               <Button
                 type="default"
-                className="bg-(--primary-color-800)! text-white! w-full mt-3 border! border-(--primary-color-800)!"
+                className="bg-(--primary-color-700)! text-white! w-full mt-3 border! border-(--primary-color-800)!"
                 htmlType="submit"
                 size="large"
               >

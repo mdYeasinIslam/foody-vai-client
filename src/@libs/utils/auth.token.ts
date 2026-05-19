@@ -1,8 +1,8 @@
-import Cookies from "js-cookie";
+import cookiesStorage from "./cookiesStorage";
 
 export const getAccessToken = () => {
-  return Cookies.get("auth_token");
+  return cookiesStorage.get("auth_token");
 };
 export const removeAccessToken = (): void => {
-  Cookies.remove("auth_token");
+  return cookiesStorage.remove("auth_token");
 };

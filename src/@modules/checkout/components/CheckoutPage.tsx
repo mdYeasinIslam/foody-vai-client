@@ -61,7 +61,7 @@ const CheckoutPage: React.FC<IProps> = () => {
                       placeholder="Have a coupon code?"
                       className="flex-1 px-4 py-1 md:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-(--primary-color-800)"
                     />
-                    <button className="bg-(--primary-color-800) hover:bg-(--primary-color-900) text-white max-sm:text-xs px-2 py-1 md:px-6 md:py-2 rounded-lg font-medium cursor-pointer">
+                    <button className="bg-(--primary-color-700) hover:bg-(--primary-color-800) text-white max-sm:text-xs px-2 py-1 md:px-6 md:py-2 rounded-lg font-medium cursor-pointer">
                       Apply
                     </button>
                   </div>

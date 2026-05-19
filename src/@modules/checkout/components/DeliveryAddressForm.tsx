@@ -59,7 +59,7 @@ const DeliveryAddressForm = () => {
           <h3 className="text-base font-semibold ">Delivery address</h3>
           <button
             onClick={handleAddNew}
-            className=" text-sm font-semibold cursor-pointer"
+            className=" text-sm font-semibold cursor-pointer border border-transparent hover:border-(--primary-color-800) rounded-sm px-2"
           >
             + Add new
           </button>
@@ -158,7 +158,7 @@ const DeliveryAddressForm = () => {
               type="primary"
               htmlType="submit"
               block
-              className="bg-(--primary-color-800)! font-semibold! py-5!"
+              className="bg-(--primary-color-700)! hover:bg-(--primary-color-800)!  font-semibold!  sm:py-5! sm:text-base!"
             >
               Add Address
             </Button>
