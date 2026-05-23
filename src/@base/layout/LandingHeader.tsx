@@ -12,9 +12,10 @@ import {
   ShoppingCartOutlined,
 } from "@ant-design/icons";
 import { Badge, Dropdown, Input, MenuProps, message } from "antd";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMenu } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { ClassNameValue } from "tailwind-merge";
@@ -37,9 +38,17 @@ const LandingHeader: React.FC<IProps> = ({ className }) => {
   const router = useRouter();
   const [messageApi, contextHolder] = message.useMessage();
   const [open, setOpen] = useState(false);
-  const { cart, clearCart } = useCartState(messageApi);
+  const { cart, clearCart, syncGuestCartToDB } = useCartState(messageApi);
   const { user, clearAuthUser } = useAuthState(messageApi);
-  console.log(user);
+
+  // Sync guest cart to database whenever a user logs in
+  useEffect(() => {
+    if (user && user.email && cart.length > 0) {
+      syncGuestCartToDB();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?._id]);
+
   const handleAfterNavigateFn = () => {
     setOpenMenu(false);
   };
@@ -86,11 +95,21 @@ const LandingHeader: React.FC<IProps> = ({ className }) => {
             href="/"
             className="flex items-center gap-1 shrink-0 cursor-pointer"
           >
-            <div className="w-8 h-8 md:w-10 md:h-10 bg-white rounded-xl flex items-center justify-center text-xl shadow-sm select-none">
+            <figure className="flex items-center justify-center">
+              <Image
+                src={"/images/auth/logo.png"}
+                alt="Login Illustration"
+                width={40}
+                height={40}
+                className="w-full h-full object-cover rounded-lg shadow-md"
+              />
+            </figure>
+            {/* <div className="w-8 h-8 md:w-10 md:h-10 bg-white rounded-xl flex items-center justify-center text-xl shadow-sm select-none">
               🍛
-            </div>
+
+            </div> */}
             <span className="hidden sm:block font-extrabold text-xl text-white tracking-tight leading-none">
-              Foody<span className="text-yellow-300">Vai</span>
+              Foody<span className="text-(--primary-color-500)">Vai</span>
             </span>
           </Link>
         </div>

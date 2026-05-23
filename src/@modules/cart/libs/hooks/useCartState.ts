@@ -13,18 +13,22 @@ import {
 } from "@/src/@modules/cart/libs/interfaces";
 import { MessageInstance } from "antd/es/message/interface";
 import useGlobalState from "../../../../@libs/hooks/useGlobalState";
+import { useAuthState } from "@/src/@modules/auth/libs/hooks/useAuthState";
 
 // useCartState.ts
-export const useCartState = (messageApi?:MessageInstance) => {
+export const useCartState = (messageApi?: MessageInstance) => {
+  const { user } = useAuthState(messageApi);
   const [cart, setCart] = useGlobalState<ICartItem[]>({
     key: "cart",
     initialValue: [],
   });
   const { data } = useCartProducts({});
   const cartProducts = data?.data;
+
   //create (add to cart)
   const {
     mutate: createMutate,
+    mutateAsync: createMutateAsync,
     isPending: isCreating,
     variables: createVariables,
   } = useCreateCartProduct({
@@ -111,8 +115,49 @@ export const useCartState = (messageApi?:MessageInstance) => {
       },
     },
   });
+
   const addToCart = (payload: Omit<ICartItemCreate, "_id">) => {
-    createMutate(payload);
+    if (user && user.email) {
+      payload.userId = user._id;
+      createMutate(payload);
+      return;
+    }
+    const existingItem = cart.find(
+      (item) =>
+        item.productId === payload.productId &&
+        item.price?.weight === payload.price?.weight,
+    );
+    if (existingItem) {
+      setCart((prev) =>
+        prev.map((item) =>
+          item.productId === payload.productId &&
+          item.price?.weight === payload.price?.weight
+            ? { ...item, quantity: item.quantity + 1 }
+            : item,
+        ),
+      );
+      return;
+    }
+    setCart((prev) => [...prev, { ...payload, quantity: 1 }]);
+  };
+
+  // Sync guest cart items to DB on login
+  const syncGuestCartToDB = async () => {
+    if (cart.length > 0 && user) {
+      console.log(cart)
+      try {
+        for (const item of cart) {
+          console.log(item)
+          const payload = { ...item, userId: user._id };
+          // await createMutateAsync(payload);
+        }
+        // setCart([]);
+        messageApi?.success("Cart synced successfully");
+      } catch (error) {
+        console.log(error);
+        messageApi?.error("Failed to sync cart");
+      }
+    }
   };
 
   const updateCartItemQuantity = (
@@ -140,5 +185,6 @@ export const useCartState = (messageApi?:MessageInstance) => {
     removeSingleItem,
     clearCart,
     cartProducts,
+    syncGuestCartToDB,
   };
 };

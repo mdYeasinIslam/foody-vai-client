@@ -15,7 +15,7 @@ export const useAuthState = (messageApi?: MessageInstance) => {
 
   // auto-sync: if cookie expired but localStorage still has data → clear it ──
   useEffect(() => {
-    const cookie = getAccessToken()
+    const cookie = getAccessToken();
     const hasLocalStorageData = !!auth?.token && !!auth?.user;
 
     if (!cookie && hasLocalStorageData) {
@@ -26,9 +26,8 @@ export const useAuthState = (messageApi?: MessageInstance) => {
 
   const setAuthUser = (user: IAuthUser, token: string) => {
     setAuth({ user, token });
-    //  cookie — for middleware (new)
     Cookies.set(TOKEN_COOKIE, token, {
-      expires: 60 / 86400,
+      expires: 5 / 1440,
       sameSite: "strict",
       // httpOnly: false — js-cookie can't set httpOnly, only server can
       // but middleware just needs to READ it, so this is fine
@@ -41,20 +40,20 @@ export const useAuthState = (messageApi?: MessageInstance) => {
     messageApi?.success("Logged out successfully");
   };
 
-  // ── Derived helpers ──────────────────────────────────────────────────────────
-
-  const isAuthenticated = !!auth?.token && !!auth?.user;
+  // helpers ──────────────────────────────────────────────────────────
+  const cookieExists = !!Cookies.get(TOKEN_COOKIE);
+  const isAuthenticated = !!auth?.token && !!auth?.user && cookieExists;
   const isAdmin = auth?.user?.role === "admin";
   const isUser = auth?.user?.role === "user";
-
+  const info = isAuthenticated ? (auth?.user ?? null) : null;
   return {
-    user: auth?.user ?? null, // IAuthUser | null
-    token: auth?.token ?? null, // string | null
-    isAuthenticated, // boolean — use for protected routes
-    isAdmin, // boolean — use for admin guards
-    isUser, // boolean
-    setAuthUser, // call on signIn/signUp success
-    clearAuthUser, // call on signOut
+    user: info,
+    token: info,
+    isAuthenticated,
+    isAdmin,
+    isUser,
+    setAuthUser,
+    clearAuthUser,
     messageApi,
   };
 };

@@ -1,6 +1,6 @@
 "use client";
-import { useCartState } from "@/src/@modules/cart/libs/hooks/useCartState";
 import cn from "@/src/@libs/utils/_cn";
+import { useCartState } from "@/src/@modules/cart/libs/hooks/useCartState";
 import { Badge, message } from "antd";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -20,7 +20,7 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
   const [selectedWeight, setSelectedWeight] = useState<number>(
     product.prices?.[0]?.weight ?? 0,
   );
-  const [messageApi, contextHolder] = message.useMessage()
+  const [messageApi, contextHolder] = message.useMessage();
   const {
     cart,
     addToCart,
@@ -52,11 +52,13 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
   const item = cart?.find(
     (i) => i?.productId === product?._id && i.price?.weight === selectedWeight,
   );
+
   const badgeCount = item?.quantity ?? 0;
   const handleAddToCartFn = async () => {
     try {
       const payload = {
         productId: product._id,
+        userId: null,
         name: product.name,
         description: product.description,
         img: product.img,
@@ -70,6 +72,47 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
       console.error(err);
     }
   };
+  // const handleAddToCartFn = async () => {
+  //   try {
+  //     const payload: ICartItemCreate & { userId?: string | null } = {
+  //       productId: product._id,
+  //       userId: null,
+  //       name: product.name,
+  //       description: product.description,
+  //       img: product.img,
+  //       price: selectedPriceObj,
+  //       quantity: 1,
+  //       category: product.category,
+  //       subCategory: product.subcategory,
+  //     };
+  //     if (!user) {
+  //       // Save to localStorage if user is not logged in
+  //       const existingCart = JSON.parse(
+  //         localStorage.getItem("cartItem") || "[]",
+  //       );
+  //       const existingItem = existingCart.find(
+  //         (item: ICartItemCreate) =>
+  //           item.productId === product._id &&
+  //           item.price?.weight === selectedWeight,
+  //       );
+
+  //       if (existingItem) {
+  //         existingItem.quantity += 1;
+  //       } else {
+  //         existingCart.push(payload);
+  //       }
+  //       localStorage.setItem("cartItem", JSON.stringify(existingCart));
+  //       messageApi.success("Added to cart");
+  //     } else {
+  //       // Add to cart via API if user is logged in
+  //       payload.userId = user._id;
+  //       addToCart(payload);
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //     messageApi.error("Failed to add to cart");
+  //   }
+  // };
   const handleQuantityUpdateFn = async () => {
     try {
       const payload = {
@@ -84,9 +127,6 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
       console.error(err);
     }
   };
-  //   if (isLoading) {
-  //     return <BaseLoader className="absolute top-10" />;
-  //   }
   return (
     <div
       key={product._id}

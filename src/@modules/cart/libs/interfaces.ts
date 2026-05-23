@@ -13,7 +13,7 @@ export interface ICartItemFilter {
 }
 
 export interface ICartItem {
-  _id: string;
+  _id?: string;
   productId: string;
   name: string;
   description?: string;
@@ -26,11 +26,13 @@ export interface ICartItem {
 export interface ICartItemCreate {
   _id?: string;
   productId: string;
+  userId?: string | null;
   name: string;
   description?: string;
   price: IPrice;
   category: string;
   quantity: number;
+  subCategory?: string;
   img: string;
 }
 export interface ICartItemUpdate {
