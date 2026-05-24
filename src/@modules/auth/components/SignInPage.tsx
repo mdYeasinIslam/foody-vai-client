@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import { useSignIn } from "../libs/hooks";
 import { useAuthState } from "../libs/hooks/useAuthState";
+import { useCartState } from "../../cart/libs/hooks/useCartState";
 
 type FieldType = {
   email: string;
@@ -16,6 +17,7 @@ type FieldType = {
 const SignInPage = () => {
   const [messageApi, messageHolder] = message.useMessage();
   const { setAuthUser } = useAuthState();
+  const { cart, syncGuestCartToDB } = useCartState(messageApi);
 
   const route = useRouter();
   const { mutate: signInMutate } = useSignIn({
@@ -23,6 +25,9 @@ const SignInPage = () => {
       onSuccess(data) {
         if (!data?.success) return;
         setAuthUser(data?.user, data.token);
+        if (data?.user && data?.user?.email && cart.length > 0) {
+          syncGuestCartToDB();
+        }
         messageApi.loading("Welcome to FoodyVai", 1).then(() => {
           if (data?.user?.role === "admin") {
             return route.push("/admin");

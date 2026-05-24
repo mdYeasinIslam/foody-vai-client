@@ -42,12 +42,12 @@ const LandingHeader: React.FC<IProps> = ({ className }) => {
   const { user, clearAuthUser } = useAuthState(messageApi);
 
   // Sync guest cart to database whenever a user logs in
-  useEffect(() => {
-    if (user && user.email && cart.length > 0) {
-      syncGuestCartToDB();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?._id]);
+  // useEffect(() => {
+  //   if (user && user.email && cart.length > 0) {
+  //     syncGuestCartToDB();
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [user?._id]);
 
   const handleAfterNavigateFn = () => {
     setOpenMenu(false);
@@ -173,10 +173,7 @@ const LandingHeader: React.FC<IProps> = ({ className }) => {
               </button>
             </Dropdown>
           ) : (
-            <Link
-              href="/signIn"
-              className="px-2 md:px-6 md:py-1 rounded-md border border-(--primary-color-800) relative before:absolute overflow-hidden before:translate-x-50 hover:before:translate-x-0 before:-translate-y-12 dark:text-slate-200 dark:border-white dark:z-0 dark:before:bg-(--primary-color-900) hover:before:translate-y-0 before:z-[-1] before:transition before:duration-300 hover:text-secondary  before:w-full before:h-full before:bg-primary before:top-0 before:left-0"
-            >
+            <Link href="/signIn" className="btn-primary btn-nav">
               Sign In
             </Link>
           )}

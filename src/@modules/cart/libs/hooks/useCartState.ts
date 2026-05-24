@@ -143,12 +143,12 @@ export const useCartState = (messageApi?: MessageInstance) => {
 
   // Sync guest cart items to DB on login
   const syncGuestCartToDB = async () => {
-    if (cart.length > 0 && user) {
+    if (cart.length > 0 && user?.email) {
       console.log(cart)
       try {
         for (const item of cart) {
-          console.log(item)
           const payload = { ...item, userId: user._id };
+          console.log(payload);
           // await createMutateAsync(payload);
         }
         // setCart([]);

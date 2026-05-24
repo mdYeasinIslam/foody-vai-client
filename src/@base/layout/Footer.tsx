@@ -50,7 +50,7 @@ const COMPANY_LINKS = [
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#E8E8E8] shadow-md w-full relative pb-10">
+    <footer className="bg-[#E8E8E8] shadow-md w-full relative mt-10 lg:mt-16 pb-10">
       <div className="container">
         <div className="flex flex-col md:flex-row justify-between gap-10 pt-7.5 pb-5">
           <div className="w-full flex flex-col gap-5">

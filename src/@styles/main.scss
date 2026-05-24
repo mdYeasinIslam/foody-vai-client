@@ -1,6 +1,6 @@
 @use 'sass:meta';
 @use './marquee.scss';
-
+@use './button.scss';
 // Define responsive breakpoints
 $breakpoints: (
   'sm': 640px,
