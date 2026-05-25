@@ -7,7 +7,7 @@ interface IProps {
 const NewsletterSection: React.FC<IProps> = ({ className }) => {
   return (
     <section
-      className={cn(className, "py-16 px-4")}
+      className={cn(className, " container mx-auto py-16 mt-10")}
       style={{ backgroundColor: "var(--primary-color-600)" }}
     >
       <div className="max-w-2xl mx-auto text-center">
