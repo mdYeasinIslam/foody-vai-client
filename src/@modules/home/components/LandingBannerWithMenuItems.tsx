@@ -1,8 +1,4 @@
-import NavbarMenuItemsOptional from "@/src/@base/components/NavbarMenuItemsOptional";
-import Image from "next/image";
 import React from "react";
-import BannerMarquee from "./BannerMarquee";
-import MenuItems from "./MenuItems";
 import Banner from "./Banner";
 
 interface IProps {

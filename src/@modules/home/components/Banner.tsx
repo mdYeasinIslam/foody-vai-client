@@ -11,10 +11,10 @@ const Banner: React.FC<IProps> = ({ className }) => {
     <div
       className={cn(
         className,
-        "md:container mx-auto relative w-full overflow-hidden rounded-lg",
+        "md:container mx-auto relative w-full overflow-hidden",
       )}
     >
-      <div className="absolute inset-0 lg:left-20 flex flex-col gap-1 md:gap-3 justify-center p-4 sm:p-6 md:p-8 lg:p-12 max-w-xs md:max-w-full z-10">
+      <div className="absolute inset-0  flex flex-col gap-1 md:gap-3 justify-center p-4 sm:p-6 md:p-8 lg:p-12 max-w-xs md:max-w-full z-10">
         <p className="text-xs sm:text-sm text-gray-600">Best Deals</p>
         <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">
           Limited Time  <span className="text-(--primary-color-800) uppercase">Offer</span>
