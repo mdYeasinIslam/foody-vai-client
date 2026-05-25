@@ -1,4 +1,5 @@
 import LandingBannerWithMenuItems from "@/src/@modules/home/components/LandingBannerWithMenuItems";
+import ShopSmarterSection from "@/src/@modules/home/components/ShopSmarterSection";
 import WhyChooseUs from "@/src/@modules/home/components/WhyChooseUs";
 import AllProducts from "@/src/@modules/products/components/AllProducts";
 import React from "react";
@@ -8,7 +9,8 @@ const page = () => {
     <React.Fragment>
       <LandingBannerWithMenuItems />
       <AllProducts />
-      <WhyChooseUs/>
+      <WhyChooseUs className='mt-10'/>
+      <ShopSmarterSection className='mt-10'/>
     </React.Fragment>
   );
 };
