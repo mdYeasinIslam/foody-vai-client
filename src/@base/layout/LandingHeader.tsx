@@ -15,7 +15,7 @@ import { Badge, Dropdown, Input, MenuProps, message } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IoMenu } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { ClassNameValue } from "tailwind-merge";
@@ -38,7 +38,7 @@ const LandingHeader: React.FC<IProps> = ({ className }) => {
   const router = useRouter();
   const [messageApi, contextHolder] = message.useMessage();
   const [open, setOpen] = useState(false);
-  const { cart, clearCart, syncGuestCartToDB } = useCartState(messageApi);
+  const { cart, clearCart } = useCartState(messageApi);
   const { user, clearAuthUser } = useAuthState(messageApi);
 
   // Sync guest cart to database whenever a user logs in

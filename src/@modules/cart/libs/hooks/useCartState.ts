@@ -22,7 +22,7 @@ export const useCartState = (messageApi?: MessageInstance) => {
     key: "cart",
     initialValue: [],
   });
-  const { data } = useCartProducts({});
+  const { data, refetch } = useCartProducts({});
   const cartProducts = data?.data;
 
   //create (add to cart)
@@ -143,20 +143,26 @@ export const useCartState = (messageApi?: MessageInstance) => {
 
   // Sync guest cart items to DB on login
   const syncGuestCartToDB = async () => {
-    if (cart.length > 0 && user?.email) {
-      console.log(cart)
-      try {
-        for (const item of cart) {
-          const payload = { ...item, userId: user._id };
-          console.log(payload);
-          // await createMutateAsync(payload);
-        }
-        // setCart([]);
-        messageApi?.success("Cart synced successfully");
-      } catch (error) {
-        console.log(error);
-        messageApi?.error("Failed to sync cart");
-      }
+    if (!cart.length || !user?._id) {
+      return;
+    }
+    try {
+      await Promise.all(
+        cart.map((item) => {
+          const payload = {
+            ...item,
+            userId: user?._id,
+          };
+
+          return createMutateAsync(payload);
+        }),
+      );
+      setCart([]);
+      await refetch();
+      messageApi?.success("Cart synced successfully");
+    } catch (error) {
+      console.log(error);
+      messageApi?.error("Failed to sync cart");
     }
   };
 
@@ -173,7 +179,6 @@ export const useCartState = (messageApi?: MessageInstance) => {
   const clearCart = () => {
     deleteMutate(undefined);
   };
-  // ✅ expose variables so each card can check if IT is loading
   return {
     cart,
     isCreating,
