@@ -17,7 +17,7 @@ type FieldType = {
 };
 const SignInPage = () => {
   const [messageApi, messageHolder] = message.useMessage();
-  const { user, setAuthUser } = useAuthState();
+  const { setAuthUser } = useAuthState();
   const { cart, syncGuestCartToDB } = useCartState(messageApi);
 
   const route = useRouter();
@@ -26,11 +26,10 @@ const SignInPage = () => {
       onSuccess(data) {
         if (!data?.success) return;
         setAuthUser(data?.user, data.token);
-        if (data?.user && data?.user?.email && cart.length > 0) {
-          console.log(data);
-          syncGuestCartToDB(data?.user);
-        }
         messageApi.loading("Welcome to FoodyVai", 1).then(() => {
+          if (data?.user && data?.user?.email && cart.length > 0) {
+            syncGuestCartToDB(data?.user);
+          }
           if (data?.user?.role === "admin") {
             return route.push("/admin");
           }

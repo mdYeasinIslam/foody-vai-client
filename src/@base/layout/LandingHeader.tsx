@@ -15,7 +15,7 @@ import { Badge, Dropdown, Input, MenuProps, message } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMenu } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { ClassNameValue } from "tailwind-merge";
@@ -38,13 +38,14 @@ const LandingHeader: React.FC<IProps> = ({ className }) => {
   const router = useRouter();
   const [messageApi, contextHolder] = message.useMessage();
   const [open, setOpen] = useState(false);
-  const { cart, clearCart } = useCartState(messageApi);
+  const { cart,setCart,clearCart, cartProducts } = useCartState(messageApi);
   const { user, clearAuthUser } = useAuthState(messageApi);
 
   // Sync guest cart to database whenever a user logs in
   // useEffect(() => {
-  //   if (user && user.email && cart.length > 0) {
-  //     syncGuestCartToDB();
+  //   console.log("header", cartProducts);
+  //   if (user && user.email && cartProducts) {
+  //     setCart(cartProducts)
   //   }
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [user?._id]);
@@ -58,6 +59,7 @@ const LandingHeader: React.FC<IProps> = ({ className }) => {
   const handleLogout = ({ key }: { key: string }) => {
     if (key === "logout") {
       clearAuthUser();
+      setCart([]);
       router.push("/signIn");
     }
   };
@@ -200,7 +202,6 @@ const LandingHeader: React.FC<IProps> = ({ className }) => {
           content={
             <>
               <CartContent
-                cartItems={cart}
                 handleOnCloseAfterCheckoutFn={handleOnCloseAfterCheckoutFn}
               />
             </>

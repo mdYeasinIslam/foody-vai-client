@@ -154,14 +154,11 @@ export const useCartState = (messageApi?: MessageInstance) => {
             ...item,
             userId: userInfo?._id,
           };
-
           return createMutateAsync(payload);
         }),
       );
-      console.log("success", cartProducts);
-      setCart(cartProducts || []);
       await refetch();
-      messageApi?.success("Cart synced successfully");
+      // messageApi?.success("Cart synced successfully");
     } catch (error) {
       console.log(error);
       messageApi?.error("Failed to sync cart");
@@ -176,7 +173,7 @@ export const useCartState = (messageApi?: MessageInstance) => {
       updateMutate({ ...payload, action: action });
       return;
     }
-    
+
     setCart((prev) => {
       return prev
         .map((item) =>
@@ -195,14 +192,21 @@ export const useCartState = (messageApi?: MessageInstance) => {
     });
   };
 
-  const removeSingleItem = (id: string) => {
-    deleteMutateSingleItem(id);
+  const removeSingleItem = (item: ICartItem) => {
+    if (user && user.email && item._id) {
+      console.log("hit here with login", item);
+      deleteMutateSingleItem(item._id);
+      return;
+    }
+    console.log("hit here", item);
+    setCart((prev) => prev.filter((i) => i.productId !== item.productId));
   };
   const clearCart = () => {
     deleteMutate(undefined);
   };
   return {
     cart,
+    setCart,
     isCreating,
     isUpdating,
     createVariables, // { productId, price.weight, ... } of in-flight create

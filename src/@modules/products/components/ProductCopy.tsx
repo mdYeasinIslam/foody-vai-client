@@ -127,7 +127,7 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
       console.error(err);
     }
   };
-  console.log(cart);
+  // console.log(cart);
   return (
     <div
       key={product._id}

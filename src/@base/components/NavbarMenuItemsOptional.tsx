@@ -31,7 +31,7 @@ const NavbarMenuItemsOptional = () => {
                 className={cn(
                   "max-md:bg-(--secondary-color-500) max-md:text-(--secondary-color-700) max-md:rounded-full px-4 py-1.5 md:px-2.5 xl:px-4 md:py-2.5 max-md:my-1",
                   index < 7 && "max-sm:border-r border-(--primary-color-800)",
-                  index === 0 && "hidden",
+                  // index === 0 && "hidden",
                 )}
               >
                 <Link
