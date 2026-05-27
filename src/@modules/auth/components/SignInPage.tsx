@@ -26,9 +26,10 @@ const SignInPage = () => {
       onSuccess(data) {
         if (!data?.success) return;
         setAuthUser(data?.user, data.token);
-        // if (data?.user && data?.user?.email && cart.length > 0) {
-        //   syncGuestCartToDB();
-        // }
+        if (data?.user && data?.user?.email && cart.length > 0) {
+          console.log(data);
+          syncGuestCartToDB(data?.user);
+        }
         messageApi.loading("Welcome to FoodyVai", 1).then(() => {
           if (data?.user?.role === "admin") {
             return route.push("/admin");
@@ -42,11 +43,11 @@ const SignInPage = () => {
       },
     },
   });
-  useEffect(() => {
-    if (user?._id && cart.length > 0) {
-      syncGuestCartToDB();
-    }
-  }, [user, cart.length, syncGuestCartToDB]);
+  // useEffect(() => {
+  //   if (user?._id && cart.length > 0) {
+  //     syncGuestCartToDB();
+  //   }
+  // }, [user, cart.length, syncGuestCartToDB]);
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     const { email, password } = values;
     signInMutate({ email, password });

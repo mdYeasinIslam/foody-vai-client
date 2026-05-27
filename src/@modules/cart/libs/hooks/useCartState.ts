@@ -14,6 +14,7 @@ import {
 import { MessageInstance } from "antd/es/message/interface";
 import useGlobalState from "../../../../@libs/hooks/useGlobalState";
 import { useAuthState } from "@/src/@modules/auth/libs/hooks/useAuthState";
+import { IAuthUser } from "@/src/@modules/auth/libs/interface";
 
 // useCartState.ts
 export const useCartState = (messageApi?: MessageInstance) => {
@@ -142,8 +143,8 @@ export const useCartState = (messageApi?: MessageInstance) => {
   };
 
   // Sync guest cart items to DB on login
-  const syncGuestCartToDB = async () => {
-    if (!cart.length || !user?._id) {
+  const syncGuestCartToDB = async (userInfo: IAuthUser) => {
+    if (!cart.length || !userInfo?._id) {
       return;
     }
     try {
@@ -151,13 +152,14 @@ export const useCartState = (messageApi?: MessageInstance) => {
         cart.map((item) => {
           const payload = {
             ...item,
-            userId: user?._id,
+            userId: userInfo?._id,
           };
 
           return createMutateAsync(payload);
         }),
       );
-      setCart([]);
+      console.log("success", cartProducts);
+      setCart(cartProducts || []);
       await refetch();
       messageApi?.success("Cart synced successfully");
     } catch (error) {
@@ -170,7 +172,27 @@ export const useCartState = (messageApi?: MessageInstance) => {
     payload: Omit<ICartItemUpdate, "_id">,
     action: string,
   ) => {
-    updateMutate({ ...payload, action: action });
+    if (user && user.email) {
+      updateMutate({ ...payload, action: action });
+      return;
+    }
+    
+    setCart((prev) => {
+      return prev
+        .map((item) =>
+          item.productId === payload.productId &&
+          item.price?.weight === payload.price?.weight
+            ? {
+                ...item,
+                quantity:
+                  action === "increment"
+                    ? item.quantity + 1
+                    : item.quantity - 1,
+              }
+            : item,
+        )
+        .filter((item) => item.quantity > 0);
+    });
   };
 
   const removeSingleItem = (id: string) => {

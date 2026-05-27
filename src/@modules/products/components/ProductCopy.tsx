@@ -72,6 +72,7 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
       console.error(err);
     }
   };
+
   // const handleAddToCartFn = async () => {
   //   try {
   //     const payload: ICartItemCreate & { userId?: string | null } = {
@@ -122,11 +123,11 @@ const ProductCopy: React.FC<IProps> = ({ className, product }) => {
         quantity: 1,
       };
       updateCartItemQuantity(payload, "decrement");
-      console.log(cart);
     } catch (err) {
       console.error(err);
     }
   };
+  console.log(cart);
   return (
     <div
       key={product._id}
