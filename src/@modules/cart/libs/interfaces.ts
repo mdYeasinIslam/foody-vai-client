@@ -14,6 +14,7 @@ export interface ICartItemFilter {
 
 export interface ICartItem {
   _id?: string;
+  userId?: string | null;
   productId: string;
   name: string;
   description?: string;

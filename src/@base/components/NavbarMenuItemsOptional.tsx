@@ -22,7 +22,7 @@ const NavbarMenuItemsOptional = () => {
             Visit Food Bazar
           </p>
         </div>
-        <div className="hidden_scrollbar w-full lg:col-span-6 flex md:justify-around lg:flex-wrap max-md:gap-2 max-md:overflow-x-scroll scroll-smooth ">
+        <div className="hidden_scrollbar w-full lg:col-span-6 flex md:justify-start lg:flex-wrap max-md:gap-2 max-md:overflow-x-scroll scroll-smooth ">
           {navItems?.map((item, index) => {
             const isActive = pathname.includes(item.link);
             return (

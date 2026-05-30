@@ -5,10 +5,10 @@ import { Button, Form, FormProps, Input, message } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
+import { useCartState } from "../../cart/libs/hooks/useCartState";
 import { useSignIn } from "../libs/hooks";
 import { useAuthState } from "../libs/hooks/useAuthState";
-import { useCartState } from "../../cart/libs/hooks/useCartState";
-import { useEffect } from "react";
+import { useCartProducts } from "../../cart/libs/hooks";
 
 type FieldType = {
   email: string;
@@ -19,11 +19,12 @@ const SignInPage = () => {
   const [messageApi, messageHolder] = message.useMessage();
   const { setAuthUser } = useAuthState();
   const { cart, syncGuestCartToDB } = useCartState(messageApi);
+  const { refetch } = useCartProducts({});
 
   const route = useRouter();
   const { mutate: signInMutate } = useSignIn({
     config: {
-      onSuccess(data) {
+      onSuccess: async (data) => {
         if (!data?.success) return;
         setAuthUser(data?.user, data.token);
         messageApi.loading("Welcome to FoodyVai", 1).then(() => {
@@ -35,6 +36,7 @@ const SignInPage = () => {
           }
           route.push("/");
         });
+        await refetch();
       },
       onError(error) {
         console.log(error);

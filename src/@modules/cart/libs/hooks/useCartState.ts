@@ -37,6 +37,7 @@ export const useCartState = (messageApi?: MessageInstance) => {
       onSuccess: async (data) => {
         if (!data?.alreadyExist && data?.success) {
           setCart((prev) => [...prev, data?.data]);
+          await refetch();
           messageApi?.success("Product added to the cart successfully");
         } else if (data?.alreadyExist && data?.success) {
           setCart((prev) =>
@@ -47,6 +48,7 @@ export const useCartState = (messageApi?: MessageInstance) => {
                 : item,
             ),
           );
+          await refetch();
           messageApi?.success(data?.message || "Product quantity updated");
         } else {
           messageApi?.error(
@@ -63,7 +65,7 @@ export const useCartState = (messageApi?: MessageInstance) => {
     variables: updateVariables,
   } = useUpdateCartProduct({
     config: {
-      onSuccess: (data: ICartItemResponse) => {
+      onSuccess: async (data: ICartItemResponse) => {
         if (data?.success && !data?.deleted) {
           setCart((prev) =>
             prev.map((item) =>
@@ -73,11 +75,13 @@ export const useCartState = (messageApi?: MessageInstance) => {
                 : item,
             ),
           );
+          await refetch();
           messageApi?.success(data?.message || "Quantity updated");
         } else if (data?.deleted) {
           setCart((prev) =>
             prev.filter((item) => item?._id !== data.cartItemId),
           );
+          await refetch();
           messageApi?.success(data?.message || "Product removed from cart");
         } else {
           messageApi?.error(data?.message || "Failed to update quantity");
@@ -88,7 +92,7 @@ export const useCartState = (messageApi?: MessageInstance) => {
   //delete single item
   const { mutate: deleteMutateSingleItem } = useDeleteCartProduct({
     config: {
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         console.log(data);
         if (!data?.success) {
           messageApi?.error(data?.message || "Failed to clear cart");
@@ -97,14 +101,16 @@ export const useCartState = (messageApi?: MessageInstance) => {
         console.log("delete product", data);
         // setCart(cartItems.filter((item) => item._id !== data.cartItemId));
         setCart((prev) => prev.filter((item) => item._id !== data.cartItemId));
+        await refetch();
         messageApi?.success("Cart item deleted successfully");
+        // refetch();
       },
     },
   });
   // delete all item
   const { mutate: deleteMutate } = useDeleteAllCartProducts({
     config: {
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         console.log(data);
         if (!data?.success) {
           messageApi?.error(data?.message || "Failed to clear cart");
@@ -112,12 +118,13 @@ export const useCartState = (messageApi?: MessageInstance) => {
         }
         console.log("delete all");
         setCart([]);
+        await refetch();
         messageApi?.success("Cart cleared successfully");
       },
     },
   });
 
-  const addToCart = (payload: Omit<ICartItemCreate, "_id">) => {
+  const addToCart = async (payload: Omit<ICartItemCreate, "_id">) => {
     if (user && user.email) {
       payload.userId = user._id;
       createMutate(payload);
@@ -147,9 +154,11 @@ export const useCartState = (messageApi?: MessageInstance) => {
     if (!cart.length || !userInfo?._id) {
       return;
     }
+    const filterByUserId = cart.filter((item) => item?.userId !== null);
+    console.log(filterByUserId)
     try {
       await Promise.all(
-        cart.map((item) => {
+        cart?.map((item) => {
           const payload = {
             ...item,
             userId: userInfo?._id,
@@ -158,6 +167,8 @@ export const useCartState = (messageApi?: MessageInstance) => {
         }),
       );
       await refetch();
+      // console.log("after sync", data);
+      // setCart()
       // messageApi?.success("Cart synced successfully");
     } catch (error) {
       console.log(error);
@@ -194,15 +205,17 @@ export const useCartState = (messageApi?: MessageInstance) => {
 
   const removeSingleItem = (item: ICartItem) => {
     if (user && user.email && item._id) {
-      console.log("hit here with login", item);
       deleteMutateSingleItem(item._id);
       return;
     }
-    console.log("hit here", item);
     setCart((prev) => prev.filter((i) => i.productId !== item.productId));
   };
   const clearCart = () => {
-    deleteMutate(undefined);
+    if (user && user.email) {
+      deleteMutate(undefined);
+      return;
+    }
+    setCart([]);
   };
   return {
     cart,

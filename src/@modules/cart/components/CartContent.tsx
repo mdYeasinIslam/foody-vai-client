@@ -21,7 +21,7 @@ const CartContent: React.FC<IProps> = ({
   className,
   handleOnCloseAfterCheckoutFn,
 }) => {
-  const [cart, setCart] = useGlobalState<ICartItem[]>({
+  const [cart] = useGlobalState<ICartItem[]>({
     key: "cart",
     initialValue: [],
   });

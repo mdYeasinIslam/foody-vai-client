@@ -42,7 +42,7 @@ export const CartService = {
       throw error;
     }
   },
-  async deleteAll(): Promise<ICartItemResponse> {
+  async deleteAll(): Promise<ICartItemResponse>{
     try {
       const res = await AxiosInstance.delete(`${END_POINT}`);
       return Promise.resolve(res?.data);

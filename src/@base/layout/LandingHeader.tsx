@@ -4,6 +4,7 @@ import cn from "@/src/@libs/utils/_cn";
 import { useAuthState } from "@/src/@modules/auth/libs/hooks/useAuthState";
 import CartContent from "@/src/@modules/cart/components/CartContent";
 import CartDrawer from "@/src/@modules/cart/components/CartDrawer";
+import { useCartProducts } from "@/src/@modules/cart/libs/hooks";
 import { useCartState } from "@/src/@modules/cart/libs/hooks/useCartState";
 import MenuItems from "@/src/@modules/home/components/MenuItems";
 import {
@@ -38,9 +39,10 @@ const LandingHeader: React.FC<IProps> = ({ className }) => {
   const router = useRouter();
   const [messageApi, contextHolder] = message.useMessage();
   const [open, setOpen] = useState(false);
-  const { cart,setCart,clearCart, cartProducts } = useCartState(messageApi);
+  const { cart, setCart, clearCart } = useCartState(messageApi);
   const { user, clearAuthUser } = useAuthState(messageApi);
-
+  const { data } = useCartProducts({});
+  console.log('from landing',data)
   // Sync guest cart to database whenever a user logs in
   // useEffect(() => {
   //   console.log("header", cartProducts);
@@ -59,7 +61,7 @@ const LandingHeader: React.FC<IProps> = ({ className }) => {
   const handleLogout = ({ key }: { key: string }) => {
     if (key === "logout") {
       clearAuthUser();
-      setCart([]);
+      // setCart([]);
       router.push("/signIn");
     }
   };
