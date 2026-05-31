@@ -2,6 +2,7 @@ import { ENV } from "@/environments";
 import { AxiosInstance } from "@/src/@libs/config/AxiosInstance";
 import {
   ICustomerAddress,
+  ICustomerAddressCreate,
   ICustomerAddressesResponse,
   ICustomerAddressResponse,
   IDistrictsAndZillasResponse,
@@ -35,7 +36,6 @@ export const CheckoutServices = {
     }
   },
 
-
   //--------------actual service of Customer Address------------
   findAddress: async (): Promise<ICustomerAddressesResponse> => {
     try {
@@ -45,9 +45,9 @@ export const CheckoutServices = {
       throw error;
     }
   },
-  
+
   create: async (
-    payload: ICustomerAddress,
+    payload: ICustomerAddressCreate,
   ): Promise<ICustomerAddressResponse> => {
     try {
       const res = await AxiosInstance.post(END_POINT, payload);
@@ -56,28 +56,31 @@ export const CheckoutServices = {
       throw error;
     }
   },
-  update: async (id: string, payload: ICustomerAddress) => {
-  try {
-    const res = await AxiosInstance.put(`${END_POINT}/${id}`, payload);
-    return Promise.resolve(res.data);
-  } catch (error) {
-    throw error
-  }
-},
-  deleteOne: async (id: string) => {
+  update: async (
+    id: string,
+    payload: ICustomerAddress,
+  ): Promise<ICustomerAddressResponse> => {
+    try {
+      const res = await AxiosInstance.put(`${END_POINT}/${id}`, payload);
+      return Promise.resolve(res.data);
+    } catch (error) {
+      throw error;
+    }
+  },
+  deleteOne: async (id: string): Promise<ICustomerAddressResponse> => {
     try {
       const res = await AxiosInstance.delete(`${END_POINT}/${id}`);
       return Promise.resolve(res.data);
     } catch (error) {
-      throw error
+      throw error;
     }
   },
   deleteAll: async () => {
-try {
-  const res = await AxiosInstance.delete(END_POINT);
-  return Promise.resolve(res.data);
-} catch (error) {
-  throw error
-}
-  }
+    try {
+      const res = await AxiosInstance.delete(END_POINT);
+      return Promise.resolve(res.data);
+    } catch (error) {
+      throw error;
+    }
+  },
 };

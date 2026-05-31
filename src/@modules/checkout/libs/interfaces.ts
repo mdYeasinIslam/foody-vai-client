@@ -41,7 +41,19 @@ export interface ICustomerAddress {
   phone: string;
   addressName: string;
   address: string;
+  isDefault:boolean
 }
+export interface ICustomerAddressCreate {
+  districtId: string;
+  districtName?: string;
+  areaId: string;
+  areaName?: string;
+  contactName: string;
+  phone: string;
+  addressName: string;
+  address: string;
+}
+
 export interface ICustomerAddressResponse {
   data: ICustomerAddress;
   success: boolean;

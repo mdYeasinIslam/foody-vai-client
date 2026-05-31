@@ -1,33 +1,22 @@
 import BaseModal from "@/src/@base/components/BaseModal";
+import BaseSkeleton from "@/src/@base/components/BaseSkeleton";
 import { Button, Form, Input, message, Select } from "antd";
 import { useState } from "react";
+import { useAddressState } from "../libs/hook/useAddressState";
 import { useDistrictAndArea } from "../libs/hook/useDistrictAndArea";
-import { useCreateAddress } from "../libs/hooks";
 
 const DeliveryAddressForm = () => {
+  const [messageApi, contextHolder] = message.useMessage();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
   const [districtId, setDistrictId] = useState<number | null>(null);
   const { districtsData, areasData, isLoading, isPending } =
     useDistrictAndArea();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { addressData, addressDataLoading, createCustomerAddress } =
+    useAddressState(messageApi);
 
-  const { mutate: createCustomerAddress } = useCreateAddress({
-    config: {
-      onSuccess: (data) => {
-        if (!data) return;
-        messageApi.loading("Address is adding.....", 1).then(() => {
-          messageApi.success("Address added successfully");
-        });
-      },
-      onError: (error) => {
-        messageApi.error(
-          error instanceof Error ? error.message : "An error occurred",
-        );
-      },
-    },
-  });
-  // console.log(districtsData);
+  console.log(addressData)
+  
   const handleAddNew = () => {
     setIsModalOpen(true);
   };
@@ -61,7 +50,16 @@ const DeliveryAddressForm = () => {
             + Add new
           </button>
         </div>
-        <p className="text-gray-500  px-4 py-2">No address found.</p>
+        {addressDataLoading && <BaseSkeleton />}
+        {addressData && addressData?.length > 0 ? (
+          <>
+            hi
+          </>
+        ) : (
+          <>
+            <p className="text-gray-500  px-4 py-2">No address found.</p>
+          </>
+        )}
       </div>
       <BaseModal
         title="Add New Address"
@@ -164,6 +162,6 @@ const DeliveryAddressForm = () => {
       </BaseModal>
     </>
   );
-};;
+};
 
 export default DeliveryAddressForm;
