@@ -1,19 +1,18 @@
-import { useCartState } from "@/src/@modules/cart/libs/hooks/useCartState";
-import useGlobalState from "@/src/@libs/hooks/useGlobalState";
 import cn from "@/src/@libs/utils/_cn";
-import { calculateTotal } from "@/src/@libs/utils/helperFunction";
-import Image from "next/image";
+import {
+  calculateSaved,
+  calculateTotal,
+} from "@/src/@libs/utils/helperFunction";
+import { useCartState } from "@/src/@modules/cart/libs/hooks/useCartState";
+import { message } from "antd";
 import Link from "next/link";
 import React from "react";
-import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
 import { ClassNameValue } from "tailwind-merge";
 import { ICartItem } from "../libs/interfaces";
-import { message } from "antd";
 import CartSingleItem from "./CartSingleItem";
 
 interface IProps {
   className?: ClassNameValue;
-  // cart??: ICartItem[];
   handleOnCloseAfterCheckoutFn: () => void;
 }
 
@@ -21,21 +20,12 @@ const CartContent: React.FC<IProps> = ({
   className,
   handleOnCloseAfterCheckoutFn,
 }) => {
-  const [cart] = useGlobalState<ICartItem[]>({
-    key: "cart",
-    initialValue: [],
-  });
+  
   const [messageApi, contextHolder] = message.useMessage();
-  const { updateCartItemQuantity, removeSingleItem } = useCartState(messageApi);
-  const calculateSaved = () => {
-    return cart?.reduce(
-      (sum, item) =>
-        sum + (item?.price?.originalPrice - item.price?.price) * item.quantity,
-      0,
-    );
-  };
+  const { cart, updateCartItemQuantity, removeSingleItem } =
+    useCartState(messageApi);
 
-  const handleQuantityChange = (item: ICartItem, action: string) => {
+  const handleQuantityChangeFn = (item: ICartItem, action: string) => {
     const findItem = cart?.find((i) => i.productId === item.productId);
     try {
       if (findItem) {
@@ -52,55 +42,30 @@ const CartContent: React.FC<IProps> = ({
     } catch (error) {
       console.log(error);
     }
-    // setCart(updatedCart);
   };
 
-  const handleDeleteItem = (item: any) => {    
-    // const updatedCart = cart?.filter((item) => item._id !== itemId);
-    // setCart(updatedCart);
+  const handleDeleteItemFn = (item: any) => {
     removeSingleItem(item);
   };
-  // const handleQuantityUpdateFn = async (id: string) => {
-  //   const updatedCart = cart?.filter((item) => item._id !== id);
-  //   console.log(updatedCart);
-
-  //   try {
-  //     const payload = {
-  //       productId: id,
-  //       action: "decrement",
-  //       // price: selectedPriceObj,
-  //       quantity: 1,
-  //     };
-  //     updateCartItemQuantity(payload);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
-  const total = calculateTotal(cart);
-  const saved = calculateSaved();
+  const total = calculateTotal(cart || []);
+  const saved = calculateSaved(cart || []);
 
   return (
     <div className={cn("flex flex-col h-full bg-white", className)}>
       {contextHolder}
-      {/* Header */}
-      {/* <div className="flex justify-between items-center p-4 border-b">
-        <h2 className="text-xl font-bold">Shopping Cart</h2>
-        <div className="flex gap-2">
-          <button
-            onClick={handleClearCart}
-            className="text-gray-400 hover:text-red-600 transition"
-          >
-            <FiTrash2 size={20} />
-          </button>
-        </div>
-      </div> */}
 
-      {/* Cart Items */}
       <div className="flex-1 overflow-y-auto space-y-2 hidden_scrollbar">
         {cart?.length === 0 ? (
           <p className="text-center text-gray-500 py-8">Cart is empty</p>
         ) : (
-          cart?.map((item, idx) => <CartSingleItem key={idx} item={item} handleDeleteItem={handleDeleteItem} handleQuantityChange={handleQuantityChange}/>)
+          cart?.map((item, idx) => (
+            <CartSingleItem
+              key={idx}
+              item={item}
+              handleDeleteItemFn={handleDeleteItemFn}
+              handleQuantityChangeFn={handleQuantityChangeFn}
+            />
+          ))
         )}
       </div>
 
@@ -110,7 +75,7 @@ const CartContent: React.FC<IProps> = ({
           <span className="text-lg font-bold text-green-600">৳ {total}</span>
         </div>
 
-        {saved > 0 && (
+        {saved && saved > 0 && (
           <div className="text-sm">
             <span className="text-gray-600">Saved: </span>
             <span className="font-semibold text-green-600">৳ {saved}</span>

@@ -7,14 +7,14 @@ import cn from "@/src/@libs/utils/_cn";
 interface IProps {
   className?: ClassNameValue;
   item: ICartItem;
-  handleDeleteItem: (item: ICartItem) => void;
-  handleQuantityChange: (item: ICartItem, action: string) => void;
+  handleDeleteItemFn: (item: ICartItem) => void;
+  handleQuantityChangeFn: (item: ICartItem, action: string) => void;
 }
 const CartSingleItem: React.FC<IProps> = ({
   className,
   item,
-  handleDeleteItem,
-  handleQuantityChange,
+  handleDeleteItemFn,
+  handleQuantityChangeFn,
 }) => {
   return (
     <div className={cn(className, "flex justify-between border-b pb-1")}>
@@ -43,21 +43,21 @@ const CartSingleItem: React.FC<IProps> = ({
 
       <div className="flex flex-col items-end justify-between">
         <button
-          onClick={() => handleDeleteItem(item)}
+          onClick={() => handleDeleteItemFn(item)}
           className="text-gray-400 hover:text-red-500 transition cursor-pointer"
         >
           <FiTrash2 size={18} />
         </button>
         <div className="flex items-center gap-2 border border-(--primary-color-800) rounded">
           <button
-            onClick={() => handleQuantityChange(item, "decrement")}
+            onClick={() => handleQuantityChangeFn(item, "decrement")}
             className="p-1 hover:bg-(--primary-color-600) transition cursor-pointer"
           >
             <FiMinus size={16} />
           </button>
           <span className="w-6 text-center text-sm">{item.quantity}</span>
           <button
-            onClick={() => handleQuantityChange(item, "increment")}
+            onClick={() => handleQuantityChangeFn(item, "increment")}
             className="p-1 hover:bg-(--primary-color-600) transition cursor-pointer"
           >
             <FiPlus size={16} />

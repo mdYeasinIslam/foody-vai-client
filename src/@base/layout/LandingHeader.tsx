@@ -4,7 +4,6 @@ import cn from "@/src/@libs/utils/_cn";
 import { useAuthState } from "@/src/@modules/auth/libs/hooks/useAuthState";
 import CartContent from "@/src/@modules/cart/components/CartContent";
 import CartDrawer from "@/src/@modules/cart/components/CartDrawer";
-import { useCartProducts } from "@/src/@modules/cart/libs/hooks";
 import { useCartState } from "@/src/@modules/cart/libs/hooks/useCartState";
 import MenuItems from "@/src/@modules/home/components/MenuItems";
 import {
@@ -34,23 +33,22 @@ const accountItems: MenuProps["items"] = [
 ];
 
 const LandingHeader: React.FC<IProps> = ({ className }) => {
+  const [messageApi, contextHolder] = message.useMessage();
   const [searchValue, setSearchValue] = useState("");
   const [openMenu, setOpenMenu] = useState(false);
   const router = useRouter();
-  const [messageApi, contextHolder] = message.useMessage();
+
   const [open, setOpen] = useState(false);
-  const { cart, setCart, clearCart } = useCartState(messageApi);
+  const { cart, cartProductsFromDB, setCart, clearCart } =
+    useCartState(messageApi);
   const { user, clearAuthUser } = useAuthState(messageApi);
-  const { data } = useCartProducts({});
-  console.log('from landing',data)
+  
   // Sync guest cart to database whenever a user logs in
-  // useEffect(() => {
-  //   console.log("header", cartProducts);
-  //   if (user && user.email && cartProducts) {
-  //     setCart(cartProducts)
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [user?._id]);
+  useEffect(() => {
+    if (user && user.email && cartProductsFromDB) {
+      setCart(cartProductsFromDB);
+    }
+  }, [user, cartProductsFromDB]);
 
   const handleAfterNavigateFn = () => {
     setOpenMenu(false);
@@ -58,7 +56,8 @@ const LandingHeader: React.FC<IProps> = ({ className }) => {
   const handleOnCloseAfterCheckoutFn = () => {
     setOpen(false);
   };
-  const handleLogout = ({ key }: { key: string }) => {
+
+  const handleLogoutFn = ({ key }: { key: string }) => {
     if (key === "logout") {
       clearAuthUser();
       // setCart([]);
@@ -159,7 +158,7 @@ const LandingHeader: React.FC<IProps> = ({ className }) => {
             <Dropdown
               menu={{
                 items: accountItems,
-                onClick: handleLogout,
+                onClick: handleLogoutFn,
               }}
               trigger={["click"]}
             >
@@ -195,7 +194,11 @@ const LandingHeader: React.FC<IProps> = ({ className }) => {
 
       {open && (
         <CartDrawer
-          title={<h1 className="text-xl font-semibold">Shopping Cart</h1>}
+          title={
+            <h1 className="text-xl font-semibold">
+              Shopping Cart : {cart?.length} Item{" "}
+            </h1>
+          }
           open={open}
           onClose={handleOnCloseAfterCheckoutFn}
           handleClearCart={() => {

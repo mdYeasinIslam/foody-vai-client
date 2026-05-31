@@ -24,7 +24,7 @@ export const useCartState = (messageApi?: MessageInstance) => {
     initialValue: [],
   });
   const { data, refetch } = useCartProducts({});
-  const cartProducts = data?.data;
+  const cartProductsFromDB = data?.data;
 
   //create (add to cart)
   const {
@@ -154,7 +154,7 @@ export const useCartState = (messageApi?: MessageInstance) => {
     if (!cart.length || !userInfo?._id) {
       return;
     }
-    const filterByUserId = cart.filter((item) => item?.userId !== null);
+    const filterByUserId = cart.filter((item) => item?.userId == null);
     console.log(filterByUserId)
     try {
       await Promise.all(
@@ -228,7 +228,7 @@ export const useCartState = (messageApi?: MessageInstance) => {
     updateCartItemQuantity,
     removeSingleItem,
     clearCart,
-    cartProducts,
+    cartProductsFromDB,
     syncGuestCartToDB,
   };
 };
