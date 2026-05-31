@@ -6,6 +6,7 @@ import {
   ICustomerAddressResponse,
   IDistrictsAndZillasResponse,
 } from "./interfaces";
+import axios from "axios";
 
 // const BD_API_END_POINT = "https://bdapis.vercel.app/geo/v2.0/districts";
 const END_POINT = "customer-address";
@@ -14,7 +15,7 @@ export const CheckoutServices = {
   Name: END_POINT,
   findDistrict: async () => {
     try {
-      const response = await AxiosInstance.get<IDistrictsAndZillasResponse>(
+      const response = await axios.get<IDistrictsAndZillasResponse>(
         `${BD_API_FOR_DISTRICT_AND_AREAS}/districts`,
       );
       return Promise.resolve(response.data);
@@ -25,7 +26,7 @@ export const CheckoutServices = {
   },
   findAreas: async (id: number) => {
     try {
-      const res = await AxiosInstance.get<IDistrictsAndZillasResponse>(
+      const res = await axios.get<IDistrictsAndZillasResponse>(
         `${BD_API_FOR_DISTRICT_AND_AREAS}/upazilas/${id}`,
       );
       return Promise.resolve(res.data);

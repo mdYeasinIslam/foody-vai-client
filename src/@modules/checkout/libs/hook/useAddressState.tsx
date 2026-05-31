@@ -1,22 +1,22 @@
 import { message } from "antd";
-import { useCreateCustomerAddress } from "../hooks";
+import { useCreateAddress } from "../hooks";
 
 
 export const useAddressState = () => {
   const [messageApi, contextHolder] = message.useMessage();
-    const { mutate: createCustomerAddress } = useCreateCustomerAddress({
-        config: {
-            onSuccess: (data) => {
-                if (data.success) {
-                 messageApi.success('Address added successfully')
-                }
-                messageApi.error(data.message);
-            },
-            onError: (error) => {
-                messageApi.error(error.message);
-                console.log(error);
-            }
-        }
+    const { mutate: createCustomerAddress } = useCreateAddress({
+      config: {
+        onSuccess: (data) => {
+          if (data.success) {
+            messageApi.success("Address added successfully");
+          }
+          messageApi.error(data.message);
+        },
+        onError: (error) => {
+          messageApi.error(error.message);
+          console.log(error);
+        },
+      },
     });
 
     // Add other address-related hooks/queries here

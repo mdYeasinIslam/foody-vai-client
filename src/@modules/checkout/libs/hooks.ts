@@ -19,7 +19,7 @@ export const useAreas = (id: number) => {
 type ICreateCustomerAddressProps = {
   config?: MutationConfig<typeof CheckoutServices.create>;
 };
-export const useCreateCustomerAddress = ({
+export const useCreateAddress = ({
   config,
 }: ICreateCustomerAddressProps = {}) => {
   return useMutation({
@@ -27,4 +27,24 @@ export const useCreateCustomerAddress = ({
     mutationFn: CheckoutServices.create,
   });
 };
+// find address
+export const useFindAddress = () => {
+  return useQuery({
+    queryKey: ["address"],
+    queryFn: () => CheckoutServices.findAddress(),
+  });
+};
+//delete address
+export const useDeleteAddress = () => {
+  return useMutation({
+    mutationFn: CheckoutServices.deleteOne,
+  });
+};
+//delete all address 
+export const useDeleteAddresses = () => {
+  return useMutation({
+    mutationFn: CheckoutServices.deleteAll,
+  });
+
+}
 

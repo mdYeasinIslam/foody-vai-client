@@ -1,27 +1,24 @@
 import BaseModal from "@/src/@base/components/BaseModal";
 import { Button, Form, Input, message, Select } from "antd";
 import { useState } from "react";
-import {
-  useAreas,
-  useCreateCustomerAddress,
-  useDistricts,
-} from "../libs/hooks";
+import { useDistrictAndArea } from "../libs/hook/useDistrictAndArea";
+import { useCreateAddress } from "../libs/hooks";
 
 const DeliveryAddressForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
   const [districtId, setDistrictId] = useState<number | null>(null);
-  const { data, isLoading, isPending } = useDistricts();
-  const { data: areaData } = useAreas(districtId || 1);
-  const districtsData = data?.data;
-  const areasData = areaData?.data;
+  const { districtsData, areasData, isLoading, isPending } =
+    useDistrictAndArea();
   const [messageApi, contextHolder] = message.useMessage();
 
-  const { mutate: createCustomerAddress } = useCreateCustomerAddress({
+  const { mutate: createCustomerAddress } = useCreateAddress({
     config: {
       onSuccess: (data) => {
         if (!data) return;
-        messageApi.success("Address added successfully");
+        messageApi.loading("Address is adding.....", 1).then(() => {
+          messageApi.success("Address added successfully");
+        });
       },
       onError: (error) => {
         messageApi.error(
@@ -81,7 +78,7 @@ const DeliveryAddressForm = () => {
               <Select
                 placeholder="Type or select district"
                 options={districtsData?.map((district) => ({
-                  label: district.name,
+                  label: district?.name,
                   value: district.id,
                 }))}
                 onChange={(e) => setDistrictId(e)}
@@ -167,6 +164,6 @@ const DeliveryAddressForm = () => {
       </BaseModal>
     </>
   );
-};
+};;
 
 export default DeliveryAddressForm;
