@@ -9,17 +9,20 @@ import { useCartState } from "../../cart/libs/hooks/useCartState";
 import { useSignIn } from "../libs/hooks";
 import { useAuthState } from "../libs/hooks/useAuthState";
 import { useCartProducts } from "../../cart/libs/hooks";
+import { useRef } from "react";
 
 type FieldType = {
   email: string;
   password: string;
   remember?: string;
+  signInAsGuest?: boolean;
 };
 const SignInPage = () => {
   const [messageApi, messageHolder] = message.useMessage();
   const { setAuthUser } = useAuthState();
   const { cart, syncGuestCartToDB } = useCartState(messageApi);
   const { refetch } = useCartProducts({});
+  const [form] = Form.useForm();
 
   const route = useRouter();
   const { mutate: signInMutate } = useSignIn({
@@ -44,11 +47,21 @@ const SignInPage = () => {
       },
     },
   });
-  // useEffect(() => {
-  //   if (user?._id && cart.length > 0) {
-  //     syncGuestCartToDB();
-  //   }
-  // }, [user, cart.length, syncGuestCartToDB]);
+
+  const handleGuestCheckboxFn = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      form.setFieldsValue({
+        email: "test@test.com",
+        password: "aassdd",
+      });
+    } else {
+      form.setFieldsValue({
+        email: "",
+        password: "",
+      });
+    }
+  };
+
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     const { email, password } = values;
     signInMutate({ email, password });
@@ -64,49 +77,9 @@ const SignInPage = () => {
         {/* form section */}
         <div className="flex-1 flex flex-col items-center justify-center bg-white rounded-lg  px-10 py-12 w-full ">
           <h1 className="text-3xl font-bold mb-2 text-gray-800">Login</h1>
-          {/* <form
-            onSubmit={formHandler}
-            className="w-full flex flex-col gap-4 max-w-md"
-          >
-            {error.length > 0 && <div className="text-red-500">{error}</div>}
-            <div className="w-full">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                className="w-full border border-gray-300 rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Password
-              </label>
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                className="w-full border border-gray-300 rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div className="flex justify-end w-full">
-              <Link
-                href={paths?.auth?.forgotPassword}
-                className="text-gray-600 text-sm hover:underline"
-              >
-                Forgot password?
-              </Link>
-            </div>
-            <button
-              type="submit"
-              className="bg-(--primary-color-700) text-white font-semibold rounded py-3 mt-2 hover:bg-(--hover-color) transition"
-            >
-              Sign In
-            </button>
-          </form> */}
+
           <Form
+            form={form}
             name="signup"
             layout="vertical"
             className="max-w-md! w-full"
@@ -116,7 +89,7 @@ const SignInPage = () => {
             autoComplete="off"
             scrollToFirstError={true}
             size="large"
-            rootClassName="[&_.ant-form-item-label]:p-0! "
+            rootClassName="[&_.ant-form-item-label]:p-0!"
           >
             <Form.Item
               name="email"
@@ -144,10 +117,17 @@ const SignInPage = () => {
                   message: "Please input your password!",
                 },
               ]}
-              // hasFeedback
               className="m-0!"
             >
               <Input.Password />
+            </Form.Item>
+            <Form.Item
+              name="signInAsGuest"
+              valuePropName="checked"
+              className="m-0! flex! items-center!"
+            >
+              <input type="checkbox" className="cursor-pointer" onChange={handleGuestCheckboxFn} />
+              <span className="ml-2">Sign in as guest</span>
             </Form.Item>
             <Form.Item>
               <Button
