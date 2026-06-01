@@ -12,7 +12,7 @@ const DeliveryAddressForm = () => {
   const [form] = Form.useForm();
   const [districtId, setDistrictId] = useState<number | null>(null);
   const { districtsData, areasData, isLoading, isPending } =
-    useDistrictAndArea();
+    useDistrictAndArea(districtId);
   const { addressData, addressDataLoading, createCustomerAddress } =
     useAddressState(messageApi);
 
@@ -30,7 +30,16 @@ const DeliveryAddressForm = () => {
   };
   const handleSubmit = (values: any) => {
     try {
-      createCustomerAddress(values);
+      const district = districtsData?.find((d) => d.id === values.districtId);
+
+      const area = areasData?.find((a) => a.id === values.areaId);
+      console.log(district, area);
+      const payload = {
+        ...values,
+        districtName: district?.name,
+        areaName: area?.name,
+      };
+      createCustomerAddress(payload);
       setIsModalOpen(false);
       form.resetFields();
     } catch (error) {
@@ -54,7 +63,7 @@ const DeliveryAddressForm = () => {
           </button>
         </div>
         {addressDataLoading && <BaseSkeleton />}
-        {addressData && addressData?.length < 0 && (
+        {addressData && addressData?.length <= 0 && (
           <>
             <p className="text-gray-500  px-4 py-2">No address found.</p>
           </>

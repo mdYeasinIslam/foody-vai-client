@@ -13,9 +13,9 @@ const ShowAddress: React.FC<IProps> = ({ address, className }) => {
         <h1 className="font-semibold">{address.contactName}</h1>
         <p>{address.phone}</p>
       </div>
-      <p>
-        {address.address} <span>{address.areaName}</span>
-        <span>{address.districtName}</span>
+      <p className="text-sm">
+        <span> {address.address}</span> , <span> {address.areaName}</span>,
+        <span> {address.districtName}</span>
       </p>
     </div>
   );

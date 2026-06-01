@@ -13,6 +13,7 @@ export const useAreas = (id: number) => {
   return useQuery({
     queryKey: ["areas", id],
     queryFn: () => CheckoutServices.findAreas(id),
+    enabled: !!id,
   });
 };
 // -------------hooks for address related services--------------------
