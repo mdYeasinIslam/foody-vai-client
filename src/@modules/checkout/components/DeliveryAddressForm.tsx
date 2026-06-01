@@ -4,6 +4,7 @@ import { Button, Form, Input, message, Select } from "antd";
 import { useState } from "react";
 import { useAddressState } from "../libs/hook/useAddressState";
 import { useDistrictAndArea } from "../libs/hook/useDistrictAndArea";
+import EditAddressModal from "./EditAddressModal";
 import ShowAddress from "./ShowAddress";
 
 const DeliveryAddressForm = () => {
@@ -53,11 +54,11 @@ const DeliveryAddressForm = () => {
     <>
       {contextHolder}
       <div className="border border-(--primary-color-500) rounded-lg ">
-        <div className="flex justify-between items-center bg-(--primary-color-600) px-4 py-2 ">
+        <div className="flex justify-between items-center bg-(--primary-color-600) px-2 py-1  md:px-4 md:py-2">
           <h3 className="text-base font-semibold ">Delivery address</h3>
           <button
             onClick={handleAddNew}
-            className=" text-sm font-semibold cursor-pointer border border-transparent hover:border-(--primary-color-800) rounded-sm px-2"
+            className=" text-sm font-semibold cursor-pointer border hover:border-(--primary-color-900) border-(--primary-color-700) rounded-sm px-2"
           >
             + Add new
           </button>
@@ -68,12 +69,17 @@ const DeliveryAddressForm = () => {
             <p className="text-gray-500  px-4 py-2">No address found.</p>
           </>
         )}
-        <div>
-          {defaultAddress &&
-            defaultAddress?.length > 0 &&
-            defaultAddress?.map((address, idx) => (
-              <ShowAddress key={idx} address={address} className=" px-4 py-2" />
-            ))}
+        <div className="flex items-center justify-between px-2 py-1  md:px-4 md:py-2">
+          <div>
+            {defaultAddress &&
+              defaultAddress?.length > 0 &&
+              defaultAddress?.map((address, idx) => (
+                <ShowAddress key={idx} address={address} className="" />
+              ))}
+          </div>
+          <>
+            <EditAddressModal />
+          </>
         </div>
       </div>
       <BaseModal

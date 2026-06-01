@@ -9,11 +9,11 @@ interface IProps {
 const ShowAddress: React.FC<IProps> = ({ address, className }) => {
   return (
     <div className={cn(className, "")}>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 text-sm md:text-base">
         <h1 className="font-semibold">{address.contactName}</h1>
         <p>{address.phone}</p>
       </div>
-      <p className="text-sm">
+      <p className="text-xs md:text-sm">
         <span> {address.address}</span> , <span> {address.areaName}</span>,
         <span> {address.districtName}</span>
       </p>
