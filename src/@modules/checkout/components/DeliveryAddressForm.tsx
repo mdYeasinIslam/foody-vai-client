@@ -17,7 +17,6 @@ const DeliveryAddressForm = () => {
   const { addressData, addressDataLoading, createCustomerAddress } =
     useAddressState(messageApi);
 
-  console.log(addressData);
   const defaultAddress = addressData?.filter(
     (address) => address.isDefault === true,
   );
@@ -63,7 +62,7 @@ const DeliveryAddressForm = () => {
             + Add new
           </button>
         </div>
-        {addressDataLoading && <BaseSkeleton />}
+        {addressDataLoading && <BaseSkeleton isAvatar={true} />}
         {addressData && addressData?.length <= 0 && (
           <>
             <p className="text-gray-500  px-4 py-2">No address found.</p>

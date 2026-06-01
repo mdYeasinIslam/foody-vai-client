@@ -4,13 +4,15 @@ import React from "react";
 import { ClassNameValue } from "tailwind-merge";
 interface IProps {
   className?: ClassNameValue;
+  rowNumber?: number;
+  isAvatar?: boolean;
 }
-const BaseSkeleton: React.FC<IProps> = ({ className }) => {
+const BaseSkeleton: React.FC<IProps> = ({ className, rowNumber, isAvatar }) => {
   return (
     <>
       <Skeleton
-        avatar
-        paragraph={{ rows: 1 }}
+        avatar={isAvatar ? true : false}
+        paragraph={{ rows: rowNumber ? rowNumber : 1 }}
         className={cn(className, "mt-1")}
       />
     </>
