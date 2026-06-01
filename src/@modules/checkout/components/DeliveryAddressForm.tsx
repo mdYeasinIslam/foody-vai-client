@@ -4,6 +4,7 @@ import { Button, Form, Input, message, Select } from "antd";
 import { useState } from "react";
 import { useAddressState } from "../libs/hook/useAddressState";
 import { useDistrictAndArea } from "../libs/hook/useDistrictAndArea";
+import ShowAddress from "./ShowAddress";
 
 const DeliveryAddressForm = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -15,8 +16,10 @@ const DeliveryAddressForm = () => {
   const { addressData, addressDataLoading, createCustomerAddress } =
     useAddressState(messageApi);
 
-  console.log(addressData)
-  
+  console.log(addressData);
+  const defaultAddress = addressData?.filter(
+    (address) => address.isDefault === true,
+  );
   const handleAddNew = () => {
     setIsModalOpen(true);
   };
@@ -51,15 +54,18 @@ const DeliveryAddressForm = () => {
           </button>
         </div>
         {addressDataLoading && <BaseSkeleton />}
-        {addressData && addressData?.length > 0 ? (
-          <>
-            hi
-          </>
-        ) : (
+        {addressData && addressData?.length < 0 && (
           <>
             <p className="text-gray-500  px-4 py-2">No address found.</p>
           </>
         )}
+        <div>
+          {defaultAddress &&
+            defaultAddress?.length > 0 &&
+            defaultAddress?.map((address, idx) => (
+              <ShowAddress key={idx} address={address} className=" px-4 py-2" />
+            ))}
+        </div>
       </div>
       <BaseModal
         title="Add New Address"
