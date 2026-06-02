@@ -1,8 +1,5 @@
-import NavbarMenuItemsOptional from "@/src/@base/components/NavbarMenuItemsOptional";
-import Image from "next/image";
 import React from "react";
-import BannerMarquee from "./BannerMarquee";
-import MenuItems from "./MenuItems";
+import Banner from "./Banner";
 
 interface IProps {
   className?: string;
@@ -10,10 +7,9 @@ interface IProps {
 const LandingBannerWithMenuItems: React.FC<IProps> = () => {
   return (
     <section>
-      <div className="container">
-        <NavbarMenuItemsOptional />
-        <hr className="hidden md:block  text-gray-300" />
-        <div className=" grid lg:grid-cols-8 ">
+      <div className="">
+        {/* <NavbarMenuItemsOptional /> */}
+        {/* <div className=" grid lg:grid-cols-8 ">
           <aside className="hidden lg:block col-span-2 w-full">
             <MenuItems className="h-100 2xl:h-116 overflow-y-scroll hidden_scrollbar" />
           </aside>
@@ -42,7 +38,8 @@ const LandingBannerWithMenuItems: React.FC<IProps> = () => {
               <BannerMarquee className="flex-1 mt-auto" />
             </>
           </aside>
-        </div>
+        </div> */}
+        <Banner />
       </div>
     </section>
   );

@@ -1,12 +1,10 @@
 "use client";
 
-import useGlobalState from "@/src/@libs/hooks/useGlobalState";
 import cn from "@/src/@libs/utils/_cn";
+import { useAuthState } from "@/src/@modules/auth/libs/hooks/useAuthState";
 import CartContent from "@/src/@modules/cart/components/CartContent";
 import CartDrawer from "@/src/@modules/cart/components/CartDrawer";
-import {
-  useDeleteAllCartProducts
-} from "@/src/@modules/cart/libs/hooks";
+import { useCartState } from "@/src/@modules/cart/libs/hooks/useCartState";
 import MenuItems from "@/src/@modules/home/components/MenuItems";
 import {
   DownOutlined,
@@ -14,8 +12,10 @@ import {
   ShoppingCartOutlined,
 } from "@ant-design/icons";
 import { Badge, Dropdown, Input, MenuProps, message } from "antd";
+import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { IoMenu } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { ClassNameValue } from "tailwind-merge";
@@ -32,37 +32,40 @@ const accountItems: MenuProps["items"] = [
   { key: "logout", label: "Logout" },
 ];
 
-const LandingHeader: React.FC<IProps> = () => {
+const LandingHeader: React.FC<IProps> = ({ className }) => {
+  const [messageApi, contextHolder] = message.useMessage();
   const [searchValue, setSearchValue] = useState("");
   const [openMenu, setOpenMenu] = useState(false);
+  const router = useRouter();
+
   const [open, setOpen] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
-  const [cart, setCart] = useGlobalState({
-    key: "cart",
-    initialValue: [],
-  });
-  const { mutate: deleteMutate } = useDeleteAllCartProducts({
-    config: {
-      onSuccess:  (data) => {
-        console.log(data)
-        if (!data?.success) {
-          messageApi.error(data?.message || "Failed to clear cart");
-          return;
-        }
-        console.log('delete all')
-        setCart([]);
-        messageApi.success("Cart cleared successfully");
-      },
-    },
-  });
+  const { cart, cartProductsFromDB, setCart, clearCart } =
+    useCartState(messageApi);
+  const { user, clearAuthUser } = useAuthState(messageApi);
+  
+  // Sync guest cart to database whenever a user logs in
+  useEffect(() => {
+    if (user && user.email && cartProductsFromDB) {
+      setCart(cartProductsFromDB);
+    }
+  }, [user, cartProductsFromDB]);
+
   const handleAfterNavigateFn = () => {
     setOpenMenu(false);
   };
   const handleOnCloseAfterCheckoutFn = () => {
     setOpen(false);
   };
+
+  const handleLogoutFn = ({ key }: { key: string }) => {
+    if (key === "logout") {
+      clearAuthUser();
+      // setCart([]);
+      router.push("/signIn");
+    }
+  };
   return (
-    <nav className="relative w-full bg-green-700 shadow-md">
+    <nav className={cn(className, "relative w-full bg-green-700 shadow-md")}>
       {contextHolder}
       <div className="container flex items-center justify-between gap-2  h-16 md:h-20  ">
         {/* Logo */}
@@ -95,11 +98,21 @@ const LandingHeader: React.FC<IProps> = () => {
             href="/"
             className="flex items-center gap-1 shrink-0 cursor-pointer"
           >
-            <div className="w-8 h-8 md:w-10 md:h-10 bg-white rounded-xl flex items-center justify-center text-xl shadow-sm select-none">
+            <figure className="flex items-center justify-center">
+              <Image
+                src={"/images/auth/logo.png"}
+                alt="Login Illustration"
+                width={40}
+                height={40}
+                className="w-full h-full object-cover rounded-lg shadow-md"
+              />
+            </figure>
+            {/* <div className="w-8 h-8 md:w-10 md:h-10 bg-white rounded-xl flex items-center justify-center text-xl shadow-sm select-none">
               🍛
-            </div>
+
+            </div> */}
             <span className="hidden sm:block font-extrabold text-xl text-white tracking-tight leading-none">
-              Foody<span className="text-yellow-300">Vai</span>
+              Foody<span className="text-(--primary-color-500)">Vai</span>
             </span>
           </Link>
         </div>
@@ -135,41 +148,44 @@ const LandingHeader: React.FC<IProps> = () => {
             //     </Dropdown>
             //   }
             className="rounded-full border-white/30 bg-white/15 text-white placeholder-white/60 hover:border-white/50 focus-within:border-white/60 md:py-2!"
-            //   style={{
-            //     backgroundColor: "rgba(255,255,255,0.15)",
-            //     borderColor: "rgba(255,255,255,0.3)",
-            //     color: "#fff",
-            //   }}
           />
         </div>
 
         {/* Actions */}
         <div className="flex items-center gap-1 md:gap-2 shrink-0">
-
           <div className="hidden md:block w-px h-7 bg-white/20 mx-1" />
-
-          <Dropdown menu={{ items: accountItems }} trigger={["click"]}>
-            <button
-              type="button"
-              className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-1 py-1 mg:px-3 md:py-1.5 text-white hover:bg-white/20 transition-colors"
+          {user && user.email ? (
+            <Dropdown
+              menu={{
+                items: accountItems,
+                onClick: handleLogoutFn,
+              }}
+              trigger={["click"]}
             >
-              <div className="w-5 h-5 md:w-7 md:h-7 rounded-full bg-yellow-300 flex items-center justify-center text-green-800 font-bold text-sm select-none">
-                Y
-              </div>
-              <span className="hidden md:block text-sm font-semibold">
-                Account
-              </span>
-              <DownOutlined style={{ fontSize: 10 }} />
-            </button>
-          </Dropdown>
+              <button
+                type="button"
+                className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-1 py-1 mg:px-3 md:py-1.5 text-white hover:bg-white/20 transition-colors cursor-pointer"
+              >
+                <div className="w-5 h-5 md:w-7 md:h-7 rounded-full bg-yellow-300 flex items-center justify-center text-green-800 font-bold text-sm select-none">
+                  Y
+                </div>
+                <span className="hidden md:block text-sm font-semibold">
+                  Account
+                </span>
+                <DownOutlined style={{ fontSize: 10 }} />
+              </button>
+            </Dropdown>
+          ) : (
+            <Link href="/signIn" className="btn-primary btn-nav">
+              Sign In
+            </Link>
+          )}
 
-          <Badge
-            onClick={() => setOpen(true)}
-            count={cart?.length}
-            size="small"
-            offset={[-2, 2]}
-          >
-            <span className="p-1 md:p-2.5 rounded-full flex items-center justify-center bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer">
+          <Badge count={cart?.length} size="small" offset={[-2, 2]}>
+            <span
+              onClick={() => setOpen(true)}
+              className="p-1 md:p-2.5 rounded-full flex items-center justify-center bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer"
+            >
               <ShoppingCartOutlined style={{ fontSize: 18 }} />
             </span>
           </Badge>
@@ -178,16 +194,19 @@ const LandingHeader: React.FC<IProps> = () => {
 
       {open && (
         <CartDrawer
-          title={<h1 className="text-xl font-semibold">Shopping Cart</h1>}
+          title={
+            <h1 className="text-xl font-semibold">
+              Shopping Cart : {cart?.length} Item{" "}
+            </h1>
+          }
           open={open}
           onClose={handleOnCloseAfterCheckoutFn}
           handleClearCart={() => {
-            deleteMutate(undefined);
+            clearCart();
           }}
           content={
             <>
               <CartContent
-                cartItems={cart}
                 handleOnCloseAfterCheckoutFn={handleOnCloseAfterCheckoutFn}
               />
             </>

@@ -1,4 +1,5 @@
 import { PathName } from "@/src/@libs/constant/_paths";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { BsInstagram, BsLinkedin, BsTwitter } from "react-icons/bs";
@@ -13,11 +14,32 @@ const SOCIAL_LINKS = [
 ];
 
 // Footer sections
-const ABOUT_STORE_LINKS = ["Home", "Become a customer", "About us", "FAQ", "Return policy", "Contact us"];
+const ABOUT_STORE_LINKS = [
+  "Home",
+  "Become a customer",
+  "About us",
+  "FAQ",
+  "Return policy",
+  "Contact us",
+];
 
-const USE_CASES_LINKS = ["Use Cases", "Web-designers", "Marketers", "Small Business", "Website Builder"];
+const USE_CASES_LINKS = [
+  "Use Cases",
+  "Web-designers",
+  "Marketers",
+  "Small Business",
+  "Website Builder",
+];
 
-const RESOURCES_LINKS = ["Resources", "Academy", "Blog", "Themes", "Hosting", "Developers", "Support"];
+const RESOURCES_LINKS = [
+  "Resources",
+  "Academy",
+  "Blog",
+  "Themes",
+  "Hosting",
+  "Developers",
+  "Support",
+];
 
 const COMPANY_LINKS = [
   { label: "About Us", href: PathName.about },
@@ -28,13 +50,34 @@ const COMPANY_LINKS = [
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#E8E8E8] shadow-md w-full relative mt-10 lg:mt-20">
+    <footer className="bg-[#E8E8E8] shadow-md w-full relative mt-10 lg:mt-16 pb-10">
       <div className="container">
         <div className="flex flex-col md:flex-row justify-between gap-10 pt-7.5 pb-5">
           <div className="w-full flex flex-col gap-5">
-            <span className="font-extrabold text-3xl lg:text-5xl text-(--primary-color-900) tracking-tight leading-none">
+            <Link
+              href="/"
+              className="flex items-center gap-1 shrink-0 cursor-pointer"
+            >
+              <figure className="flex items-center justify-center">
+                <Image
+                  src={"/images/auth/logo.png"}
+                  alt="Login Illustration"
+                  width={50}
+                  height={50}
+                  className="w-full h-full object-cover rounded-lg shadow-md"
+                />
+              </figure>
+              {/* <div className="w-8 h-8 md:w-10 md:h-10 bg-white rounded-xl flex items-center justify-center text-xl shadow-sm select-none">
+              🍛
+
+            </div> */}
+              <span className="font-extrabold text-3xl lg:text-5xl text-(--primary-color-900) tracking-tight leading-none">
+               Foody<span className="text-(--primary-color-800)">Vai</span>
+              </span>
+            </Link>
+            {/* <span className="font-extrabold text-3xl lg:text-5xl text-(--primary-color-900) tracking-tight leading-none">
               🍛 Foody<span className="text-(--primary-color-800)">Vai</span>
-            </span>
+            </span> */}
             <p className="lg:w-2/3 text-[0.9rem] text-(--secondary-color-800)">
               FoodyVai is an innovative agri-tech startup based in Bangladesh
               with the vision to create a future where safe agro food is the
@@ -52,7 +95,11 @@ const Footer: React.FC = () => {
             </h3>
             <div className="flex gap-4 mt-4">
               {SOCIAL_LINKS.map(({ Icon, label }) => (
-                <a key={label} aria-label={label} className="text-[1.3rem] p-1.5 rounded-full bg-white text-(--primary-color-800) hover:bg-(--primary-color-800) hover:text-(--primary-color-500) shadow-md cursor-pointer transition-colors">
+                <a
+                  key={label}
+                  aria-label={label}
+                  className="text-[1.3rem] p-1.5 rounded-full bg-white text-(--primary-color-800) hover:bg-(--primary-color-800) hover:text-(--primary-color-500) shadow-md cursor-pointer transition-colors"
+                >
                   <Icon />
                 </a>
               ))}
@@ -61,10 +108,15 @@ const Footer: React.FC = () => {
         </div>
         <div className="max-sm:grid grid-cols-1 flex justify-between gap-5 text-(--primary-color-800)">
           <div>
-            <h3 className="text-[1.2rem] font-semibold mb-2">About The Store</h3>
+            <h3 className="text-[1.2rem] font-semibold mb-2">
+              About The Store
+            </h3>
             <div className="flex flex-col gap-2 text-black">
               {ABOUT_STORE_LINKS.map((item) => (
-                <a key={item} className="text-[0.9rem] text-(--secondary-color-800) cursor-pointer">
+                <a
+                  key={item}
+                  className="text-[0.9rem] text-(--secondary-color-800) cursor-pointer"
+                >
                   {item}
                 </a>
               ))}
@@ -75,7 +127,10 @@ const Footer: React.FC = () => {
             <h3 className="text-[1.2rem] font-semibold mb-2">Use Cases</h3>
             <div className="flex flex-col gap-2 text-black">
               {USE_CASES_LINKS.map((item) => (
-                <a key={item} className="text-[0.9rem] text-(--secondary-color-800) cursor-pointer">
+                <a
+                  key={item}
+                  className="text-[0.9rem] text-(--secondary-color-800) cursor-pointer"
+                >
                   {item}
                 </a>
               ))}
@@ -86,7 +141,10 @@ const Footer: React.FC = () => {
             <h3 className="text-[1.2rem] font-semibold mb-2">Resources</h3>
             <div className="flex flex-col gap-2 text-black">
               {RESOURCES_LINKS.map((item) => (
-                <a key={item} className="text-[0.9rem] text-(--secondary-color-800) cursor-pointer">
+                <a
+                  key={item}
+                  className="text-[0.9rem] text-(--secondary-color-800) cursor-pointer"
+                >
                   {item}
                 </a>
               ))}

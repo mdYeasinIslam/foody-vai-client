@@ -33,6 +33,19 @@ export interface ICustomerAddressFilter {
   addressName?: string;
 }
 export interface ICustomerAddress {
+  _id: string;
+  districtId: string;
+  districtName?: string;
+  areaId: string;
+  areaName?: string;
+  contactName: string;
+  phone: string;
+  addressName: string;
+  address: string;
+  isDefault: boolean;
+}
+export interface ICustomerAddressCreate {
+ 
   districtId: string;
   districtName?: string;
   areaId: string;
@@ -42,6 +55,7 @@ export interface ICustomerAddress {
   addressName: string;
   address: string;
 }
+
 export interface ICustomerAddressResponse {
   data: ICustomerAddress;
   success: boolean;

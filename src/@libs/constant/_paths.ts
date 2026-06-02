@@ -11,4 +11,15 @@ export const PathName = {
     email: "info@foodyVai.com",
     whatsApp: "01764078605",
   },
+  auth: {
+    signIn:'/signIn',
+    signUp:'/signUp'
+  },
+  private: {
+    checkout: '/checkout',
+    profile:'/profile',
+    orders: '/orders',
+    admin: '/admin',
+    dashboard:'/dashboard'
+  }
 };

@@ -1,21 +1,28 @@
+import BaseButton from "@/src/@base/components/BaseButton";
 import BaseModal from "@/src/@base/components/BaseModal";
-import { Button, Form, Input, Select } from "antd";
+import BaseSkeleton from "@/src/@base/components/BaseSkeleton";
+import { Form, Input, message, Select } from "antd";
 import { useState } from "react";
-import { useAreas, useCreateCustomerAddress, useDistricts } from "../libs/hooks";
-import toast from "react-hot-toast";
+import { useAddressState } from "../libs/hook/useAddressState";
+import { useDistrictAndArea } from "../libs/hook/useDistrictAndArea";
+import EditAddressModal from "./EditAddressModal";
+import ShowAddress from "./ShowAddress";
 
 const DeliveryAddressForm = () => {
+  const [messageApi, contextHolder] = message.useMessage();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
   const [districtId, setDistrictId] = useState<number | null>(null);
-  const { data, isLoading, isPending } = useDistricts();
-  const { data: areaData } = useAreas(districtId || 1);
-  const districtsData = data?.data;
-  const areasData = areaData?.data;
+  const { districtsData, areasData, isLoading, isPending } =
+    useDistrictAndArea(districtId);
+  const { addressData, addressDataLoading, createCustomerAddress } =
+    useAddressState(messageApi);
 
-  const {mutate:createCustomerAddress} = useCreateCustomerAddress()
-  // console.log(districtsData);
+  const defaultAddress = addressData?.filter(
+    (address) => address.isDefault === true,
+  );
   const handleAddNew = () => {
+    console.log('clicked')
     setIsModalOpen(true);
   };
 
@@ -24,32 +31,59 @@ const DeliveryAddressForm = () => {
     form.resetFields();
   };
   const handleSubmit = (values: any) => {
-    console.log("Form values:", values);
     try {
-      const res = createCustomerAddress(values)
-      console.log(res)
-      toast.success("Address added successfully")
+      const district = districtsData?.find((d) => d.id === values.districtId);
+
+      const area = areasData?.find((a) => a.id === values.areaId);
+      console.log(district, area);
+      const payload = {
+        ...values,
+        districtName: district?.name,
+        areaName: area?.name,
+      };
+      createCustomerAddress(payload);
       setIsModalOpen(false);
-       form.resetFields();
+      form.resetFields();
     } catch (error) {
-      console.log(error)
-      toast.error(error instanceof Error ? error.message : "An error occurred")
+      console.log(error);
+      messageApi.error(
+        error instanceof Error ? error.message : "An error occurred",
+      );
     }
-   
   };
   return (
     <>
+      {contextHolder}
       <div className="border border-(--primary-color-500) rounded-lg ">
-        <div className="flex justify-between items-center bg-(--primary-color-600) px-4 py-2 ">
+        <div className="flex justify-between items-center bg-(--primary-color-600) px-2 py-1  md:px-4 md:py-2">
           <h3 className="text-base font-semibold ">Delivery address</h3>
           <button
             onClick={handleAddNew}
-            className=" text-sm font-semibold cursor-pointer"
+            className=" text-sm font-semibold cursor-pointer border hover:border-(--primary-color-900) border-(--primary-color-700) rounded-sm px-2"
           >
             + Add new
           </button>
         </div>
-        <p className="text-gray-500  px-4 py-2">No address found.</p>
+        {addressDataLoading && <BaseSkeleton isAvatar={true} />}
+        {addressData && addressData?.length <= 0 && (
+          <>
+            <p className="text-gray-500  px-4 py-2">No address found.</p>
+          </>
+        )}
+        <div className="flex items-center justify-between px-2 py-1  md:px-4 md:py-2">
+          <div>
+            {defaultAddress &&
+              defaultAddress?.length > 0 &&
+              defaultAddress?.map((address, idx) => (
+                <ShowAddress key={idx} address={address} className="" />
+              ))}
+          </div>
+          <>
+            <EditAddressModal
+              handleAddNew={handleAddNew}
+            />
+          </>
+        </div>
       </div>
       <BaseModal
         title="Add New Address"
@@ -66,7 +100,7 @@ const DeliveryAddressForm = () => {
               <Select
                 placeholder="Type or select district"
                 options={districtsData?.map((district) => ({
-                  label: district.name,
+                  label: district?.name,
                   value: district.id,
                 }))}
                 onChange={(e) => setDistrictId(e)}
@@ -80,12 +114,16 @@ const DeliveryAddressForm = () => {
               rules={[{ required: true, message: "Please select area" }]}
             >
               <Select
-              placeholder="Select area first"
-              options={districtId ? areasData?.map((area) => ({
-                label: area.name,
-                value: area.id,
-              })) : []}
-              disabled={!districtId}
+                placeholder="Select area first"
+                options={
+                  districtId
+                    ? areasData?.map((area) => ({
+                        label: area.name,
+                        value: area.id,
+                      }))
+                    : []
+                }
+                disabled={!districtId}
               />
             </Form.Item>
           </div>
@@ -108,20 +146,20 @@ const DeliveryAddressForm = () => {
             </Form.Item>
           </div>
 
-            <Form.Item
+          <Form.Item
             label="Address Name"
             name="addressName"
             rules={[{ required: true, message: "Please select address name" }]}
-            >
+          >
             <Select
               placeholder="Select address type"
               options={[
-              { label: "Home", value: "home" },
-              { label: "Office", value: "office" },
-              { label: "Other", value: "other" },
+                { label: "Home", value: "home" },
+                { label: "Office", value: "office" },
+                { label: "Other", value: "other" },
               ]}
             />
-            </Form.Item>
+          </Form.Item>
 
           <Form.Item
             label="Address"
@@ -135,14 +173,7 @@ const DeliveryAddressForm = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              block
-              className="bg-(--primary-color-800)! font-semibold! py-5!"
-            >
-              Add Address
-            </Button>
+            <BaseButton content="+ Add Address" />
           </Form.Item>
         </Form>
       </BaseModal>

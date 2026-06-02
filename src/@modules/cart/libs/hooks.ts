@@ -1,7 +1,7 @@
 import { MutationConfig, QueryConfig } from "@/src/@libs/config/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { ICartItemFilter } from "./interfaces";
 import { CartService } from "./services";
-import { ICartItem, ICartItemFilter } from "./interfaces";
 
 type IUseCarts = {
   options?: ICartItemFilter;

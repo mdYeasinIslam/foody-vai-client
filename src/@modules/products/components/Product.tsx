@@ -1,19 +1,17 @@
 "use client";
+import { AxiosInstance } from "@/src/@libs/config/AxiosInstance";
 import useGlobalState from "@/src/@libs/hooks/useGlobalState";
 import cn from "@/src/@libs/utils/_cn";
-import { LocalStorage } from "@/src/@libs/utils/localStorage";
 import { Badge, message } from "antd";
 import Image from "next/image";
 import React, { useMemo, useState } from "react";
 import { FaCircleMinus, FaCirclePlus } from "react-icons/fa6";
 import { ClassNameValue } from "tailwind-merge";
-import { IProduct, IProductCreate } from "../libs/interfaces";
 import {
-  useCreateCartProduct,
-  useUpdateCartProduct,
+  useCreateCartProduct
 } from "../../cart/libs/hooks";
 import { ICartItemCreate } from "../../cart/libs/interfaces";
-import { AxiosInstance } from "@/src/@libs/config/AxiosInstance";
+import { IProduct } from "../libs/interfaces";
 interface IProps {
   className?: ClassNameValue;
   product: IProduct;
