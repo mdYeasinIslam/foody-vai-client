@@ -1,7 +1,8 @@
 "use client";
 
+import BaseButton from "@/src/@base/components/BaseButton";
 import { PathName } from "@/src/@libs/constant/_paths";
-import { Button, Form, FormProps, Input, message } from "antd";
+import { Form, FormProps, Input, message } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
@@ -125,27 +126,32 @@ const SignInPage = () => {
               valuePropName="checked"
               className="m-0! flex! items-center!"
             >
-              <input type="checkbox" className="cursor-pointer" onChange={handleGuestCheckboxFn} />
+              <input
+                type="checkbox"
+                className="cursor-pointer"
+                onChange={handleGuestCheckboxFn}
+              />
               <span className="ml-2">Sign in as guest</span>
             </Form.Item>
             <Form.Item>
-              <Button
+              {/* <Button
                 type="default"
                 className="bg-(--primary-color-700)! text-white! w-full mt-3 border! border-(--primary-color-800)!"
                 htmlType="submit"
                 size="large"
               >
                 Log In
-              </Button>
+              </Button> */}
+              <BaseButton content="Log In" />
             </Form.Item>
           </Form>
           {/* google login  */}
           <div className="w-full flex flex-col max-w-md">
             <button
               type="button"
-              className="flex items-center justify-center gap-2 bg-white border border-green-900 hover:bg-(--primary-color-700) text-gray-500 font-semibold rounded py-3 mt-4 hover:text-white transition"
+              className="btn-primary flex items-center justify-center gap-2  font-semibold rounded  max-md:py-1!"
             >
-              <FcGoogle className="text-xl" />
+              <FcGoogle className="w-5 h-5 md:w-6 md:h-6" />
               <span className="text-sm">Sign in with Google</span>
             </button>
           </div>

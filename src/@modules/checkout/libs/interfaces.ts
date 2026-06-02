@@ -23,7 +23,10 @@ export interface IDistrictsAndZillasResponse {
   message: string;
   count: number;
 }
-
+export interface ICustomerAddressUpdateDefault {
+    _id:string
+    isDefault: boolean;
+  };
 //customer address type
 export interface ICustomerAddressFilter {
   districtId?: string;

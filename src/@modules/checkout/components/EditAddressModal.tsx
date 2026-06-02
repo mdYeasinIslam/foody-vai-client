@@ -1,13 +1,14 @@
+import BaseButton from "@/src/@base/components/BaseButton";
 import BaseModal from "@/src/@base/components/BaseModal";
+import BaseSkeleton from "@/src/@base/components/BaseSkeleton";
 import cn from "@/src/@libs/utils/_cn";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import { message, Popconfirm, Switch } from "antd";
+import React, { useState } from "react";
 import { FaPencilAlt } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 import { ClassNameValue } from "tailwind-merge";
 import { useAddressState } from "../libs/hook/useAddressState";
-import { message, Popconfirm, Switch } from "antd";
-import BaseSkeleton from "@/src/@base/components/BaseSkeleton";
-import BaseButton from "@/src/@base/components/BaseButton";
-import { MdDelete } from "react-icons/md";
+import { ICustomerAddress } from "../libs/interfaces";
 interface IProps {
   className?: ClassNameValue;
   handleAddNew: () => void;
@@ -16,18 +17,30 @@ const EditAddressModal: React.FC<IProps> = ({ className, handleAddNew }) => {
   const [messageApi, contextHolder] = message.useMessage();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { addressData, addressDataLoading, deleteAddress } =
-    useAddressState(messageApi);
-  console.log(addressData);
+  const {
+    addressData,
+    addressDataLoading,
+    deleteAddressMutate,
+    updateAddressMutate,
+    updateAddressSetDefaultMutate,
+  } = useAddressState(messageApi);
+
   const handleCancel = () => {
     setIsModalOpen(false);
   };
 
-  const onChange = (checked: boolean) => {
-    console.log(`switch to ${checked}`);
+  const onChangeSetDefaultFn = (
+    checked: boolean,
+    address: ICustomerAddress,
+  ) => {
+    const payload = {
+      _id: address._id,
+      isDefault: checked,
+    };
+    updateAddressSetDefaultMutate(payload);
   };
   const handleDeleteFn = (id: string) => {
-    deleteAddress(id);
+    deleteAddressMutate(id);
   };
   return (
     <div className={cn(className, "")}>
@@ -57,7 +70,7 @@ const EditAddressModal: React.FC<IProps> = ({ className, handleAddNew }) => {
                 <div
                   key={idx}
                   className={cn(
-                    "rounded-lg p-4 border cursor-pointer",
+                    "rounded-lg p-4 border  ",
                     addr.isDefault
                       ? "border-2 border-(--primary-color-700) bg-(--primary-color-500)"
                       : "border-gray-300 bg-(--secondary-color-500) hover:border-(--primary-color-700)",
@@ -70,9 +83,10 @@ const EditAddressModal: React.FC<IProps> = ({ className, handleAddNew }) => {
                     <div className="flex items-center gap-2">
                       <Switch
                         defaultChecked={addr.isDefault}
-                        onChange={onChange}
+                        value={addr.isDefault}
+                        onChange={(e) => onChangeSetDefaultFn(e, addr)}
                         size={"middle"}
-                        className={cn("", {
+                        className={cn("bg-(--secondary-color-800)!", {
                           "bg-(--primary-color-900)!": addr.isDefault,
                         })}
                       />

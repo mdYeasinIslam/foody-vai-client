@@ -32,6 +32,26 @@ export const useFindAddress = () => {
     queryFn: () => CheckoutServices.findAddress(),
   });
 };
+//update address
+type ICustomerAddressUpdate = {
+  config?: MutationConfig<typeof CheckoutServices.update>;
+};
+export const useUpdateAddress = ({ config }: ICustomerAddressUpdate = {}) => {
+  return useMutation({
+    ...config,
+    mutationFn: CheckoutServices.update,
+  });
+};
+//update address (set default address)
+type ICustomerAddressUpdateDefault = {
+  config?: MutationConfig<typeof CheckoutServices.updateSetDefault>;
+};
+export const useUpdateAddressSetDefault = ({ config }: ICustomerAddressUpdateDefault = {}) => {
+  return useMutation({
+    ...config,
+    mutationFn: CheckoutServices.updateSetDefault,
+  });
+};
 //delete single address
 type ICustomerAddressDelete = {
   config?: MutationConfig<typeof CheckoutServices.deleteOne>;

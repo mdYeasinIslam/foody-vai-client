@@ -5,6 +5,7 @@ import {
   ICustomerAddressCreate,
   ICustomerAddressesResponse,
   ICustomerAddressResponse,
+  ICustomerAddressUpdateDefault,
   IDistrictsAndZillasResponse,
 } from "./interfaces";
 import axios from "axios";
@@ -57,11 +58,27 @@ export const CheckoutServices = {
     }
   },
   update: async (
-    id: string,
     payload: ICustomerAddress,
   ): Promise<ICustomerAddressResponse> => {
     try {
-      const res = await AxiosInstance.put(`${END_POINT}/${id}`, payload);
+      const res = await AxiosInstance.patch(
+        `${END_POINT}/${payload._id}`,
+        payload,
+      );
+      return Promise.resolve(res.data);
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  updateSetDefault: async (
+    payload: ICustomerAddressUpdateDefault,
+  ): Promise<ICustomerAddressResponse> => {
+    try {
+      const res = await AxiosInstance.patch(
+        `${END_POINT}/${payload._id}/set-default`,
+        payload,
+      );
       return Promise.resolve(res.data);
     } catch (error) {
       throw error;

@@ -15,7 +15,7 @@ const DeliveryAddressForm = () => {
   const [districtId, setDistrictId] = useState<number | null>(null);
   const { districtsData, areasData, isLoading, isPending } =
     useDistrictAndArea(districtId);
-  const { addressData, addressDataLoading, createCustomerAddress } =
+  const { addressData, addressDataLoading, createCustomerAddressMutate } =
     useAddressState(messageApi);
 
   const defaultAddress = addressData?.filter(
@@ -41,7 +41,7 @@ const DeliveryAddressForm = () => {
         districtName: district?.name,
         areaName: area?.name,
       };
-      createCustomerAddress(payload);
+      createCustomerAddressMutate(payload);
       setIsModalOpen(false);
       form.resetFields();
     } catch (error) {
