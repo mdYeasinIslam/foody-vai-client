@@ -10,6 +10,7 @@ import React from "react";
 import { ClassNameValue } from "tailwind-merge";
 import { ICartItem } from "../libs/interfaces";
 import CartSingleItem from "./CartSingleItem";
+import BaseButton from "@/src/@base/components/BaseButton";
 
 interface IProps {
   className?: ClassNameValue;
@@ -20,7 +21,6 @@ const CartContent: React.FC<IProps> = ({
   className,
   handleOnCloseAfterCheckoutFn,
 }) => {
-  
   const [messageApi, contextHolder] = message.useMessage();
   const { cart, updateCartItemQuantity, removeSingleItem } =
     useCartState(messageApi);
@@ -83,13 +83,15 @@ const CartContent: React.FC<IProps> = ({
         )}
 
         <Link href={"/checkout"}>
-          <button
-            onClick={handleOnCloseAfterCheckoutFn}
-            disabled={cart?.length === 0}
-            className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold py-3 rounded-lg transition cursor-pointer"
-          >
+          {/* <button  disabled={cart?.length === 0}
+            onClick={handleOnCloseAfterCheckoutFn} className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold py-3 rounded-lg transition cursor-pointer">
             Proceed To Checkout
-          </button>
+          </button> */}
+          <BaseButton
+            disabled={cart?.length === 0}
+            onClick={handleOnCloseAfterCheckoutFn}
+            content="Proceed To Checkout"
+          />
         </Link>
       </div>
     </div>

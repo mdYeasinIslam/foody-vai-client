@@ -1,5 +1,5 @@
 import { MessageInstance } from "antd/es/message/interface";
-import { useCreateAddress, useFindAddress } from "../hooks";
+import { useCreateAddress, useDeleteAddress, useFindAddress } from "../hooks";
 
 export const useAddressState = (messageApi?: MessageInstance) => {
   const { data, isLoading: addressDataLoading, refetch } = useFindAddress();
@@ -20,9 +20,20 @@ export const useAddressState = (messageApi?: MessageInstance) => {
       },
     },
   });
-
+  const { mutate: deleteAddress } = useDeleteAddress({
+    config: {
+      onSuccess: async (data) => {
+        if (!data) return;
+        messageApi?.loading("Address is deleting.....").then(async () => {
+          await refetch();
+          messageApi?.success("Address deleted successfully");
+        });
+      },
+    },
+  });
   return {
     createCustomerAddress,
+    deleteAddress,
     addressData,
     addressDataLoading,
   };

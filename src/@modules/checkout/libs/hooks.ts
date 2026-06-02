@@ -2,7 +2,6 @@ import { MutationConfig } from "@/src/@libs/config/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { CheckoutServices } from "./services";
 
-
 export const useDistricts = () => {
   return useQuery({
     queryKey: ["districts"],
@@ -17,12 +16,10 @@ export const useAreas = (id: number) => {
   });
 };
 // -------------hooks for address related services--------------------
-type ICreateCustomerAddressProps = {
+type ICustomerAddressCreate = {
   config?: MutationConfig<typeof CheckoutServices.create>;
 };
-export const useCreateAddress = ({
-  config,
-}: ICreateCustomerAddressProps = {}) => {
+export const useCreateAddress = ({ config }: ICustomerAddressCreate = {}) => {
   return useMutation({
     ...config,
     mutationFn: CheckoutServices.create,
@@ -35,17 +32,25 @@ export const useFindAddress = () => {
     queryFn: () => CheckoutServices.findAddress(),
   });
 };
-//delete address
-export const useDeleteAddress = () => {
+//delete single address
+type ICustomerAddressDelete = {
+  config?: MutationConfig<typeof CheckoutServices.deleteOne>;
+};
+export const useDeleteAddress = ({ config }: ICustomerAddressDelete = {}) => {
   return useMutation({
+    ...config,
     mutationFn: CheckoutServices.deleteOne,
   });
 };
-//delete all address 
-export const useDeleteAddresses = () => {
+//delete all address
+type ICustomerAddressesDelete = {
+  config?: MutationConfig<typeof CheckoutServices.deleteAll>;
+};
+export const useDeleteAddresses = ({
+  config,
+}: ICustomerAddressesDelete = {}) => {
   return useMutation({
+    ...config,
     mutationFn: CheckoutServices.deleteAll,
   });
-
-}
-
+};

@@ -1,12 +1,12 @@
+import BaseButton from "@/src/@base/components/BaseButton";
 import BaseModal from "@/src/@base/components/BaseModal";
 import BaseSkeleton from "@/src/@base/components/BaseSkeleton";
-import { Button, Form, Input, message, Select } from "antd";
+import { Form, Input, message, Select } from "antd";
 import { useState } from "react";
 import { useAddressState } from "../libs/hook/useAddressState";
 import { useDistrictAndArea } from "../libs/hook/useDistrictAndArea";
 import EditAddressModal from "./EditAddressModal";
 import ShowAddress from "./ShowAddress";
-import BaseButton from "@/src/@base/components/BaseButton";
 
 const DeliveryAddressForm = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -22,6 +22,7 @@ const DeliveryAddressForm = () => {
     (address) => address.isDefault === true,
   );
   const handleAddNew = () => {
+    console.log('clicked')
     setIsModalOpen(true);
   };
 
@@ -78,7 +79,9 @@ const DeliveryAddressForm = () => {
               ))}
           </div>
           <>
-            <EditAddressModal handleAddNew={handleAddNew} />
+            <EditAddressModal
+              handleAddNew={handleAddNew}
+            />
           </>
         </div>
       </div>

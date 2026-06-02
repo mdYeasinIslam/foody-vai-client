@@ -1,11 +1,13 @@
 import BaseModal from "@/src/@base/components/BaseModal";
 import cn from "@/src/@libs/utils/_cn";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { FaPencilAlt } from "react-icons/fa";
 import { ClassNameValue } from "tailwind-merge";
 import { useAddressState } from "../libs/hook/useAddressState";
-import { message, Switch } from "antd";
+import { message, Popconfirm, Switch } from "antd";
 import BaseSkeleton from "@/src/@base/components/BaseSkeleton";
+import BaseButton from "@/src/@base/components/BaseButton";
+import { MdDelete } from "react-icons/md";
 interface IProps {
   className?: ClassNameValue;
   handleAddNew: () => void;
@@ -14,14 +16,18 @@ const EditAddressModal: React.FC<IProps> = ({ className, handleAddNew }) => {
   const [messageApi, contextHolder] = message.useMessage();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { addressData, addressDataLoading } = useAddressState(messageApi);
-
+  const { addressData, addressDataLoading, deleteAddress } =
+    useAddressState(messageApi);
   console.log(addressData);
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
   const onChange = (checked: boolean) => {
     console.log(`switch to ${checked}`);
+  };
+  const handleDeleteFn = (id: string) => {
+    deleteAddress(id);
   };
   return (
     <div className={cn(className, "")}>
@@ -37,7 +43,8 @@ const EditAddressModal: React.FC<IProps> = ({ className, handleAddNew }) => {
         open={isModalOpen}
         onCancel={handleCancel}
         onOk={handleCancel}
-        className=""
+        style={{ top: 15, bottom: 20 }}
+        className="w-screen! xl:w-[50vw]! mb-10!"
       >
         <div className="space-y-4">
           {addressDataLoading ? (
@@ -57,37 +64,63 @@ const EditAddressModal: React.FC<IProps> = ({ className, handleAddNew }) => {
                   )}
                 >
                   <div className="flex justify-between items-center mb-3">
-                    <h3 className="font-semibold text-gray-900">
+                    <h3 className="font-semibold text-gray-900 capitalize">
                       {addr.addressName}
                     </h3>
-                    <div>
+                    <div className="flex items-center gap-2">
                       <Switch
-                        defaultChecked
+                        defaultChecked={addr.isDefault}
                         onChange={onChange}
-                        className="bg-(--primary-color-900)!"
+                        size={"middle"}
+                        className={cn("", {
+                          "bg-(--primary-color-900)!": addr.isDefault,
+                        })}
                       />
-                      ;
+                      <p>{addr.isDefault ? "Default" : "Set as Default"}</p>
                     </div>
                   </div>
-                  <p className="text-sm font-medium text-gray-800 mb-1">
+                  <p className="text-sm font-semibold text-gray-800 capitalize mb-1">
                     {addr.contactName}
                   </p>
                   <p className="text-sm text-gray-600">{addr.phone}</p>
-                  <p className="text-sm text-gray-600">
-                    {addr.districtName} - {addr.areaName}
-                  </p>
                   <p className="text-sm text-gray-600">{addr.address}</p>
+                  <p className="text-sm text-gray-600">{addr.areaName}</p>
+                  <p>{addr.districtName} </p>
+                  <div className="flex items-center justify-end gap-2">
+                    <Popconfirm
+                      title="Delete the address"
+                      description="Are you sure to delete this address?"
+                      onConfirm={() => handleDeleteFn(addr?._id)}
+                      // onCancel={()=>messageApi.error('')}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <div
+                        // onClick={() => handleDeleteFn(addr?._id)}
+                        className="bg-red-600 hover:bg-red-700 p-1 rounded-full cursor-pointer"
+                      >
+                        <MdDelete
+                          color="white"
+                          className="w-4 h-4 md:w-4 md:h-4 cursor-pointer"
+                        />
+                      </div>
+                    </Popconfirm>
+                    <div
+                      // onClick={() => setIsModalOpen(true)}
+                      className="bg-(--primary-color-900) hover:bg-(--primary-color-800) p-1 rounded-full cursor-pointer"
+                    >
+                      <FaPencilAlt
+                        color="white"
+                        className="w-4 h-4 md:w-4 md:h-4 cursor-pointer "
+                      />
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
           )}
-
-          <button
-            onClick={handleAddNew}
-            className="btn-primary w-full border-2 border-dashed border-(--primary-color-700) rounded-lg p-4 text-(--primary-color-700) font-semibold hover:bg-(--primary-color-600)"
-          >
-            + Add Address
-          </button>
+          {/* <div onClick={handleOpenModal}>add</div> */}
+          <BaseButton onClick={handleAddNew} content="+ Add Address" />
         </div>
       </BaseModal>
     </div>
