@@ -7,6 +7,8 @@ import { useAddressState } from "../libs/hook/useAddressState";
 import { useDistrictAndArea } from "../libs/hook/useDistrictAndArea";
 import EditAddressModal from "./EditAddressModal";
 import ShowAddress from "./ShowAddress";
+import BaseForm from "@/src/@base/components/BaseForm";
+import AddressFields from "./AddressFields";
 
 const DeliveryAddressForm = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -22,7 +24,7 @@ const DeliveryAddressForm = () => {
     (address) => address.isDefault === true,
   );
   const handleAddNew = () => {
-    console.log('clicked')
+    console.log("clicked");
     setIsModalOpen(true);
   };
 
@@ -35,7 +37,6 @@ const DeliveryAddressForm = () => {
       const district = districtsData?.find((d) => d.id === values.districtId);
 
       const area = areasData?.find((a) => a.id === values.areaId);
-      console.log(district, area);
       const payload = {
         ...values,
         districtName: district?.name,
@@ -79,9 +80,7 @@ const DeliveryAddressForm = () => {
               ))}
           </div>
           <>
-            <EditAddressModal
-              handleAddNew={handleAddNew}
-            />
+            <EditAddressModal handleAddNew={handleAddNew} />
           </>
         </div>
       </div>
@@ -90,7 +89,22 @@ const DeliveryAddressForm = () => {
         open={isModalOpen}
         onCancel={handleCancel}
       >
-        <Form form={form} layout="vertical" onFinish={handleSubmit}>
+        <BaseForm
+          form={form}
+          submitText="+ Add Address"
+          onFinish={(values) => {
+            handleSubmit(values);
+          }}
+        >
+          <AddressFields
+            form={form}
+            districtId={districtId}
+            setDistrictId={setDistrictId}
+            districtsData={districtsData}
+            areasData={areasData}
+          />
+        </BaseForm>
+        {/* <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <div className="grid grid-cols-2 gap-4">
             <Form.Item
               label="District"
@@ -175,7 +189,7 @@ const DeliveryAddressForm = () => {
           <Form.Item>
             <BaseButton content="+ Add Address" />
           </Form.Item>
-        </Form>
+        </Form> */}
       </BaseModal>
     </>
   );

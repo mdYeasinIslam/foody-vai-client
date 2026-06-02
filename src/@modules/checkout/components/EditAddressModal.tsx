@@ -39,6 +39,9 @@ const EditAddressModal: React.FC<IProps> = ({ className, handleAddNew }) => {
     };
     updateAddressSetDefaultMutate(payload);
   };
+  const handleUpdateAddressFn = (address: ICustomerAddress) => {
+    console.log(address);
+  };
   const handleDeleteFn = (id: string) => {
     deleteAddressMutate(id);
   };
@@ -105,24 +108,18 @@ const EditAddressModal: React.FC<IProps> = ({ className, handleAddNew }) => {
                       title="Delete the address"
                       description="Are you sure to delete this address?"
                       onConfirm={() => handleDeleteFn(addr?._id)}
-                      // onCancel={()=>messageApi.error('')}
                       okText="Yes"
                       cancelText="No"
                     >
-                      <div
-                        // onClick={() => handleDeleteFn(addr?._id)}
-                        className="bg-red-600 hover:bg-red-700 p-1 rounded-full cursor-pointer"
-                      >
+                      <div className="bg-red-600 hover:bg-red-700 p-1 rounded-full cursor-pointer">
                         <MdDelete
                           color="white"
                           className="w-4 h-4 md:w-4 md:h-4 cursor-pointer"
                         />
                       </div>
                     </Popconfirm>
-                    <div
-                      // onClick={() => setIsModalOpen(true)}
-                      className="bg-(--primary-color-900) hover:bg-(--primary-color-800) p-1 rounded-full cursor-pointer"
-                    >
+
+                    <div className="bg-(--primary-color-900) hover:bg-(--primary-color-800) p-1 rounded-full cursor-pointer">
                       <FaPencilAlt
                         color="white"
                         className="w-4 h-4 md:w-4 md:h-4 cursor-pointer "
