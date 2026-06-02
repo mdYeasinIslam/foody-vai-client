@@ -6,6 +6,7 @@ import { useAddressState } from "../libs/hook/useAddressState";
 import { useDistrictAndArea } from "../libs/hook/useDistrictAndArea";
 import EditAddressModal from "./EditAddressModal";
 import ShowAddress from "./ShowAddress";
+import BaseButton from "@/src/@base/components/BaseButton";
 
 const DeliveryAddressForm = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -77,7 +78,7 @@ const DeliveryAddressForm = () => {
               ))}
           </div>
           <>
-            <EditAddressModal />
+            <EditAddressModal handleAddNew={handleAddNew} />
           </>
         </div>
       </div>
@@ -169,14 +170,7 @@ const DeliveryAddressForm = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              block
-              className="bg-(--primary-color-700)! hover:bg-(--primary-color-800)!  font-semibold!  sm:py-5! sm:text-base!"
-            >
-              Add Address
-            </Button>
+            <BaseButton content="+ Add Address" />
           </Form.Item>
         </Form>
       </BaseModal>

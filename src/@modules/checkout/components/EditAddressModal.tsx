@@ -8,8 +8,9 @@ import { message, Switch } from "antd";
 import BaseSkeleton from "@/src/@base/components/BaseSkeleton";
 interface IProps {
   className?: ClassNameValue;
+  handleAddNew: () => void;
 }
-const EditAddressModal: React.FC<IProps> = ({ className }) => {
+const EditAddressModal: React.FC<IProps> = ({ className, handleAddNew }) => {
   const [messageApi, contextHolder] = message.useMessage();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -60,7 +61,12 @@ const EditAddressModal: React.FC<IProps> = ({ className }) => {
                       {addr.addressName}
                     </h3>
                     <div>
-                      <Switch defaultChecked onChange={onChange}  className="bg-(--primary-color-900)!"/>;
+                      <Switch
+                        defaultChecked
+                        onChange={onChange}
+                        className="bg-(--primary-color-900)!"
+                      />
+                      ;
                     </div>
                   </div>
                   <p className="text-sm font-medium text-gray-800 mb-1">
@@ -76,7 +82,10 @@ const EditAddressModal: React.FC<IProps> = ({ className }) => {
             </div>
           )}
 
-          <button className="btn-primary w-full border-2 border-dashed border-(--primary-color-700) rounded-lg p-4 text-(--primary-color-700) font-semibold hover:bg-(--primary-color-600)">
+          <button
+            onClick={handleAddNew}
+            className="btn-primary w-full border-2 border-dashed border-(--primary-color-700) rounded-lg p-4 text-(--primary-color-700) font-semibold hover:bg-(--primary-color-600)"
+          >
             + Add Address
           </button>
         </div>
