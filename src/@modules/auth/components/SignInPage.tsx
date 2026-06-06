@@ -2,7 +2,7 @@
 
 import BaseButton from "@/src/@base/components/BaseButton";
 import { PathName } from "@/src/@libs/constant/_paths";
-import { Form, FormProps, Input, message } from "antd";
+import { Checkbox, CheckboxProps, Form, FormProps, Input, message } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
@@ -48,7 +48,7 @@ const SignInPage = () => {
     },
   });
 
-  const handleGuestCheckboxFn = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange: CheckboxProps["onChange"] = (e) => {
     if (e.target.checked) {
       form.setFieldsValue({
         email: "test@test.com",
@@ -126,12 +126,16 @@ const SignInPage = () => {
               valuePropName="checked"
               className="m-0! flex! items-center!"
             >
-              <input
-                type="checkbox"
-                className="cursor-pointer"
-                onChange={handleGuestCheckboxFn}
-              />
-              <span className="ml-2">Sign in as guest</span>
+              <Checkbox onChange={onChange}>Sign in as guest</Checkbox>
+
+              {/* <>
+                <input
+                  type="checkbox"
+                  className="cursor-pointer"
+                  onChange={handleGuestCheckboxFn}
+                />
+                <span className="ml-2">Sign in as guest</span>
+              </> */}
             </Form.Item>
             <Form.Item>
               {/* <Button

@@ -45,11 +45,12 @@ const AddressFields = ({
         >
           <Select
             placeholder="Select area first"
+            
             options={
               districtId
                 ? areasData?.map((area) => ({
-                    label: area.name,
-                    value: area.id,
+                    label: area?.name,
+                    value: area?.id,
                   }))
                 : []
             }

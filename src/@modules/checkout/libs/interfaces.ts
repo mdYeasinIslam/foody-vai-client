@@ -24,9 +24,9 @@ export interface IDistrictsAndZillasResponse {
   count: number;
 }
 export interface ICustomerAddressUpdateDefault {
-    _id:string
-    isDefault: boolean;
-  };
+  _id: string;
+  isDefault: boolean;
+}
 //customer address type
 export interface ICustomerAddressFilter {
   districtId?: string;
@@ -48,7 +48,6 @@ export interface ICustomerAddress {
   isDefault: boolean;
 }
 export interface ICustomerAddressCreate {
- 
   districtId: string;
   districtName?: string;
   areaId: string;

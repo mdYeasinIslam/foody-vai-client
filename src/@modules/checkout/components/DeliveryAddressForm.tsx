@@ -1,21 +1,20 @@
-import BaseButton from "@/src/@base/components/BaseButton";
+import BaseForm from "@/src/@base/components/BaseForm";
 import BaseModal from "@/src/@base/components/BaseModal";
 import BaseSkeleton from "@/src/@base/components/BaseSkeleton";
-import { Form, Input, message, Select } from "antd";
+import { Form, message } from "antd";
 import { useState } from "react";
 import { useAddressState } from "../libs/hook/useAddressState";
 import { useDistrictAndArea } from "../libs/hook/useDistrictAndArea";
+import AddressFields from "./AddressFields";
 import EditAddressModal from "./EditAddressModal";
 import ShowAddress from "./ShowAddress";
-import BaseForm from "@/src/@base/components/BaseForm";
-import AddressFields from "./AddressFields";
 
 const DeliveryAddressForm = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
   const [districtId, setDistrictId] = useState<number | null>(null);
-  const { districtsData, areasData, isLoading, isPending } =
+  const { districtsData, areasData, } =
     useDistrictAndArea(districtId);
   const { addressData, addressDataLoading, createCustomerAddressMutate } =
     useAddressState(messageApi);
@@ -24,7 +23,6 @@ const DeliveryAddressForm = () => {
     (address) => address.isDefault === true,
   );
   const handleAddNew = () => {
-    console.log("clicked");
     setIsModalOpen(true);
   };
 
