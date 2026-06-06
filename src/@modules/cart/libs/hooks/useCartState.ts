@@ -155,10 +155,11 @@ export const useCartState = (messageApi?: MessageInstance) => {
       return;
     }
     const filterByUserId = cart.filter((item) => item?.userId == null);
-    console.log(filterByUserId)
+    console.log(filterByUserId);
     try {
+      if(filterByUserId?.length<=0)return
       await Promise.all(
-        cart?.map((item) => {
+        filterByUserId?.map((item) => {
           const payload = {
             ...item,
             userId: userInfo?._id,
