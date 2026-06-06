@@ -4,7 +4,6 @@ interface IProps {
 
 const CategoryPage:React.FC<IProps> = async ({ params }) => {
   const { category } = await params;
-console.log(category)
   return (
     <div>
       <h1>Category: {category}</h1>
