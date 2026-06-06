@@ -1,10 +1,16 @@
 import { MessageInstance } from "antd/es/message/interface";
-import { useCreateAddress, useDeleteAddress, useFindAddress } from "../hooks";
+import {
+  useCreateAddress,
+  useDeleteAddress,
+  useFindAddress,
+  useUpdateAddress,
+  useUpdateAddressSetDefault,
+} from "../hooks";
 
 export const useAddressState = (messageApi?: MessageInstance) => {
   const { data, isLoading: addressDataLoading, refetch } = useFindAddress();
   const addressData = data?.data;
-  const { mutate: createCustomerAddress } = useCreateAddress({
+  const { mutate: createCustomerAddressMutate } = useCreateAddress({
     config: {
       onSuccess: async (data) => {
         if (!data) return;
@@ -14,13 +20,48 @@ export const useAddressState = (messageApi?: MessageInstance) => {
         });
       },
       onError: (error) => {
+        console.log(error);
         messageApi?.error(
           error instanceof Error ? error.message : "An error occurred",
         );
       },
     },
   });
-  const { mutate: deleteAddress } = useDeleteAddress({
+  const { mutate: updateAddressMutate } = useUpdateAddress({
+    config: {
+      onSuccess: async (data) => {
+        if (!data) return;
+        messageApi?.loading("Address is updating.....").then(async () => {
+          await refetch();
+          messageApi?.success("Address updated successfully");
+        });
+      },
+      onError: (error) => {
+        console.log(error);
+        messageApi?.error(
+          error instanceof Error ? error.message : "An error occurred",
+        );
+      },
+    },
+  });
+  const { mutate: updateAddressSetDefaultMutate } = useUpdateAddressSetDefault({
+    config: {
+      onSuccess: async (data) => {
+        if (!data) return;
+        messageApi?.loading("Address is updating.....").then(async () => {
+          await refetch();
+          messageApi?.success("Address updated successfully");
+        });
+      },
+      onError: (error) => {
+        console.log(error);
+        messageApi?.error(
+          error instanceof Error ? error.message : "An error occurred",
+        );
+      },
+    },
+  });
+  const { mutate: deleteAddressMutate } = useDeleteAddress({
     config: {
       onSuccess: async (data) => {
         if (!data) return;
@@ -29,11 +70,19 @@ export const useAddressState = (messageApi?: MessageInstance) => {
           messageApi?.success("Address deleted successfully");
         });
       },
+      onError: (error) => {
+        console.log(error);
+        messageApi?.error(
+          error instanceof Error ? error.message : "An error occurred",
+        );
+      },
     },
   });
   return {
-    createCustomerAddress,
-    deleteAddress,
+    createCustomerAddressMutate,
+    deleteAddressMutate,
+    updateAddressMutate,
+    updateAddressSetDefaultMutate,
     addressData,
     addressDataLoading,
   };

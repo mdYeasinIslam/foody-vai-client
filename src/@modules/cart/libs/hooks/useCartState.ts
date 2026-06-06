@@ -93,12 +93,10 @@ export const useCartState = (messageApi?: MessageInstance) => {
   const { mutate: deleteMutateSingleItem } = useDeleteCartProduct({
     config: {
       onSuccess: async (data) => {
-        console.log(data);
         if (!data?.success) {
           messageApi?.error(data?.message || "Failed to clear cart");
           return;
         }
-        console.log("delete product", data);
         // setCart(cartItems.filter((item) => item._id !== data.cartItemId));
         setCart((prev) => prev.filter((item) => item._id !== data.cartItemId));
         await refetch();
@@ -111,12 +109,10 @@ export const useCartState = (messageApi?: MessageInstance) => {
   const { mutate: deleteMutate } = useDeleteAllCartProducts({
     config: {
       onSuccess: async (data) => {
-        console.log(data);
         if (!data?.success) {
           messageApi?.error(data?.message || "Failed to clear cart");
           return;
         }
-        console.log("delete all");
         setCart([]);
         await refetch();
         messageApi?.success("Cart cleared successfully");
@@ -155,10 +151,10 @@ export const useCartState = (messageApi?: MessageInstance) => {
       return;
     }
     const filterByUserId = cart.filter((item) => item?.userId == null);
-    console.log(filterByUserId)
     try {
+      if(filterByUserId?.length<=0)return
       await Promise.all(
-        cart?.map((item) => {
+        filterByUserId?.map((item) => {
           const payload = {
             ...item,
             userId: userInfo?._id,

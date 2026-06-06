@@ -42,7 +42,6 @@ export async function middleware(req: NextRequest) {
   // verify token — null means expired or invalid
   const payload = token ? await verifyToken(token) : null;
   const isAuthenticated = !!payload;
-  console.log('middleware',payload)
   const isAdmin = payload?.role === "admin";
 
   // ── 1. Guest-only routes (signIn, signUp) ──────────────────────────────────

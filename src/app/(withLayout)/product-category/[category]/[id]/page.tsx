@@ -5,7 +5,6 @@ interface IProps {
 const SubcategoryPage:React.FC<IProps> = async ({ params }) => {
   const { category, id } = await params;
   const data = await params
-  console.log(data);
 
   return (
     <div>
