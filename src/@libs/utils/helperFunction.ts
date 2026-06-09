@@ -15,3 +15,8 @@ export const calculateTotal = (arrayCart: ValueType[]) => {
      0,
    );
  };
+export const calculateDiscountFn = (cart: ICartItem[], isDiscount: boolean) => {
+  const discountPercentage = isDiscount ? 10 : 0;
+  const total = calculateTotal(cart);
+  return (total * discountPercentage) / 100;
+};

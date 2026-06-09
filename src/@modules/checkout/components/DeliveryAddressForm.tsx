@@ -15,12 +15,12 @@ const DeliveryAddressForm = () => {
   const [form] = Form.useForm();
   const [districtId, setDistrictId] = useState<number | null>(null);
   const { districtsData, areasData } = useDistrictAndArea(districtId);
-  const { addressData, addressDataLoading, createCustomerAddressMutate } =
-    useAddressState(messageApi);
-
-  const defaultAddress = addressData?.filter(
-    (address) => address.isDefault === true,
-  );
+  const {
+    addressData,
+    defaultAddress,
+    addressDataLoading,
+    createCustomerAddressMutate,
+  } = useAddressState(messageApi);
   const handleAddNew = () => {
     setIsModalOpen(true);
   };

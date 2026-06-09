@@ -10,6 +10,9 @@ import {
 export const useAddressState = (messageApi?: MessageInstance) => {
   const { data, isLoading: addressDataLoading, refetch } = useFindAddress();
   const addressData = data?.data;
+  const defaultAddress = addressData?.filter(
+    (address) => address?.isDefault === true,
+  );
   const { mutate: createCustomerAddressMutate } = useCreateAddress({
     config: {
       onSuccess: async (data) => {
@@ -84,6 +87,7 @@ export const useAddressState = (messageApi?: MessageInstance) => {
     updateAddressMutate,
     updateAddressSetDefaultMutate,
     addressData,
+    defaultAddress,
     addressDataLoading,
   };
 };
