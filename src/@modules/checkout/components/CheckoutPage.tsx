@@ -1,10 +1,8 @@
 "use client";
 import BaseButton from "@/src/@base/components/BaseButton";
 import BaseSkeleton from "@/src/@base/components/BaseSkeleton";
-import {
-  calculateDiscountFn,
-  calculateTotal,
-} from "@/src/@libs/utils/helperFunction";
+import { useSocket } from "@/src/@libs/hooks/useSocket";
+import { calculateTotal } from "@/src/@libs/utils/helperFunction";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import Image from "next/image";
@@ -19,6 +17,7 @@ interface IProps {
   className?: ClassNameValue;
 }
 const CheckoutPage: React.FC<IProps> = () => {
+  const { socket } = useSocket();
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const { cart, isPendingCartProducts } = useCartState();
   const { defaultAddress } = useAddressState();
@@ -26,22 +25,37 @@ const CheckoutPage: React.FC<IProps> = () => {
     dayjs().add(1, "day"),
   );
   const [note, setNote] = useState("");
-
+  console.log(cart);
   const subTotal = calculateTotal(cart);
   const deliveryCharge = Delivery_Charge.INSIDE_DHAKA;
-  const calculateDiscount = calculateDiscountFn(cart, true);
+  // const calculateDiscount = calculateDiscountFn(cart, true);
   const totalAmount = subTotal + deliveryCharge;
-
-  const checkoutInfo = {
-    subTotal,
-    deliveryCharge,
-    totalAmount,
-    paymentMethod,
-    deliveryDate: deliveryDate?.clone().format("Do MMM, YYYY"),
-    note,
-    defaultAddress: defaultAddress?.[0],
+  const connectSocket = () => {
+    const checkoutInfo = {
+      subTotal,
+      deliveryCharge,
+      totalAmount,
+      paymentMethod,
+      deliveryDate: deliveryDate?.clone().format("Do MMM, YYYY"),
+      note,
+      defaultAddress: defaultAddress?.[0],
+      items: cart,
+    };
+    socket?.emit(
+      "placeOrder",
+      {
+        data: checkoutInfo,
+      },
+      (res: any) => {
+        if (res.success) {
+          console.log("successful");
+        } else {
+          console.log("failed");
+        }
+      },
+    );
+    console.log(checkoutInfo);
   };
-  console.log(checkoutInfo);
   return (
     <section>
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -218,7 +232,11 @@ const CheckoutPage: React.FC<IProps> = () => {
               {/* <button className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition">
                 Order Now
               </button> */}
-              <BaseButton content="Order Now" className="" />
+              <BaseButton
+                onClick={connectSocket}
+                content="Order Now"
+                className=""
+              />
               {/* Terms */}
               <p className="text-gray-600 text-xs mt-4">
                 By placing your order, you agree to be bound by the Khaas Food
