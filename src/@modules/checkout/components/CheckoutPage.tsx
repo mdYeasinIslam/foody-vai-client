@@ -13,31 +13,33 @@ import { useCartState } from "../../cart/libs/hooks/useCartState";
 import { Delivery_Charge } from "../libs/enums";
 import { useAddressState } from "../libs/hook/useAddressState";
 import DeliveryAddressForm from "./DeliveryAddressForm";
+import { useAuthState } from "../../auth/libs/hooks/useAuthState";
 interface IProps {
   className?: ClassNameValue;
 }
 const CheckoutPage: React.FC<IProps> = () => {
   const { socket } = useSocket();
   const [paymentMethod, setPaymentMethod] = useState("cod");
-  const { cart, isPendingCartProducts } = useCartState();
+  const {user, cart, isPendingCartProducts } = useCartState();
   const { defaultAddress } = useAddressState();
   const [deliveryDate, setDeliveryDate] = useState<dayjs.Dayjs | null>(
     dayjs().add(1, "day"),
   );
   const [note, setNote] = useState("");
-  console.log(cart);
   const subTotal = calculateTotal(cart);
   const deliveryCharge = Delivery_Charge.INSIDE_DHAKA;
   // const calculateDiscount = calculateDiscountFn(cart, true);
   const totalAmount = subTotal + deliveryCharge;
-  const connectSocket = () => {
+  const handleOrderViaSocketFn = () => {
     const checkoutInfo = {
+      customerName:user?.userName,
       subTotal,
       deliveryCharge,
       totalAmount,
       paymentMethod,
       deliveryDate: deliveryDate?.clone().format("Do MMM, YYYY"),
       note,
+      status: "pending",
       defaultAddress: defaultAddress?.[0],
       items: cart,
     };
@@ -47,7 +49,8 @@ const CheckoutPage: React.FC<IProps> = () => {
         data: checkoutInfo,
       },
       (res: any) => {
-        if (res.success) {
+        console.log(res);
+        if (res?.success) {
           console.log("successful");
         } else {
           console.log("failed");
@@ -233,7 +236,7 @@ const CheckoutPage: React.FC<IProps> = () => {
                 Order Now
               </button> */}
               <BaseButton
-                onClick={connectSocket}
+                onClick={handleOrderViaSocketFn}
                 content="Order Now"
                 className=""
               />

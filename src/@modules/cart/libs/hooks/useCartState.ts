@@ -218,6 +218,7 @@ export const useCartState = (messageApi?: MessageInstance) => {
     setCart([]);
   };
   return {
+    user,
     cart,
     setCart,
     isCreating,
