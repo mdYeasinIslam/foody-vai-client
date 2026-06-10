@@ -1,7 +1,7 @@
 // @modules/order/libs/services/order.socket.service.ts
-import { Socket } from "socket.io-client";
 import { socketRequest } from "@/src/@libs/socket/libs/socketRequest";
-import { IOrderCreate, IOrderInfo, IOrderResponse } from "./interface";
+import { Socket } from "socket.io-client";
+import { IOrderCreate, IOrderResponse } from "./interface";
 
 const EVENTS = {
   PLACE_ORDER: "placeOrder",

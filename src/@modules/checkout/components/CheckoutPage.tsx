@@ -16,7 +16,7 @@ interface IProps {
   className?: ClassNameValue;
 }
 const CheckoutPage: React.FC<IProps> = () => {
-  const [messageApi, contextHolder]= message.useMessage()
+  const [messageApi, contextHolder] = message.useMessage();
   const { placeOrder } = useOrderState(messageApi);
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const { user, cart, isPendingCartProducts } = useCartState();
@@ -46,7 +46,7 @@ const CheckoutPage: React.FC<IProps> = () => {
       specialNote,
       // status: "pending",
       items: cart?.map((item) => ({
-        id: item?._id,
+        // id: item?._id,
         productId: item.productId,
         userId: item?.userId,
       })),

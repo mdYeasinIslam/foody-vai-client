@@ -22,7 +22,7 @@ export const calculateTotal = (
     (acc, item) => acc + item.price.price * item.quantity,
     0,
   );
-  const tax = subTotal * 0.1;
+  const tax = parseFloat((subTotal * 0.1).toFixed(2));
   const deliveryFee: Delivery_Charge =
     districtName === "Dhaka"
       ? Delivery_Charge.INSIDE_DHAKA

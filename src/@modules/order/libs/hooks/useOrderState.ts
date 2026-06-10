@@ -2,9 +2,13 @@ import { useAuthState } from "@/src/@modules/auth/libs/hooks/useAuthState";
 import { MessageInstance } from "antd/es/message/interface";
 import { usePlaceOrder } from "../hooks";
 import { IOrderCreate } from "../interface";
+import { useCartState } from "@/src/@modules/cart/libs/hooks/useCartState";
+import { useRouter } from "next/navigation";
 
 export const useOrderState = (messageApi?: MessageInstance) => {
   const { user } = useAuthState(messageApi);
+  const router = useRouter();
+  const { clearCart, setCart } = useCartState();
   // const [orders, setOrders] = useGlobalState<IOrderInfo[]>({
   //   key: "orders",
   //   initialValue: [],
@@ -26,7 +30,11 @@ export const useOrderState = (messageApi?: MessageInstance) => {
           messageApi?.error(res.message || "Failed to place order");
         }
         messageApi?.loading("Placing order...").then(() => {
+          clearCart();
+          setCart([]);
+
           messageApi?.success(res.message);
+          router.push("/");
         });
       },
       onError: (err) => messageApi?.error(err.message),
