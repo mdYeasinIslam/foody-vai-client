@@ -1,7 +1,7 @@
 // @modules/order/libs/services/order.socket.service.ts
 import { Socket } from "socket.io-client";
 import { socketRequest } from "@/src/@libs/socket/libs/socketRequest";
-import { IOrderInfo, IOrderResponse } from "./interface";
+import { IOrderCreate, IOrderInfo, IOrderResponse } from "./interface";
 
 const EVENTS = {
   PLACE_ORDER: "placeOrder",
@@ -14,8 +14,8 @@ export const OrderSocketService = {
   Name: "order",
   EVENTS,
 
-  place: (socket: Socket | null, payload: IOrderInfo) =>
-    socketRequest<IOrderInfo, IOrderResponse>(
+  place: (socket: Socket | null, payload: IOrderCreate) =>
+    socketRequest<IOrderCreate, IOrderResponse>(
       socket,
       EVENTS.PLACE_ORDER,
       payload,

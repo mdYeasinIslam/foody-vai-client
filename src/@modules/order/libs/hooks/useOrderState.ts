@@ -1,16 +1,14 @@
-// @modules/order/libs/hooks/useOrderState.ts
-import { MessageInstance } from "antd/es/message/interface";
 import { useAuthState } from "@/src/@modules/auth/libs/hooks/useAuthState";
-import useGlobalState from "@/src/@libs/hooks/useGlobalState";
-import { IOrderInfo } from "../interface";
-import { useCancelOrder, useOrderUpdates, usePlaceOrder } from "../hooks";
+import { MessageInstance } from "antd/es/message/interface";
+import { usePlaceOrder } from "../hooks";
+import { IOrderCreate } from "../interface";
 
 export const useOrderState = (messageApi?: MessageInstance) => {
   const { user } = useAuthState(messageApi);
-  const [orders, setOrders] = useGlobalState<IOrderInfo[]>({
-    key: "orders",
-    initialValue: [],
-  });
+  // const [orders, setOrders] = useGlobalState<IOrderInfo[]>({
+  //   key: "orders",
+  //   initialValue: [],
+  // });
 
   // place order
   const {
@@ -21,59 +19,62 @@ export const useOrderState = (messageApi?: MessageInstance) => {
   } = usePlaceOrder({
     config: {
       onSuccess: (res) => {
-        if (res.success && res.data) {
-          setOrders((prev) => [res.data as any, ...prev]);
-          messageApi?.success(res.message || "Order placed successfully");
-        } else {
+        console.log(res);
+
+        if (!res.success) {
+          // setOrders((prev) => [res?.data as IOrderInfo, ...prev]);
           messageApi?.error(res.message || "Failed to place order");
         }
+        messageApi?.loading("Placing order...").then(() => {
+          messageApi?.success(res.message);
+        });
       },
       onError: (err) => messageApi?.error(err.message),
     },
   });
 
   // cancel order
-  const { mutate: cancelMutate, isPending: isCancelling } = useCancelOrder({
-    config: {
-      onSuccess: (res) => {
-        if (res.success) {
-          setOrders((prev) =>
-            prev.map((o) =>
-              o._id === res.data?._id ? { ...o, status: "cancelled" } : o,
-            ),
-          );
-          messageApi?.success("Order cancelled");
-        }
-      },
-      onError: (err) => messageApi?.error(err.message),
-    },
-  });
+  // const { mutate: cancelMutate, isPending: isCancelling } = useCancelOrder({
+  //   config: {
+  //     onSuccess: (res) => {
+  //       if (res.success) {
+  //         setOrders((prev) =>
+  //           prev.map((o) =>
+  //             o._id === res.data?._id ? { ...o, status: "cancelled" } : o,
+  //           ),
+  //         );
+  //         messageApi?.success("Order cancelled");
+  //       }
+  //     },
+  //     onError: (err) => messageApi?.error(err.message),
+  //   },
+  // });
 
   // live updates from server
-  useOrderUpdates((updated) => {
-    setOrders((prev) =>
-      prev.map((o) => (o._id === updated._id ? { ...o, ...updated } : o)),
-    );
-    messageApi?.info(`Order ${updated._id} updated: ${updated.status}`);
-  });
+  // useOrderUpdates((updated) => {
+  //   setOrders((prev) =>
+  //     prev.map((o) => (o._id === updated._id ? { ...o, ...updated } : o)),
+  //   );
+  //   messageApi?.info(`Order ${updated._id} updated: ${updated.status}`);
+  // });
 
-  const placeOrder = (checkoutInfo: IOrderInfo) => {
+  const placeOrder = (checkoutInfo: IOrderCreate) => {
     if (!user?._id) {
       messageApi?.error("Please login to place an order");
       return;
     }
-    placeMutate({ ...checkoutInfo, userId: user._id });
+    placeMutate({ ...checkoutInfo });
   };
 
-  const cancelOrder = (orderId: string) => cancelMutate(orderId);
+  // const cancelOrder = (orderId: string) => cancelMutate(orderId);
 
   return {
-    orders,
+    // orders,
     placeOrder,
     placeOrderAsync: placeMutateAsync,
-    cancelOrder,
+    // cancelOrder,
     isPlacing,
-    isCancelling,
+    // isCancelling,
     placeVariables,
   };
 };

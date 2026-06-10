@@ -1,66 +1,76 @@
 "use client";
 import BaseButton from "@/src/@base/components/BaseButton";
 import BaseSkeleton from "@/src/@base/components/BaseSkeleton";
-import { useSocket } from "@/src/@libs/socket/hooks/useSocket";
 import { calculateTotal } from "@/src/@libs/utils/helperFunction";
-import { DatePicker } from "antd";
+import { DatePicker, message } from "antd";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { ClassNameValue } from "tailwind-merge";
 import { useCartState } from "../../cart/libs/hooks/useCartState";
-import { Delivery_Charge } from "../libs/enums";
 import { useAddressState } from "../libs/hook/useAddressState";
 import DeliveryAddressForm from "./DeliveryAddressForm";
-import { useAuthState } from "../../auth/libs/hooks/useAuthState";
+import { useOrderState } from "../../order/libs/hooks/useOrderState";
 interface IProps {
   className?: ClassNameValue;
 }
 const CheckoutPage: React.FC<IProps> = () => {
-  const { socket } = useSocket();
+  const [messageApi, contextHolder]= message.useMessage()
+  const { placeOrder } = useOrderState(messageApi);
   const [paymentMethod, setPaymentMethod] = useState("cod");
-  const {user, cart, isPendingCartProducts } = useCartState();
+  const { user, cart, isPendingCartProducts } = useCartState();
   const { defaultAddress } = useAddressState();
   const [deliveryDate, setDeliveryDate] = useState<dayjs.Dayjs | null>(
     dayjs().add(1, "day"),
   );
-  const [note, setNote] = useState("");
-  const subTotal = calculateTotal(cart);
-  const deliveryCharge = Delivery_Charge.INSIDE_DHAKA;
+  const [specialNote, setSpecialNote] = useState("");
+  const districtName = defaultAddress?.[0]?.districtName;
+  const totals = calculateTotal(cart, paymentMethod, districtName);
   // const calculateDiscount = calculateDiscountFn(cart, true);
-  const totalAmount = subTotal + deliveryCharge;
+
   const handleOrderViaSocketFn = () => {
     const checkoutInfo = {
-      customerName:user?.userName,
-      subTotal,
-      deliveryCharge,
-      totalAmount,
+      userId: user?._id,
+      customerName: defaultAddress?.[0].contactName,
+      customerPhone: defaultAddress?.[0].phone,
+      customerAddress:
+        defaultAddress?.[0].address +
+        ", " +
+        defaultAddress?.[0].areaName +
+        ", " +
+        defaultAddress?.[0].districtName,
+      totals,
       paymentMethod,
       deliveryDate: deliveryDate?.clone().format("Do MMM, YYYY"),
-      note,
-      status: "pending",
-      defaultAddress: defaultAddress?.[0],
-      items: cart,
+      specialNote,
+      // status: "pending",
+      items: cart?.map((item) => ({
+        id: item?._id,
+        productId: item.productId,
+        userId: item?.userId,
+      })),
     };
-    socket?.emit(
-      "placeOrder",
-      {
-        data: checkoutInfo,
-      },
-      (res: any) => {
-        console.log(res);
-        if (res?.success) {
-          console.log("successful");
-        } else {
-          console.log("failed");
-        }
-      },
-    );
+    placeOrder(checkoutInfo);
+    // socket?.emit(
+    //   "placeOrder",
+    //   {
+    //     data: checkoutInfo,
+    //   },
+    //   (res: any) => {
+    //     console.log(res);
+    //     if (res?.success) {
+    //       console.log("successful");
+    //     } else {
+    //       console.log("failed");
+    //     }
+    //   },
+    // );
     console.log(checkoutInfo);
   };
   return (
     <section>
+      {contextHolder}
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Section */}
@@ -98,8 +108,8 @@ const CheckoutPage: React.FC<IProps> = () => {
               </div>
               <div className="p-4">
                 <textarea
-                  onChange={(e) => setNote(e.target.value)}
-                  value={note}
+                  onChange={(e) => setSpecialNote(e.target.value)}
+                  value={specialNote}
                   placeholder="Add any additional delivery instructions"
                   rows={5}
                   className="w-full px-4 py-2 border border-(--primary-color-500) rounded-lg focus:outline-none focus:ring-2 focus:ring-(--primary-color-800) resize-none"
@@ -170,8 +180,8 @@ const CheckoutPage: React.FC<IProps> = () => {
               {/* Totals */}
               <div className="space-y-4 my-6">
                 {[
-                  { label: "Sub-Total", value: subTotal },
-                  { label: "Delivery Charge", value: deliveryCharge },
+                  { label: "Sub-Total", value: totals.subTotal },
+                  { label: "Delivery Charge", value: totals.deliveryFee },
                   // { label: "Order Discount", value: -calculateDiscount },
                 ].map(({ label, value }, idx) => (
                   <div
@@ -184,7 +194,7 @@ const CheckoutPage: React.FC<IProps> = () => {
                 ))}
                 <div className="flex justify-between text-sm font-semibold border-t border-gray-200 pt-3">
                   <span>Total Payable</span>
-                  <span>৳ {totalAmount}</span>
+                  <span>৳ {totals.totalAmount}</span>
                 </div>
               </div>
 
