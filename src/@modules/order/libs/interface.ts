@@ -12,7 +12,9 @@ interface CartItem {
   quantity: number;
   price: number;
 }
-export interface IOrderInterface {
+export interface IOrderInfo {
+  _id?: string;
+  orderId?: string;
   customerName: string;
   subTotal: number;
   deliveryCharge: number;
@@ -23,4 +25,11 @@ export interface IOrderInterface {
   status: "pending" | "confirmed" | "delivered" | "cancelled";
   defaultAddress: Address;
   items: CartItem[];
+}
+
+export interface IOrderResponse {
+  success: boolean;
+  message: string;
+  data: any;
+  [key: string]: any;
 }
