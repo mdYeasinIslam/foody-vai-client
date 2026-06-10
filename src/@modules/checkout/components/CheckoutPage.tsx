@@ -1,7 +1,7 @@
 "use client";
 import BaseButton from "@/src/@base/components/BaseButton";
 import BaseSkeleton from "@/src/@base/components/BaseSkeleton";
-import { useSocket } from "@/src/@libs/hooks/useSocket";
+import { useSocket } from "@/src/@libs/socket/hooks/useSocket";
 import { calculateTotal } from "@/src/@libs/utils/helperFunction";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";

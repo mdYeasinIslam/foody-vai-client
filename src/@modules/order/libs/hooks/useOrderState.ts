@@ -1,10 +1,6 @@
+import { useSocket } from "@/src/@libs/socket/hooks/useSocket";
 import { useCallback, useState } from "react";
-import { Socket } from "socket.io-client";
 import { IOrderInterface } from "../interface";
-
-interface CheckoutInfo {
-  [key: string]: any;
-}
 
 interface OrderResponse {
   success: boolean;
@@ -17,7 +13,8 @@ interface UseOrderStateReturn {
   error: string | null;
 }
 
-export const useOrderState = (socket: Socket | null): UseOrderStateReturn => {
+export const useOrderState = (): UseOrderStateReturn => {
+  const { socket } = useSocket();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -36,12 +33,8 @@ export const useOrderState = (socket: Socket | null): UseOrderStateReturn => {
         { data: checkoutInfo },
         (res: OrderResponse) => {
           setIsLoading(false);
-
-          if (res?.success) {
-            console.log("Order placed successfully");
-          } else {
+          if (!res?.success) {
             setError("Failed to place order");
-            console.log("Order placement failed");
           }
         },
       );
