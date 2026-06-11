@@ -30,4 +30,13 @@ export const OrderSocketService = {
 
   findAll: (socket: Socket | null) =>
     socketRequest<undefined, IOrderResponse[]>(socket, EVENTS.GET_ORDERS),
+
+  
+  // add inside OrderSocketService
+  track: (socket: Socket | null, payload: { orderId: string }) =>
+    socketRequest<{ orderId: string }, IOrderResponse>(
+      socket,
+      "trackOder", // keep the typo to match your server
+      payload,
+    ),
 };

@@ -45,11 +45,7 @@ const CheckoutPage: React.FC<IProps> = () => {
       deliveryDate: deliveryDate?.clone().format("Do MMM, YYYY"),
       specialNote,
       // status: "pending",
-      items: cart?.map((item) => ({
-        // id: item?._id,
-        productId: item.productId,
-        userId: item?.userId,
-      })),
+      items: cart,
     };
     placeOrder(checkoutInfo);
     // socket?.emit(

@@ -28,13 +28,14 @@ export const useOrderState = (messageApi?: MessageInstance) => {
         if (!res.success) {
           // setOrders((prev) => [res?.data as IOrderInfo, ...prev]);
           messageApi?.error(res.message || "Failed to place order");
+          return;
         }
         messageApi?.loading("Placing order...").then(() => {
           clearCart();
           setCart([]);
 
           messageApi?.success(res.message);
-          router.push("/");
+          router.push(`/order-track/${res?.orderData?.orderId}`);
         });
       },
       onError: (err) => messageApi?.error(err.message),

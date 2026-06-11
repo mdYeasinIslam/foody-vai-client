@@ -42,11 +42,28 @@ export interface IOrderCreate {
   deliveryDate?: string;
   specialNote: string;
   // status: "pending";
-  items: {
-    id?: string;
-    productId: string;
-    userId?: string | null;
-  }[];
+  items: ICartItem[];
+}
+export interface ITrackedOrder {
+  _id: string;
+  orderId: string;
+  status: string;
+  customerName: string;
+  customerPhone: string;
+  customerAddress: string;
+  items: ICartItem[];
+  totals: {
+    subTotal: number;
+    deliveryCharge: number;
+    discount: number;
+    total: number;
+  };
+  paymentMethod: string;
+  deliveryDate: string;
+  specialNote?: string;
+  estimatedTime?: number;
+  statusHistory: { status: string; timestamp: string; note: string }[];
+  createdAt: string;
 }
 export interface IOrderResponse {
   success: boolean;
