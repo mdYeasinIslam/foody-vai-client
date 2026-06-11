@@ -72,7 +72,9 @@ const CartContent: React.FC<IProps> = ({
       <div className="border-t p-4 space-y-3">
         <div className="flex justify-between items-center">
           <span className="text-lg font-semibold">Total:</span>
-          <span className="text-lg font-bold text-green-600">৳ {total}</span>
+          <span className="text-lg font-bold text-green-600">
+            ৳ {total.subTotal}
+          </span>
         </div>
 
         {saved && saved > 0 && (

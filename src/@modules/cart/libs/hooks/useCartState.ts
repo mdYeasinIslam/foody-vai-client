@@ -23,7 +23,11 @@ export const useCartState = (messageApi?: MessageInstance) => {
     key: "cart",
     initialValue: [],
   });
-  const { data, refetch } = useCartProducts({});
+  const {
+    data,
+    refetch,
+    isPending: isPendingCartProducts,
+  } = useCartProducts({});
   const cartProductsFromDB = data?.data;
 
   //create (add to cart)
@@ -214,6 +218,7 @@ export const useCartState = (messageApi?: MessageInstance) => {
     setCart([]);
   };
   return {
+    user,
     cart,
     setCart,
     isCreating,
@@ -225,6 +230,7 @@ export const useCartState = (messageApi?: MessageInstance) => {
     removeSingleItem,
     clearCart,
     cartProductsFromDB,
+    isPendingCartProducts,
     syncGuestCartToDB,
   };
 };

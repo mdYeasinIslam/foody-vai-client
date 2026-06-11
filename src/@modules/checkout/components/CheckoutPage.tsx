@@ -1,32 +1,72 @@
 "use client";
-import useGlobalState from "@/src/@libs/hooks/useGlobalState";
+import BaseButton from "@/src/@base/components/BaseButton";
+import BaseSkeleton from "@/src/@base/components/BaseSkeleton";
 import { calculateTotal } from "@/src/@libs/utils/helperFunction";
-import { DatePicker } from "antd";
+import { DatePicker, message } from "antd";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { ClassNameValue } from "tailwind-merge";
-import { ICartItem } from "../../cart/libs/interfaces";
-import { Delivery_Charge } from "../libs/enums";
+import { useCartState } from "../../cart/libs/hooks/useCartState";
+import { useAddressState } from "../libs/hook/useAddressState";
 import DeliveryAddressForm from "./DeliveryAddressForm";
-import BaseButton from "@/src/@base/components/BaseButton";
+import { useOrderState } from "../../order/libs/hooks/useOrderState";
 interface IProps {
   className?: ClassNameValue;
 }
 const CheckoutPage: React.FC<IProps> = () => {
-  const [paymentMethod, setPaymentMethod] = useState("online");
+  const [messageApi, contextHolder] = message.useMessage();
+  const { placeOrder } = useOrderState(messageApi);
+  const [paymentMethod, setPaymentMethod] = useState("cod");
+  const { user, cart, isPendingCartProducts } = useCartState();
+  const { defaultAddress } = useAddressState();
+  const [deliveryDate, setDeliveryDate] = useState<dayjs.Dayjs | null>(
+    dayjs().add(1, "day"),
+  );
+  const [specialNote, setSpecialNote] = useState("");
+  const districtName = defaultAddress?.[0]?.districtName;
+  const totals = calculateTotal(cart, paymentMethod, districtName);
+  // const calculateDiscount = calculateDiscountFn(cart, true);
 
-  const [cart] = useGlobalState<ICartItem[]>({
-    key: "cart",
-    initialValue: [],
-  });
-  const subTotal = calculateTotal(cart);
-  const deliveryCharge = Delivery_Charge.INSIDE_DHAKA;
-  const isDiscount = false;
-  const calculateDiscount = isDiscount ? 10 : 0;
+  const handleOrderViaSocketFn = () => {
+    const checkoutInfo = {
+      userId: user?._id,
+      customerName: defaultAddress?.[0].contactName,
+      customerPhone: defaultAddress?.[0].phone,
+      customerAddress:
+        defaultAddress?.[0].address +
+        ", " +
+        defaultAddress?.[0].areaName +
+        ", " +
+        defaultAddress?.[0].districtName,
+      totals,
+      paymentMethod,
+      deliveryDate: deliveryDate?.clone().format("Do MMM, YYYY"),
+      specialNote,
+      // status: "pending",
+      items: cart,
+    };
+    placeOrder(checkoutInfo);
+    // socket?.emit(
+    //   "placeOrder",
+    //   {
+    //     data: checkoutInfo,
+    //   },
+    //   (res: any) => {
+    //     console.log(res);
+    //     if (res?.success) {
+    //       console.log("successful");
+    //     } else {
+    //       console.log("failed");
+    //     }
+    //   },
+    // );
+    console.log(checkoutInfo);
+  };
   return (
     <section>
+      {contextHolder}
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Section */}
@@ -47,6 +87,7 @@ const CheckoutPage: React.FC<IProps> = () => {
                 placement="bottomLeft"
                 className="w-full border-(--primary-color-600)!"
                 suffixIcon={null}
+                onChange={(date) => setDeliveryDate(date || null)}
                 defaultValue={dayjs().add(1, "day")}
                 defaultPickerValue={dayjs().add(1, "day")}
                 disabledDate={(current) =>
@@ -63,6 +104,8 @@ const CheckoutPage: React.FC<IProps> = () => {
               </div>
               <div className="p-4">
                 <textarea
+                  onChange={(e) => setSpecialNote(e.target.value)}
+                  value={specialNote}
                   placeholder="Add any additional delivery instructions"
                   rows={5}
                   className="w-full px-4 py-2 border border-(--primary-color-500) rounded-lg focus:outline-none focus:ring-2 focus:ring-(--primary-color-800) resize-none"
@@ -80,61 +123,65 @@ const CheckoutPage: React.FC<IProps> = () => {
 
               {/* Products */}
               {/* Cart Items */}
-              <div className="flex-1 overflow-y-auto space-y-2 hidden_scrollbar">
-                {cart.length === 0 ? (
-                  <p className="text-center text-gray-500 py-8">
-                    Cart is empty
-                  </p>
-                ) : (
-                  cart.map((item) => (
-                    <div
-                      key={item._id}
-                      className="flex justify-between items-center border-b border-gray-200"
-                    >
-                      <div className="flex-1 flex items-center gap-3">
-                        {/* Product Image */}
-                        <div className="w-16 h-16 bg-gray-200 rounded shrink-0">
-                          {item.img && (
-                            <Image
-                              src={item.img}
-                              alt={item.name}
-                              width={100}
-                              height={100}
-                              className="w-full h-full object-cover rounded"
-                            />
-                          )}
+              {isPendingCartProducts ? (
+                <BaseSkeleton rowNumber={4} />
+              ) : (
+                <div className="flex-1 overflow-y-auto space-y-2 hidden_scrollbar">
+                  {cart.length === 0 ? (
+                    <p className="text-center text-gray-500 py-8">
+                      Cart is empty
+                    </p>
+                  ) : (
+                    cart?.map((item) => (
+                      <div
+                        key={item._id}
+                        className="flex justify-between items-center border-b border-gray-200"
+                      >
+                        <div className="flex-1 flex items-center gap-3">
+                          {/* Product Image */}
+                          <div className="w-16 h-16 bg-gray-200 rounded shrink-0">
+                            {item.img && (
+                              <Image
+                                src={item.img}
+                                alt={item.name}
+                                width={100}
+                                height={100}
+                                className="w-full h-full object-cover rounded"
+                              />
+                            )}
+                          </div>
+
+                          {/* Product Details */}
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-sm">
+                              {item.name} -
+                              <span className="text-gray-500">
+                                {item?.price?.weight} kg
+                              </span>
+                            </h3>
+                            <p className="text-xs text-gray-500">
+                              (Quantity- {item.quantity})
+                            </p>
+                          </div>
                         </div>
 
-                        {/* Product Details */}
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-sm">
-                            {item.name} -
-                            <span className="text-gray-500">
-                              {item?.price?.weight} kg
-                            </span>
-                          </h3>
-                          <p className="text-xs text-gray-500">
-                            (Quantity- {item.quantity})
-                          </p>
-                        </div>
+                        {/* Actions */}
+                        <p className="">৳ {item?.price?.price}</p>
                       </div>
-
-                      {/* Actions */}
-                      <p className="">৳ {item?.price?.price}</p>
-                    </div>
-                  ))
-                )}
-              </div>
+                    ))
+                  )}
+                </div>
+              )}
 
               {/* Totals */}
               <div className="space-y-4 my-6">
                 {[
-                  { label: "Subtotal", value: subTotal },
-                  { label: "Delivery Charge", value: deliveryCharge },
-                  { label: "Order Discount", value: -calculateDiscount },
-                ].map(({ label, value }) => (
+                  { label: "Sub-Total", value: totals.subTotal },
+                  { label: "Delivery Charge", value: totals.deliveryFee },
+                  // { label: "Order Discount", value: -calculateDiscount },
+                ].map(({ label, value }, idx) => (
                   <div
-                    key={label}
+                    key={idx}
                     className="flex  text-sm justify-between font-medium border-b border-(--primary-color-500)"
                   >
                     <span>{label}</span>
@@ -143,7 +190,7 @@ const CheckoutPage: React.FC<IProps> = () => {
                 ))}
                 <div className="flex justify-between text-sm font-semibold border-t border-gray-200 pt-3">
                   <span>Total Payable</span>
-                  <span>৳ {subTotal + deliveryCharge - calculateDiscount}</span>
+                  <span>৳ {totals.totalAmount}</span>
                 </div>
               </div>
 
@@ -194,7 +241,11 @@ const CheckoutPage: React.FC<IProps> = () => {
               {/* <button className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition">
                 Order Now
               </button> */}
-              <BaseButton content="Order Now" className=""/>
+              <BaseButton
+                onClick={handleOrderViaSocketFn}
+                content="Order Now"
+                className=""
+              />
               {/* Terms */}
               <p className="text-gray-600 text-xs mt-4">
                 By placing your order, you agree to be bound by the Khaas Food

@@ -22,7 +22,7 @@ const Banner: React.FC<IProps> = ({ className }) => {
         <p className="text-xs sm:text-sm md:text-base text-gray-700">
           Get up to 50% off on selected items.
         </p>
-        <Link href={"/products"}>
+        <Link href={"/products"} className="w-fit">
           <button className="btn-primary max-sm:py-0.5! md:max-lg:py-1! max-sm:px-1 max-sm:text-xs">View Deals</button>
         </Link>
       </div>
