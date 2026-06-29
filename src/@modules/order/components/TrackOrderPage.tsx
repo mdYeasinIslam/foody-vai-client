@@ -66,9 +66,9 @@ interface IProps {
 const TrackOrderPage: React.FC<IProps> = ({ orderId }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
-  const { order, loading, error, connected, cancelOrder, isCancelling } =
+  const { order, loading, error, cancelOrder, isCancelling } =
     useTrackOrder(orderId);
-
+  console.log(order);
   const currentStepIndex = ORDER_STEPS.findIndex(
     (s) => s.key === order?.status,
   );
@@ -156,7 +156,7 @@ const TrackOrderPage: React.FC<IProps> = ({ orderId }) => {
 
       {/* Progress Stepper */}
       {!isTerminal ||
-      (order.status !== "cancelled" && order.status !== "rejected") ? (
+      (order.status !== "cancelled" && order.status !== "cancelled") ? (
         <div className="bg-white border border-gray-100 rounded-xl p-5 shadow-sm">
           <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-5">
             Order Progress
@@ -286,7 +286,14 @@ const TrackOrderPage: React.FC<IProps> = ({ orderId }) => {
               ? [{ label: "Special Notes", value: order.specialNote }]
               : []),
           ].map(({ label, value }) => (
-            <div key={label} className={label === "Address" || label === "Special Notes" ? "col-span-2" : ""}>
+            <div
+              key={label}
+              className={
+                label === "Address" || label === "Special Notes"
+                  ? "col-span-2"
+                  : ""
+              }
+            >
               <p className="text-gray-400 text-xs mb-0.5">{label}</p>
               <p className="font-medium text-gray-800">{value}</p>
             </div>
@@ -315,20 +322,20 @@ const TrackOrderPage: React.FC<IProps> = ({ orderId }) => {
         okButtonProps={{ danger: true, loading: isCancelling }}
       >
         <p className="text-gray-600">
-          Are you sure you want to cancel order{" "}
-          <strong>{orderId}</strong>? This action cannot be undone.
+          Are you sure you want to cancel order <strong>{orderId}</strong>? This
+          action cannot be undone.
         </p>
       </Modal>
 
       {/* Connection dot */}
-      <div className="flex items-center justify-center gap-2 pb-2">
+      {/* <div className="flex items-center justify-center gap-2 pb-2">
         <span
           className={`w-2 h-2 rounded-full ${connected ? "bg-green-400" : "bg-gray-300"}`}
         />
         <span className="text-xs text-gray-400">
           {connected ? "Live tracking active" : "Reconnecting..."}
         </span>
-      </div>
+      </div> */}
     </div>
   );
 };

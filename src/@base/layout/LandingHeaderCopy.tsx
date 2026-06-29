@@ -8,10 +8,10 @@ import { useCartState } from "@/src/@modules/cart/libs/hooks/useCartState";
 import MenuItems from "@/src/@modules/home/components/MenuItems";
 import {
   DownOutlined,
-  SearchOutlined,
+
   ShoppingCartOutlined,
 } from "@ant-design/icons";
-import { Badge, Dropdown, Input, MenuProps, message } from "antd";
+import { Badge, Dropdown, MenuProps, message } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -32,7 +32,7 @@ const accountItems: MenuProps["items"] = [
   { key: "logout", label: "Logout" },
 ];
 
-const LandingHeader: React.FC<IProps> = ({ className }) => {
+const LandingHeaderCopy: React.FC<IProps> = ({ className }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [searchValue, setSearchValue] = useState("");
   const [openMenu, setOpenMenu] = useState(false);
@@ -42,7 +42,7 @@ const LandingHeader: React.FC<IProps> = ({ className }) => {
   const { cart, cartProductsFromDB, setCart, clearCart } =
     useCartState(messageApi);
   const { user, clearAuthUser } = useAuthState(messageApi);
-
+  
   // Sync guest cart to database whenever a user logs in
   useEffect(() => {
     if (user && user.email && cartProductsFromDB) {
@@ -83,9 +83,12 @@ const LandingHeader: React.FC<IProps> = ({ className }) => {
           </button>
           {openMenu && (
             <div
-              className={cn("lg:hidden absolute left-0 top-16 md:top-20 z-50", {
-                "-left-80": !openMenu,
-              })}
+              className={cn(
+                "lg:hidden absolute left-0 top-16 md:top-20 transition-all duration-1000 ease-in z-50",
+                {
+                  "-left-80 ": !openMenu,
+                },
+              )}
             >
               <MenuItems
                 handleAfterNavigate={handleAfterNavigateFn}
@@ -104,7 +107,7 @@ const LandingHeader: React.FC<IProps> = ({ className }) => {
                 alt="Login Illustration"
                 width={40}
                 height={40}
-                className="w-full h-full object-cover rounded-lg shadow-md"
+                className="max-sm:w-8 max-sm:h-8 w-full h-full object-cover rounded-lg shadow-md"
               />
             </figure>
             {/* <div className="w-8 h-8 md:w-10 md:h-10 bg-white rounded-xl flex items-center justify-center text-xl shadow-sm select-none">
@@ -115,40 +118,6 @@ const LandingHeader: React.FC<IProps> = ({ className }) => {
               Foody<span className="text-(--primary-color-500)">Vai</span>
             </span>
           </Link>
-        </div>
-
-        {/* Search Bar */}
-        <div className="flex-1 max-w-xs xl:max-w-xl">
-          <Input
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            placeholder="Search for biriyani, pizza, burgers..."
-            prefix={<SearchOutlined className="text-white/70" />}
-            //   suffix={
-            //     <Dropdown
-            //       menu={{
-            //         items: cityItems,
-            //         onClick: ({ key }) => {
-            //           const city = cityItems?.find(
-            //             (i) => i && "key" in i && i.key === key,
-            //           );
-            //           if (city && "label" in city)
-            //             setSelectedCity(city.label as string);
-            //         },
-            //       }}
-            //       trigger={["click"]}
-            //     >
-            //       <button
-            //         type="button"
-            //         className="flex items-center gap-1 text-white/85 text-sm font-semibold border-l border-white/30 pl-3 ml-1 hover:text-white transition-colors"
-            //       >
-            //         {selectedCity}
-            //         <DownOutlined style={{ fontSize: 10 }} />
-            //       </button>
-            //     </Dropdown>
-            //   }
-            className="rounded-full border-white/30 bg-white/15 text-white placeholder-white/60 hover:border-white/50 focus-within:border-white/60 md:py-2!"
-          />
         </div>
 
         {/* Actions */}
@@ -217,4 +186,4 @@ const LandingHeader: React.FC<IProps> = ({ className }) => {
   );
 };
 
-export default LandingHeader;
+export default LandingHeaderCopy;

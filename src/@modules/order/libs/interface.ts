@@ -69,5 +69,4 @@ export interface IOrderResponse {
   success: boolean;
   message: string;
   data: IOrderInfo;
-  [key: string]: any;
 }

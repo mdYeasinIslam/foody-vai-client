@@ -6,6 +6,7 @@ import { IOrderCreate, IOrderResponse } from "./interface";
 const EVENTS = {
   PLACE_ORDER: "placeOrder",
   CANCEL_ORDER: "cancelOrder",
+  TRACK_ORDER: "trackOder",
   GET_ORDERS: "getOrders",
   ORDER_UPDATED: "orderUpdated", // server -> client
 } as const;
@@ -31,12 +32,10 @@ export const OrderSocketService = {
   findAll: (socket: Socket | null) =>
     socketRequest<undefined, IOrderResponse[]>(socket, EVENTS.GET_ORDERS),
 
-  
-  // add inside OrderSocketService
-  track: (socket: Socket | null, payload: { orderId: string }) =>
+  track: (socket: Socket | null, orderId: string) =>
     socketRequest<{ orderId: string }, IOrderResponse>(
       socket,
-      "trackOder", // keep the typo to match your server
-      payload,
+      EVENTS.TRACK_ORDER,
+      { orderId },
     ),
 };
