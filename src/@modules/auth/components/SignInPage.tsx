@@ -48,12 +48,25 @@ const SignInPage = () => {
     },
   });
 
-  const onChange: CheckboxProps["onChange"] = (e) => {
-    if (e.target.checked) {
-      form.setFieldsValue({
-        email: "test@test.com",
-        password: "aassdd",
-      });
+  const onChange = (type: "guest" | "admin") => (e: any) => {
+    const isChecked = e.target.checked;
+
+    if (isChecked) {
+      if (type === "guest") {
+        form.setFieldsValue({
+          signInAsGuest: true,
+          signInAsAdmin: false,
+          email: "test@test.com",
+          password: "aassdd",
+        });
+      } else if (type === "admin") {
+        form.setFieldsValue({
+          signInAsGuest: false,
+          signInAsAdmin: true,
+          email: "admin@admin.com",
+          password: "aassdd",
+        });
+      }
     } else {
       form.setFieldsValue({
         email: "",
@@ -126,16 +139,14 @@ const SignInPage = () => {
               valuePropName="checked"
               className="m-0! flex! items-center!"
             >
-              <Checkbox onChange={onChange}>Sign in as guest</Checkbox>
-
-              {/* <>
-                <input
-                  type="checkbox"
-                  className="cursor-pointer"
-                  onChange={handleGuestCheckboxFn}
-                />
-                <span className="ml-2">Sign in as guest</span>
-              </> */}
+              <Checkbox onChange={onChange('guest')}>Sign in as guest</Checkbox>
+            </Form.Item>
+            <Form.Item
+              name="signInAsAdmin"
+              valuePropName="checked"
+              className="m-0! flex! items-center!"
+            >
+              <Checkbox onChange={onChange('admin')}>Sign in as Admin</Checkbox>
             </Form.Item>
             <Form.Item>
               {/* <Button

@@ -88,7 +88,6 @@ const AdminNavbar: React.FC<IProps> = ({ className }) => {
     localStorage.removeItem("user");
     navigate.push("/signIn");
   }
-console.log(pathName)
   return (
     <aside
       className={cn(
