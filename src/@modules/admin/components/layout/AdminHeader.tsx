@@ -8,7 +8,6 @@ interface IProps {
 }
 const AdminHeader: React.FC<IProps> = ({ className }) => {
   const admin = JSON.parse(localStorage.getItem("auth") || "{}").user;
-  console.log(admin);
   return (
     <header
       className={cn(

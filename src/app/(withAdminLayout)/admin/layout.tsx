@@ -12,7 +12,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
         <AdminHeader />
 
         {/* Page content — scrollable */}
-        <div className="flex-1 overflow-y-auto p-8">{children}</div>
+        <div className="flex-1 overflow-y-auto px-8">{children}</div>
       </div>
     </main>
   );

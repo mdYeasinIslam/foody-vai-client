@@ -35,7 +35,7 @@ const SignInPage = () => {
             syncGuestCartToDB(data?.user);
           }
           if (data?.user?.role === "admin") {
-            return route.push("/admin");
+            return route.push("/admin/dashboard");
           }
           route.push("/");
         });

@@ -1,7 +1,7 @@
 "use client";
 import cn from "@/src/@libs/utils/_cn";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { ClassNameValue } from "tailwind-merge";
 interface IProps {
@@ -82,11 +82,13 @@ const NAV_ITEMS = [
 ];
 const AdminNavbar: React.FC<IProps> = ({ className }) => {
   const navigate = useRouter();
+  const pathName = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   function handleLogout() {
     localStorage.removeItem("user");
     navigate.push("/signIn");
   }
+console.log(pathName)
   return (
     <aside
       className={cn(
@@ -106,8 +108,10 @@ const AdminNavbar: React.FC<IProps> = ({ className }) => {
         {/* Collapse toggle */}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className={`ml-auto text-white/40 hover:text-white transition-colors cursor-pointer
-              ${collapsed ? "mx-auto" : ""}`}
+          className={cn(
+            `ml-auto text-white/40 hover:text-white transition-colors cursor-pointer`,
+            collapsed ? "mx-auto" : "",
+          )}
           aria-label="Toggle sidebar"
         >
           <svg
@@ -128,17 +132,20 @@ const AdminNavbar: React.FC<IProps> = ({ className }) => {
 
       {/* Nav links */}
       <nav className="flex-1 py-4 flex flex-col gap-1 px-3">
-        {NAV_ITEMS.map(({ to, label, icon }) => (
-          <Link
-            key={to}
-            href={to}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm
-                transition-all duration-200 group text-white/60 hover:bg-white/8 hover:text-white"
-          >
-            <span className="shrink-0">{icon}</span>
-            {!collapsed && <span className="whitespace-nowrap">{label}</span>}
-          </Link>
-        ))}
+        {NAV_ITEMS.map(({ to, label, icon }) => {
+          return (
+            <Link
+              key={to}
+              href={to}
+              className={cn("flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 group text-white/60 hover:bg-white/8 hover:text-white", {
+                'text-white ':pathName==to
+              })}
+            >
+              <span className="shrink-0">{icon}</span>
+              {!collapsed && <span className="whitespace-nowrap">{label}</span>}
+            </Link>
+          )
+        })}
       </nav>
 
       {/* Logout */}
