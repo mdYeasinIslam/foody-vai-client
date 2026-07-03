@@ -1,29 +1,22 @@
 "use client";
 import BaseLoader from "@/src/@base/components/BaseLoader";
 import cn from "@/src/@libs/utils/_cn";
-import { useGetAllOrders } from "@/src/@modules/order/libs/hooks";
-import React, { useEffect } from "react";
+import React from "react";
 import { ClassNameValue } from "tailwind-merge";
+import { useFetchAllOrders } from "../../../libs/hooks/useFetchAllOrders";
+import { useOrderState } from "@/src/@modules/order/libs/hooks/useOrderState";
 
 interface IProps {
   className?: ClassNameValue;
 }
 const OrderPage: React.FC<IProps> = ({ className }) => {
-  const { mutateAsync, isPending } = useGetAllOrders();
-  useEffect(() => {
-    const loadOrders = async () => {
-      try {
-        const res = await mutateAsync();
-
-        console.log(res.data); // array of orders
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    loadOrders();
-  }, []);
+  // const { orders, isError, isPending } = useFetchAllOrders();
+  const { orders, isPending, isError, errorMessage, refetchOrders } =
+    useOrderState();
   if (isPending) return <BaseLoader />;
+  if (isError)
+    return <div className="text-red-500 p-6">Error: </div>;
+  console.log("orders",isPending,  orders);
   return <div className={cn(className, "")}>OrderPage</div>;
 };
 
