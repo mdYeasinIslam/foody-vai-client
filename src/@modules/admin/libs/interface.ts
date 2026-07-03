@@ -69,11 +69,4 @@ export interface IOrderResponse {
   success: boolean;
   message: string;
   data: IOrderInfo;
-  error?: any;
-}
-export interface IOrderResponses {
-  success: boolean;
-  message: string;
-  data: IOrderInfo[];
-  error?: any;
 }

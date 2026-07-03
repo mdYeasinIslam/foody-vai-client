@@ -6,6 +6,7 @@ export interface SocketResponse<T = any> {
   message?: string;
   data?: T;
   [key: string]: any;
+  error?: any;
 }
 
 export const socketRequest = <TPayload, TResponse>(
