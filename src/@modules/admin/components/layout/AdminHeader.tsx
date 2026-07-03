@@ -1,13 +1,22 @@
 "use client";
 
 import cn from "@/src/@libs/utils/_cn";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ClassNameValue } from "tailwind-merge";
 interface IProps {
   className?: ClassNameValue;
 }
 const AdminHeader: React.FC<IProps> = ({ className }) => {
-  const admin = JSON.parse(localStorage.getItem("auth") || "{}").user;
+  const [admin, setAdmin] = useState<any>(null);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const authData = localStorage.getItem("auth");
+      if (authData) {
+        const parsedAuth = JSON.parse(authData);
+        setAdmin(parsedAuth.user);
+      }
+    }
+  }, []);
   return (
     <header
       className={cn(

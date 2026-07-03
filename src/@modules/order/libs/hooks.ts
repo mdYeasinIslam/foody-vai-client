@@ -3,12 +3,7 @@ import {
   useSocketMutation,
 } from "./hooks/useSocketMutation";
 import { useSocketSubscription } from "./hooks/useSocketSubscription";
-import {
-  IOrderCreate,
-  IOrderInfo,
-  IOrderResponse,
-  IOrderResponses,
-} from "./interface";
+import { IOrderCreate, IOrderInfo, IOrderResponse } from "./interface";
 import { OrderSocketService } from "./services";
 
 type IUsePlaceOrder = {
@@ -30,7 +25,6 @@ export const useTrackOrderHook = ({
 
 export const useOrderUpdates = (handler: (order: IOrderInfo) => void) =>
   useSocketSubscription(OrderSocketService.EVENTS.ORDER_UPDATED, handler);
-
 // get all orders
 type IUseGetAllOrders = {
   config?: SocketMutationConfig<IOrderInfo[], void>;

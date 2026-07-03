@@ -27,7 +27,7 @@ AxiosInstance.interceptors.response.use(
   (error) => {
     if (error.response.status === 401) {
       removeAccessToken();
-      localStorage.removeItem("auth");
+        localStorage.removeItem("auth");
       window.location.href = "/signIn";
     }
     return Promise.reject(error);

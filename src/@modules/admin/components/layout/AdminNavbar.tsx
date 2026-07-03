@@ -85,8 +85,10 @@ const AdminNavbar: React.FC<IProps> = ({ className }) => {
   const pathName = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   function handleLogout() {
-    localStorage.removeItem("user");
-    navigate.push("/signIn");
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("auth");
+      navigate.push("/signIn");
+    }
   }
   return (
     <aside
@@ -136,14 +138,17 @@ const AdminNavbar: React.FC<IProps> = ({ className }) => {
             <Link
               key={to}
               href={to}
-              className={cn("flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 group text-white/60 hover:bg-white/8 hover:text-white", {
-                'text-white ':pathName==to
-              })}
+              className={cn(
+                "flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 group text-white/60 hover:bg-white/8 hover:text-white",
+                {
+                  "text-white ": pathName == to,
+                },
+              )}
             >
               <span className="shrink-0">{icon}</span>
               {!collapsed && <span className="whitespace-nowrap">{label}</span>}
             </Link>
-          )
+          );
         })}
       </nav>
 

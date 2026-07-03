@@ -1,18 +1,13 @@
 // @modules/order/libs/services/order.socket.service.ts
-import { socketRequest } from "@/src/@libs/socket/libs/socketRequest";
 import { Socket } from "socket.io-client";
-import {
-  IOrderCreate,
-  IOrderInfo,
-  IOrderResponse,
-  IOrderResponses,
-} from "./interface";
+import { IOrderCreate, IOrderInfo, IOrderResponse } from "./interface";
+import { socketRequest } from "@/src/@libs/socket/libs/socketRequest";
 
 const EVENTS = {
   PLACE_ORDER: "placeOrder",
   CANCEL_ORDER: "cancelOrder",
   TRACK_ORDER: "trackOder",
-  GET_ORDERS: "getMyOrder",
+  GET_ALL_ORDERS: "getAllOrders",
   ORDER_UPDATED: "orderUpdated", // server -> client
 } as const;
 
@@ -35,8 +30,8 @@ export const OrderSocketService = {
     ),
 
   findAll: (socket: Socket | null) =>
-    socketRequest<void, IOrderInfo[]>(socket, EVENTS.GET_ORDERS),
-  
+    socketRequest<void, IOrderInfo[]>(socket, EVENTS.GET_ALL_ORDERS),
+
   track: (socket: Socket | null, orderId: string) =>
     socketRequest<{ orderId: string }, IOrderResponse>(
       socket,
