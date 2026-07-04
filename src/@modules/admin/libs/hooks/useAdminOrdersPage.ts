@@ -1,4 +1,3 @@
-
 import { useMemo, useState } from "react";
 import { IOrderInfo } from "@/src/@modules/order/libs/interface";
 import { MessageInstance } from "antd/es/message/interface";
@@ -82,8 +81,12 @@ export function useAdminOrdersPage(messageApi?: MessageInstance) {
     if (!statusTarget) return;
     if (status === "cancelled") {
       cancelOrder(statusTarget._id);
+      messageApi?.success("Order cancelled");
       setToast({ msg: "Order cancelled", type: "success" });
     } else {
+      messageApi?.error(
+        `No endpoint yet to move an order to "${status}" — only cancel is wired up.`,
+      );
       setToast({
         msg: `No endpoint yet to move an order to "${status}" — only cancel is wired up.`,
         type: "error",
@@ -98,6 +101,7 @@ export function useAdminOrdersPage(messageApi?: MessageInstance) {
   const handleDelete = () => {
     if (!deleteTarget) return;
     cancelOrder(deleteTarget._id);
+    messageApi?.error("No delete endpoint yet — order was cancelled instead.");
     setToast({
       msg: "No delete endpoint yet — order was cancelled instead.",
       type: "error",
@@ -109,6 +113,7 @@ export function useAdminOrdersPage(messageApi?: MessageInstance) {
     if (refetch) {
       refetch();
     } else {
+        messageApi?.error("Refresh isn't wired to a real refetch yet.");
       setToast({
         msg: "Refresh isn't wired to a real refetch yet.",
         type: "error",

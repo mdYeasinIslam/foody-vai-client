@@ -1,7 +1,10 @@
+import AdminHeader from "@/src/@modules/admin/components/layout/AdminHeader"
 
 const page = () => {
   return (
-    <div>page</div>
+    <>
+    <AdminHeader pageTitle="OVERVIEW" />
+    </>
   )
 }
 
