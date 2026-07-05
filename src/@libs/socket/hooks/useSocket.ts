@@ -19,17 +19,17 @@ export const useSocket = () => {
     //connection event
     socketRef.current.on("connect", () => {
       setConnected(true);
-      console.log("socket is connected to server", socketRef.current?.id);
+      // console.log("socket is connected to server", socketRef.current?.id);
     });
     //disconnect event
     socketRef.current.on("disconnect", () => {
       setConnected(false);
-      console.log("socket is disconnected from server");
+      // console.log("socket is disconnected from server");
     });
 
     //welcome message (initial try)
     socketRef.current.on("connected", (data) => {
-      console.log("socket connected", data);
+      // console.log("socket connected", data);
     });
 
     return () => {

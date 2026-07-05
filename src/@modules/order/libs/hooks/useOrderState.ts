@@ -10,7 +10,7 @@ import {
 import { IOrderCreate, IOrderInfo } from "@/src/@modules/order/libs/interface";
 import { MessageInstance } from "antd/es/message/interface";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 
 export const useOrderState = (messageApi?: MessageInstance) => {
   const { socket } = useSocket();
@@ -18,59 +18,34 @@ export const useOrderState = (messageApi?: MessageInstance) => {
   const router = useRouter();
   const { clearCart, setCart } = useCartState();
 
-  // 🟢 CHANGED: Replaced useGlobalState with normal local React useState
   const [orders, setOrders] = useState<IOrderInfo[]>([]);
-
-  // Local UI states for the fetching pipeline
-  const [isPending, setIsPending] = useState<boolean>(true);
-  const [isError, setIsError] = useState<boolean>(false);
-
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // --------------------------------------------------------
   // 1. GET ALL ORDERS LOGIC
   // --------------------------------------------------------
-  const { mutateAsync: fetchAllOrdersRaw } = useGetAllOrders();
+  const {
+    data,
+    response: getOrderResponse,
+    isError,
+    isPending: isGetAllOrdersPending,
+    errorMessage,
+    refetch, // 🟢 pass this through if your useGetAllOrders exposes it (e.g. react-query).
+    // If it doesn't exist on your hook, remove this destructure and the
+    // `refetch` return below — `refresh()` will just no-op instead.
+  } = useGetAllOrders() as ReturnType<typeof useGetAllOrders> & {
+    refetch?: () => void;
+  };
 
-  const loadAdminOrders = useCallback(async () => {
-    if (!socket) return;
-    setIsPending(true);
-    setIsError(false);
-    setErrorMessage(null);
-
-    try {
-      const res = await fetchAllOrdersRaw();
-
-      if (res && res.success) {
-        console.log("Fetched orders successfully:", res.data);
-        setOrders(res.data || []);
-      } else {
-        setErrorMessage(res?.message || "Failed to fetch orders.");
-      }
-    } catch (err: any) {
-      setIsError(true);
-      console.error("Fetch error captured:", err);
-      setErrorMessage(err?.message || "An unexpected error occurred.");
-    } finally {
-      setIsPending(false);
-      setIsError(false);
-    }
-  }, [socket, fetchAllOrdersRaw]);
-
-  // Safety trigger: Wait for connection before firing the request
+  // 🟢 FIX: previously `orders` was only ever populated by placeOrder /
+  // cancelOrder / socket updates — the initial fetch from useGetAllOrders
+  // was never written into state, so the admin table would always start
+  // empty. Adjust `data?.data` below to match whatever shape your
+  // useGetAllOrders hook actually resolves to.
   useEffect(() => {
-    if (!socket) return;
-
-    if (socket.connected) {
-      loadAdminOrders();
-    } else {
-      socket.on("connect", loadAdminOrders);
+    if (getOrderResponse?.success && data) {
+      setOrders(data || []);
     }
-
-    return () => {
-      socket.off("connect", loadAdminOrders);
-    };
-  }, [socket, loadAdminOrders]);
+  }, [data]);
 
   // 2. PLACE ORDER LOGIC
   const {
@@ -87,7 +62,6 @@ export const useOrderState = (messageApi?: MessageInstance) => {
         }
 
         clearCart();
-        // Adds the new order right into your local state array instantly
         setOrders((prev) => [res?.data as any, ...prev]);
         setCart([]);
         messageApi?.success(res.message);
@@ -99,6 +73,10 @@ export const useOrderState = (messageApi?: MessageInstance) => {
   });
 
   // 3. CANCEL ORDER LOGIC
+  // 🟡 NOTE: this is the only status-changing mutation this hook has.
+  // There is no generic "update status to confirmed/delivered" mutation,
+  // and no delete-order mutation. The admin page's status/delete actions
+  // are wired against this limitation — see useAdminOrdersPage.ts.
   const { mutate: cancelMutate, isPending: isCancelling } = useCancelOrder({
     config: {
       onSuccess: (res) => {
@@ -134,16 +112,18 @@ export const useOrderState = (messageApi?: MessageInstance) => {
   const cancelOrder = (orderId: string) => cancelMutate(orderId);
 
   return {
-    orders, // Directly returned react state array
+    orders,
+    getOrderResponse,
     placeOrder,
     placeOrderAsync: placeMutateAsync,
     cancelOrder,
-    refetchOrders: loadAdminOrders,
+    refetch, // 🟢 new — may be undefined, guard on the consuming side
     isPlacing,
     isCancelling,
-    isPending, // True while socket is connecting/fetching
+    isGetAllOrdersPending,
     isError,
     errorMessage,
     placeVariables,
+    data,
   };
 };

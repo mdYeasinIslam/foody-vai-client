@@ -1,6 +1,9 @@
 import { ICartItem } from "../../cart/libs/interfaces";
 import { Delivery_Charge } from "../../checkout/libs/enums";
 
+export type OrderStatus = "pending" | "confirmed" | "delivered" | "cancelled";
+export type PaymentStatus = "pending" | "completed" | "failed";
+ 
 export interface IOrderInfo {
   _id: string;
   orderId?: string;

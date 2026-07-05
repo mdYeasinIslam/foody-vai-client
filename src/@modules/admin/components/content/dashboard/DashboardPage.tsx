@@ -5,7 +5,11 @@ interface IProps {
   className?: ClassNameValue;
 }
 const DashboardPage: React.FC<IProps> = ({ className }) => {
-  return <div className={cn(className, "")}>DashboardPage</div>;
+  return (
+    <>
+      <div className={cn(className, "")}>DashboardPage</div>
+    </>
+  );
 };
 
 export default DashboardPage;

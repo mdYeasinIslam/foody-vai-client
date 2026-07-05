@@ -29,9 +29,12 @@ export const OrderSocketService = {
       { orderId },
     ),
 
-  findAll: (socket: Socket | null) =>
-    socketRequest<void, IOrderInfo[]>(socket, EVENTS.GET_ALL_ORDERS),
-
+  findAll: (socket: Socket | null, variables: { status: string }) =>
+    socketRequest<{ status: string }, IOrderInfo[]>(
+      socket,
+      EVENTS.GET_ALL_ORDERS,
+      variables,
+    ),
   track: (socket: Socket | null, orderId: string) =>
     socketRequest<{ orderId: string }, IOrderResponse>(
       socket,
