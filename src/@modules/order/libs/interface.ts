@@ -6,7 +6,7 @@ export type PaymentStatus = "pending" | "completed" | "failed";
  
 export interface IOrderInfo {
   _id: string;
-  orderId?: string;
+  orderId: string;
   customerName: string;
   customerPhone: string;
   customerAddress: string;

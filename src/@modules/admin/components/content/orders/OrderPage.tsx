@@ -1,23 +1,23 @@
 "use client";
-import { useEffect } from "react";
-import { message } from "antd";
-import { ConfirmModal } from "./ConfirmModal";
-import OrderDrawer from "./OrderDrawer";
-import StatusModal from "./StatusModal";
-import { StatusBadge, PaymentBadge } from "./StatusBadge";
-import { useAdminOrdersPage } from "../../../libs/hooks/useAdminOrdersPage";
+import BaseLoader from "@/src/@base/components/BaseLoader";
 import {
   formatDateTime,
   orderId,
   STATUS_CONFIG,
 } from "@/src/@libs/utils/utils";
-import BaseLoader from "@/src/@base/components/BaseLoader";
-import CustomToast from "@/src/@base/components/CustomToast";
+import { message } from "antd";
 import Image from "next/image";
-import { FaSearch } from "react-icons/fa";
+import { FaPenAlt, FaSearch } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
-import AdminHeader from "../../layout/AdminHeader";
+import { useAdminOrdersPage } from "../../../libs/hooks/useAdminOrdersPage";
 import PageHeader from "../base/PageHeader";
+import AllStatusStats from "./AllStatusStats";
+import { ConfirmModal } from "./ConfirmModal";
+import OrderDrawer from "./OrderDrawer";
+import { PaymentBadge, StatusBadge } from "./StatusBadge";
+import StatusModal from "./StatusModal";
+import OrderTableSection from "./OrderTableSection";
 
 export default function OrderPage() {
   const [messageApi, contextHolder] = message.useMessage();
@@ -50,34 +50,12 @@ export default function OrderPage() {
         <PageHeader pageTitle="ORDERS" refresh={refresh} stats={stats} />
 
         {/* Summary stat chips — derived client-side from `orders` in useAdminOrdersPage */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {ALL_STATUSES?.map((status) => {
-            const cfg = STATUS_CONFIG[status];
-            return (
-              <button
-                key={status}
-                onClick={() =>
-                  setFilterStatus(filterStatus === status ? "All" : status)
-                }
-                className={`flex items-center gap-3 p-4 rounded-2xl border-2 text-left transition-all duration-200 ${
-                  filterStatus === status
-                    ? "border-[#f97316] bg-[#f97316]/5 shadow-[0_4px_12px_rgba(249,115,22,0.15)]"
-                    : "border-gray-100 bg-white hover:border-gray-200 shadow-sm"
-                }`}
-              >
-                <span
-                  className={`w-3 h-3 rounded-full flex-shrink-0 ${cfg.dot}`}
-                />
-                <div>
-                  <p className="text-xl font-extrabold text-[#1e2a3a] leading-none">
-                    {stats.statusCounts[status] ?? 0}
-                  </p>
-                  <p className="text-xs text-gray-400 mt-0.5">{cfg.label}</p>
-                </div>
-              </button>
-            );
-          })}
-        </div>
+        <AllStatusStats
+          ALL_STATUSES={ALL_STATUSES}
+          filterStatus={filterStatus}
+          setFilterStatus={setFilterStatus}
+          stats={stats}
+        />
 
         {/* Search + filter bar — both client-side over the fetched `orders` array */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
@@ -150,128 +128,14 @@ export default function OrderPage() {
               </p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="bg-gray-50 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                    <th className="px-6 py-4">Order ID</th>
-                    <th className="px-6 py-4">Customer</th>
-                    <th className="px-6 py-4">Items</th>
-                    <th className="px-6 py-4">Total</th>
-                    <th className="px-6 py-4">Payment</th>
-                    <th className="px-6 py-4">Status</th>
-                    <th className="px-6 py-4">Date</th>
-                    <th className="px-6 py-4 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-50">
-                  {orders?.map((order) => {
-                    const { date, time } = formatDateTime(order.createdAt);
-                    const itemImages = order?.items?.slice(0, 3);
-                    const itemCount = order.items.length;
-                    const itemLabel = itemCount > 1 ? "s" : "";
-                    return (
-                      <tr
-                        key={order._id}
-                        onClick={() => setDrawer(order)}
-                        className="hover:bg-gray-50/70 transition-colors cursor-pointer"
-                      >
-                        <td className="px-6 py-4 font-mono text-xs font-bold text-[#f97316]">
-                          #{orderId(order)}
-                        </td>
-                        <td className="px-6 py-4">
-                          <p className="font-semibold text-[#1e2a3a]">
-                            {order.customerName || "Unknown"}
-                          </p>
-                          <p className="text-xs text-gray-400 mt-0.5">
-                            {order.customerPhone || "—"}
-                          </p>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex -space-x-2">
-                            {itemImages?.map((item, i) =>
-                              item?.img ? (
-                                <Image
-                                  key={`${order._id}-${i}`}
-                                  src={item.img}
-                                  alt={item.name}
-                                  title={item.name}
-                                  width={32}
-                                  height={32}
-                                  className="w-8 h-8 rounded-lg object-cover border-2 border-white"
-                                />
-                              ) : null,
-                            )}
-                          </div>
-                          <p className="text-xs text-gray-400 mt-1">
-                            {itemCount} item{itemLabel}
-                          </p>
-                        </td>
-                        <td className="px-6 py-4 font-bold text-[#1e2a3a]">
-                          ${order.totalAmount.toFixed(2)}
-                        </td>
-                        <td className="px-6 py-4">
-                          <PaymentBadge status={order.paymentStatus} />
-                        </td>
-                        <td className="px-6 py-4">
-                          <StatusBadge status={order.status} />
-                        </td>
-                        <td className="px-6 py-4">
-                          <p className="text-gray-900 text-xs">{date}</p>
-                          <p className="text-gray-700 text-xs mt-0.5">{time}</p>
-                        </td>
-                        <td
-                          className="px-6 py-4"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <div className="flex items-center justify-end gap-2">
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setStatusTarget(order);
-                              }}
-                              className="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-500 transition-colors"
-                              title="Update status"
-                            >
-                              <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth={2}
-                                className="w-4 h-4"
-                              >
-                                <polyline points="1 4 1 10 7 10" />
-                                <path d="M3.51 15a9 9 0 1 0 .49-4.5" />
-                              </svg>
-                            </button>
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setDeleteTarget(order);
-                              }}
-                              className="w-8 h-8 flex items-center justify-center rounded-lg bg-red-50 hover:bg-red-100 text-red-500 transition-colors"
-                              title="Delete order"
-                            >
-                              <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth={2}
-                                className="w-4 h-4"
-                              >
-                                <polyline points="3 6 5 6 21 6" />
-                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-                                <path d="M10 11v6M14 11v6M9 6V4h6v2" />
-                              </svg>
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+            <>
+              <OrderTableSection
+                orders={orders}
+                setDrawer={setDrawer}
+                setStatusTarget={setStatusTarget}
+                setDeleteTarget={setDeleteTarget}
+              />
+            </>
           )}
 
           {orders.length > 0 && (

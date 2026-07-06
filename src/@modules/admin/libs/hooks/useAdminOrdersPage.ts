@@ -36,7 +36,6 @@ export function useAdminOrdersPage(messageApi?: MessageInstance) {
     isCancelling,
     refetch,
   } = useOrderState(messageApi);
-
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState<OrderStatus | "All">("All");
   const [drawer, setDrawer] = useState<IOrderInfo | null>(null);
@@ -100,7 +99,8 @@ export function useAdminOrdersPage(messageApi?: MessageInstance) {
   // useDeleteOrder hook when the backend supports it.
   const handleDelete = () => {
     if (!deleteTarget) return;
-    cancelOrder(deleteTarget._id);
+
+    cancelOrder(deleteTarget.orderId);
     messageApi?.error("No delete endpoint yet — order was cancelled instead.");
     setToast({
       msg: "No delete endpoint yet — order was cancelled instead.",
@@ -108,12 +108,11 @@ export function useAdminOrdersPage(messageApi?: MessageInstance) {
     });
     setDeleteTarget(null);
   };
-
   const refresh = () => {
     if (refetch) {
       refetch();
     } else {
-        messageApi?.error("Refresh isn't wired to a real refetch yet.");
+      messageApi?.error("Refresh isn't wired to a real refetch yet.");
       setToast({
         msg: "Refresh isn't wired to a real refetch yet.",
         type: "error",

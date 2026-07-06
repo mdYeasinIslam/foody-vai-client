@@ -80,16 +80,20 @@ export const useOrderState = (messageApi?: MessageInstance) => {
   const { mutate: cancelMutate, isPending: isCancelling } = useCancelOrder({
     config: {
       onSuccess: (res) => {
+        console.log('res')
         if (res.success) {
-          setOrders((prev) =>
-            prev.map((o) =>
-              o._id === res.data?.data?._id ? { ...o, status: "cancelled" } : o,
-            ),
-          );
+          // setOrders((prev) =>
+          //   prev.map((o) =>
+          //     o._id === res.data?.data?._id ? { ...o, status: "cancelled" } : o,
+          //   ),
+          // );
           messageApi?.success("Order cancelled");
         }
       },
-      onError: (err) => messageApi?.error(err.message),
+      onError: (err) => {
+        console.log(err)
+        messageApi?.error(err.message)
+      },
     },
   });
 
