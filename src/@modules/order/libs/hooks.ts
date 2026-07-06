@@ -4,7 +4,12 @@ import {
 } from "./hooks/useSocketMutation";
 import { useSocketQuery } from "./hooks/useSocketQuery";
 import { useSocketSubscription } from "./hooks/useSocketSubscription";
-import { IOrderCreate, IOrderInfo, IOrderResponse } from "./interface";
+import {
+  IOrderCreate,
+  IOrderInfo,
+  IOrderResponse,
+  IOrderStatusUpdate,
+} from "./interface";
 import { OrderSocketService } from "./services";
 
 type IUsePlaceOrder = {
@@ -34,3 +39,12 @@ export const useOrderUpdates = (handler: (order: IOrderInfo) => void) =>
 //   useSocketMutation(OrderSocketService.findAll, config);
 export const useGetAllOrders = (status: string = "") =>
   useSocketQuery(OrderSocketService.findAll, { status });
+export const useUpdateOrderStatus = ({
+  config,
+}: {
+  config?: SocketMutationConfig<IOrderResponse, IOrderStatusUpdate>;
+} = {}) => useSocketMutation(OrderSocketService.updateStatus, config);
+export const useDeleteOrder = ({
+  config,
+}: { config?: SocketMutationConfig<IOrderResponse, string> } = {}) =>
+  useSocketMutation(OrderSocketService.deleteOne, config);

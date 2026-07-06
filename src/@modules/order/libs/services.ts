@@ -1,6 +1,11 @@
 // @modules/order/libs/services/order.socket.service.ts
 import { Socket } from "socket.io-client";
-import { IOrderCreate, IOrderInfo, IOrderResponse } from "./interface";
+import {
+  IOrderCreate,
+  IOrderInfo,
+  IOrderResponse,
+  IOrderStatusUpdate,
+} from "./interface";
 import { socketRequest } from "@/src/@libs/socket/libs/socketRequest";
 
 const EVENTS = {
@@ -9,6 +14,8 @@ const EVENTS = {
   TRACK_ORDER: "trackOder",
   GET_ALL_ORDERS: "getAllOrders",
   ORDER_UPDATED: "orderUpdated", // server -> client
+  UPDATE_ORDER_STATUS: "updateOrderStatus", // client -> server
+  DELETE_ORDER: "deleteOrder",
 } as const;
 
 export const OrderSocketService = {
@@ -41,4 +48,20 @@ export const OrderSocketService = {
       EVENTS.TRACK_ORDER,
       { orderId },
     ),
+  updateStatus: (socket: Socket | null, order: IOrderStatusUpdate) =>
+    socketRequest<IOrderStatusUpdate, IOrderResponse>(
+      socket,
+      EVENTS.UPDATE_ORDER_STATUS,
+      {
+        _id: order._id,
+        orderId: order.orderId,
+        previousStatus: order.previousStatus,
+        newStatus: order.newStatus,
+        specialNote: order.specialNote,
+      },
+    ),
+  deleteOne: (socket: Socket | null, orderId: string) =>
+    socketRequest<{ orderId: string }, IOrderResponse>(socket, "deleteOrder", {
+      orderId,
+    }),
 };

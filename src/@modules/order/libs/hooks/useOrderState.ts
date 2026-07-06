@@ -1,19 +1,23 @@
-import { useSocket } from "@/src/@libs/socket/hooks/useSocket";
 import { useAuthState } from "@/src/@modules/auth/libs/hooks/useAuthState";
 import { useCartState } from "@/src/@modules/cart/libs/hooks/useCartState";
 import {
   useCancelOrder,
+  useDeleteOrder,
   useGetAllOrders,
   useOrderUpdates,
   usePlaceOrder,
+  useUpdateOrderStatus,
 } from "@/src/@modules/order/libs/hooks";
-import { IOrderCreate, IOrderInfo } from "@/src/@modules/order/libs/interface";
+import {
+  IOrderCreate,
+  IOrderInfo,
+  IOrderStatusUpdate,
+} from "@/src/@modules/order/libs/interface";
 import { MessageInstance } from "antd/es/message/interface";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export const useOrderState = (messageApi?: MessageInstance) => {
-  const { socket } = useSocket();
   const { user } = useAuthState(messageApi);
   const router = useRouter();
   const { clearCart, setCart } = useCartState();
@@ -56,19 +60,22 @@ export const useOrderState = (messageApi?: MessageInstance) => {
   } = usePlaceOrder({
     config: {
       onSuccess: (res) => {
+        console.log(res)
         if (!res.success) {
           messageApi?.error(res.message || "Failed to place order");
           return;
         }
-
         clearCart();
         setOrders((prev) => [res?.data as any, ...prev]);
         setCart([]);
         messageApi?.success(res.message);
 
-        router.push(`/order-track/${res?.data?.data?.orderId}`);
+        router.push(`/order-track/${res?.data?.orderId}`);
       },
-      onError: (err) => messageApi?.error(err.message),
+      onError: (err) => {
+        console.log(err)
+        messageApi?.error(err.message)
+      },
     },
   });
 
@@ -80,16 +87,20 @@ export const useOrderState = (messageApi?: MessageInstance) => {
   const { mutate: cancelMutate, isPending: isCancelling } = useCancelOrder({
     config: {
       onSuccess: (res) => {
+        console.log("res");
         if (res.success) {
-          setOrders((prev) =>
-            prev.map((o) =>
-              o._id === res.data?.data?._id ? { ...o, status: "cancelled" } : o,
-            ),
-          );
+          // setOrders((prev) =>
+          //   prev.map((o) =>
+          //     o._id === res.data?.data?._id ? { ...o, status: "cancelled" } : o,
+          //   ),
+          // );
           messageApi?.success("Order cancelled");
         }
       },
-      onError: (err) => messageApi?.error(err.message),
+      onError: (err) => {
+        console.log(err);
+        messageApi?.error(err.message);
+      },
     },
   });
 
@@ -101,6 +112,49 @@ export const useOrderState = (messageApi?: MessageInstance) => {
     messageApi?.info(`Order ${updated._id} updated: ${updated.status}`);
   });
 
+  //5. Delete order
+  const { mutate: deleteMutate, isPending: isDeleting } = useDeleteOrder({
+    config: {
+      onSuccess: (res) => {
+        console.log("res", res);
+        if (res.success) {
+          setOrders((prev) =>
+            prev.filter((o) => o._id !== res.data?.data?._id),
+        );
+        refetch();
+          messageApi?.success("Order deleted");
+        }
+      },
+      onError: (err) => {
+        console.log(err);
+        messageApi?.error(err.message);
+      },
+    },
+  });
+
+  // 6. update order status
+  const { mutate: updateStatusMutate, isPending: isUpdatingStatus } =
+    useUpdateOrderStatus({
+      config: {
+        onSuccess: (res) => {
+          console.log("res", res);
+          if (res.success) {
+            setOrders((prev) =>
+              prev.map((o) =>
+                o._id === res.data?.data?._id ? { ...o, ...res.data?.data } : o,
+              ),
+            );
+            refetch();
+            messageApi?.success("Order status updated");
+          }
+        },
+        onError: (err) => {
+          console.log(err);
+          messageApi?.error(err.message);
+        },
+      },
+    });
+
   const placeOrder = (checkoutInfo: IOrderCreate) => {
     if (!user?._id) {
       messageApi?.error("Please login to place an order");
@@ -108,18 +162,25 @@ export const useOrderState = (messageApi?: MessageInstance) => {
     }
     placeMutate({ ...checkoutInfo });
   };
+  const updateOrderStatus = (orderStatusInfo: IOrderStatusUpdate) =>
+    updateStatusMutate(orderStatusInfo);
 
   const cancelOrder = (orderId: string) => cancelMutate(orderId);
-
+  const deleteOrder = (orderId: string) => deleteMutate(orderId);
   return {
     orders,
     getOrderResponse,
     placeOrder,
     placeOrderAsync: placeMutateAsync,
     cancelOrder,
+    deleteOrder,
+    updateOrderStatus,
+
     refetch, // 🟢 new — may be undefined, guard on the consuming side
     isPlacing,
     isCancelling,
+    isDeleting,
+    isUpdatingStatus,
     isGetAllOrdersPending,
     isError,
     errorMessage,

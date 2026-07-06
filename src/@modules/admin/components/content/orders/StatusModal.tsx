@@ -1,25 +1,32 @@
 import { ALL_STATUSES, orderId, STATUS_CONFIG } from "@/src/@libs/utils/utils";
-import { IOrderInfo, OrderStatus } from "@/src/@modules/order/libs/interface";
-import React from "react";
+import {
+  IOrderInfo,
+  IOrderStatusUpdate,
+  OrderStatus,
+} from "@/src/@modules/order/libs/interface";
+import React, { useState } from "react";
+import { RxCross2 } from "react-icons/rx";
 
-interface StatusModalProps {
+interface IProps {
   order: IOrderInfo;
-  onSave: (status: OrderStatus) => void;
+  onSave: (statusInfo: IOrderStatusUpdate) => void;
   onClose: () => void;
 }
 
 const PIPELINE: OrderStatus[] = ["pending", "confirmed", "delivered"];
-
-export default function StatusModal({
-  order,
-  onSave,
-  onClose,
-}: StatusModalProps) {
-  const [selected, setSelected] = React.useState<OrderStatus>(order.status);
+const StatusModal: React.FC<IProps> = ({ order, onSave, onClose }) => {
+  const [selected, setSelected] = useState<OrderStatus>(order.status);
   const currentStep = PIPELINE.indexOf(order.status);
-
+  // console.log("currentStep", currentStep, "selected", selected, order.status);
+  const payload: IOrderStatusUpdate = {
+    _id: order._id,
+    orderId: order.orderId,
+    previousStatus: order.status,
+    newStatus: selected,
+    specialNote: "",
+  };
   return (
-    <div className="fixed h-full inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+    <div className="fixed h-full inset-0 z-60 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6">
         <div className="flex items-center justify-between mb-5">
           <div>
@@ -33,18 +40,9 @@ export default function StatusModal({
           </div>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
+            className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              className="w-5 h-5"
-            >
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
+            <RxCross2 />
           </button>
         </div>
 
@@ -56,7 +54,7 @@ export default function StatusModal({
               const current = currentStep === i;
               return (
                 <React.Fragment key={step}>
-                  <div className="flex flex-col items-center gap-1">
+                  <div className="flex flex-col items-center gap-1 ">
                     <div
                       className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all ${
                         done
@@ -106,7 +104,7 @@ export default function StatusModal({
               <button
                 key={status}
                 onClick={() => setSelected(status)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl border-2 text-sm font-semibold transition-all ${
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl border-2 text-sm font-semibold transition-all cursor-pointer ${
                   selected === status
                     ? "border-[#f97316] bg-[#f97316]/5"
                     : "border-gray-100 hover:border-gray-200 bg-gray-50"
@@ -137,14 +135,14 @@ export default function StatusModal({
         <div className="flex gap-3">
           <button
             onClick={onClose}
-            className="flex-1 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-semibold text-sm hover:bg-gray-50 transition-colors"
+            className="flex-1 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-semibold text-sm hover:bg-gray-50 transition-colors cursor-pointer"
           >
             Cancel
           </button>
           <button
-            onClick={() => onSave(selected)}
+            onClick={() => onSave(payload)}
             disabled={selected === order.status}
-            className="flex-1 py-2.5 rounded-xl bg-[#f97316] hover:bg-[#ea6c0a] disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold text-sm transition-colors shadow-[0_4px_12px_rgba(249,115,22,0.3)]"
+            className="flex-1 py-2.5 rounded-xl bg-[#f97316] hover:bg-[#ea6c0a] disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold text-sm transition-colors shadow-[0_4px_12px_rgba(249,115,22,0.3)] cursor-pointer"
           >
             Save Status
           </button>
@@ -152,4 +150,5 @@ export default function StatusModal({
       </div>
     </div>
   );
-}
+};
+export default StatusModal;

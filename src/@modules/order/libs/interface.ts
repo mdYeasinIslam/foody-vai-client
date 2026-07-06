@@ -3,10 +3,10 @@ import { Delivery_Charge } from "../../checkout/libs/enums";
 
 export type OrderStatus = "pending" | "confirmed" | "delivered" | "cancelled";
 export type PaymentStatus = "pending" | "completed" | "failed";
- 
+
 export interface IOrderInfo {
   _id: string;
-  orderId?: string;
+  orderId: string;
   customerName: string;
   customerPhone: string;
   customerAddress: string;
@@ -68,15 +68,25 @@ export interface ITrackedOrder {
   statusHistory: { status: string; timestamp: string; note: string }[];
   createdAt: string;
 }
+
+export interface IOrderStatusUpdate {
+  _id: string;
+  orderId: string;
+  previousStatus?: OrderStatus;
+  newStatus: OrderStatus;
+  specialNote?: string;
+}
 export interface IOrderResponse {
   success: boolean;
   message: string;
   data: IOrderInfo;
   error?: any;
+  orderId?: string;
 }
 export interface IOrderResponses {
   success: boolean;
   message: string;
   data: IOrderInfo[];
   error?: any;
+  orderId?: string;
 }

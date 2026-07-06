@@ -2,8 +2,8 @@ import axios from "axios";
 import { getAccessToken, removeAccessToken } from "../utils/auth.token";
 
 export const AxiosInstance = axios.create({
-  baseURL: "http://localhost:5000/",
-  //   baseURL: "https://foody-vai-server-production.up.railway.app/",
+  // baseURL: "http://localhost:5000/",
+    baseURL: "https://foody-vai-server-production.up.railway.app/",
   // baseURL:'/data'
 });
 

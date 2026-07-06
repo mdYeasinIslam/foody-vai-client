@@ -7,7 +7,7 @@ const COOKIE_NAME = "auth_token";
 
 const ROUTES = {
   protected: ["/checkout", "/profile", "/orders"],
-  admin: ["/admin", "/dashboard"],
+  admin: ["/admin/dashboard", "/admin/orders", "/admin/products", "/admin/users"],
   guestOnly: ["/signIn", "/signUp"],
 };
 
