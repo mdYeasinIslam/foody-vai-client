@@ -1,5 +1,7 @@
 "use client";
 import cn from "@/src/@libs/utils/_cn";
+import { useAuthState } from "@/src/@modules/auth/libs/hooks/useAuthState";
+import { message } from "antd";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -81,14 +83,15 @@ const NAV_ITEMS = [
   },
 ];
 const AdminNavbar: React.FC<IProps> = ({ className }) => {
+  const [messageApi, contextHolder] = message.useMessage();
   const navigate = useRouter();
   const pathName = usePathname();
   const [collapsed, setCollapsed] = useState(false);
+    const { clearAuthUser } = useAuthState(messageApi);
+  
   function handleLogout() {
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("auth");
-      navigate.push("/signIn");
-    }
+   clearAuthUser()
+    navigate.push("/signIn");
   }
   return (
     <aside
@@ -98,6 +101,7 @@ const AdminNavbar: React.FC<IProps> = ({ className }) => {
         collapsed ? "w-20" : "w-60",
       )}
     >
+      {contextHolder}
       {/* Logo row */}
       <div className="flex items-center gap-3 px-5 py-5 border-b border-white/10">
         <span className="text-[#f97316] text-2xl shrink-0">🍽️</span>

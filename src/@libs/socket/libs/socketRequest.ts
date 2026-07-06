@@ -24,7 +24,7 @@ export const socketRequest = <TPayload, TResponse>(
       reject(new Error(`Socket event "${event}" timed out`));
     }, timeoutMs);
 
-    socket.emit(event, { data: payload }, (res: SocketResponse<TResponse>) => {
+    socket.emit(event, payload, (res: SocketResponse<TResponse>) => {
       clearTimeout(timer);
       if (!res?.success) {
         return reject(new Error(res?.message || `Event "${event}" failed`));

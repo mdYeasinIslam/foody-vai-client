@@ -40,6 +40,7 @@ export default function OrderPage() {
     toast,
     handleStatusSave,
     handleDelete,
+    handleUpdateOrderStatusFn,
     refresh,
   } = useAdminOrdersPage(messageApi);
   return (
@@ -165,7 +166,7 @@ export default function OrderPage() {
         {statusTarget && (
           <StatusModal
             order={statusTarget}
-            onSave={handleStatusSave}
+            onSave={handleUpdateOrderStatusFn}
             onClose={() => setStatusTarget(null)}
           />
         )}

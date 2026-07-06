@@ -1,11 +1,15 @@
 import { ALL_STATUSES, orderId, STATUS_CONFIG } from "@/src/@libs/utils/utils";
-import { IOrderInfo, OrderStatus } from "@/src/@modules/order/libs/interface";
+import {
+  IOrderInfo,
+  IOrderStatusUpdate,
+  OrderStatus,
+} from "@/src/@modules/order/libs/interface";
 import React, { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 
 interface IProps {
   order: IOrderInfo;
-  onSave: (status: OrderStatus) => void;
+  onSave: (statusInfo: IOrderStatusUpdate) => void;
   onClose: () => void;
 }
 
@@ -13,7 +17,14 @@ const PIPELINE: OrderStatus[] = ["pending", "confirmed", "delivered"];
 const StatusModal: React.FC<IProps> = ({ order, onSave, onClose }) => {
   const [selected, setSelected] = useState<OrderStatus>(order.status);
   const currentStep = PIPELINE.indexOf(order.status);
-  console.log("currentStep", currentStep, "selected", selected, order.status);
+  // console.log("currentStep", currentStep, "selected", selected, order.status);
+  const payload: IOrderStatusUpdate = {
+    _id: order._id,
+    orderId: order.orderId,
+    previousStatus: order.status,
+    newStatus: selected,
+    specialNote: "",
+  };
   return (
     <div className="fixed h-full inset-0 z-60 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6">
@@ -129,7 +140,7 @@ const StatusModal: React.FC<IProps> = ({ order, onSave, onClose }) => {
             Cancel
           </button>
           <button
-            onClick={() => onSave(selected)}
+            onClick={() => onSave(payload)}
             disabled={selected === order.status}
             className="flex-1 py-2.5 rounded-xl bg-[#f97316] hover:bg-[#ea6c0a] disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold text-sm transition-colors shadow-[0_4px_12px_rgba(249,115,22,0.3)] cursor-pointer"
           >

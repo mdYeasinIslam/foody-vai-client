@@ -1,5 +1,8 @@
 import { useMemo, useState } from "react";
-import { IOrderInfo } from "@/src/@modules/order/libs/interface";
+import {
+  IOrderInfo,
+  IOrderStatusUpdate,
+} from "@/src/@modules/order/libs/interface";
 import { MessageInstance } from "antd/es/message/interface";
 import { useOrderState } from "@/src/@modules/order/libs/hooks/useOrderState";
 
@@ -33,7 +36,11 @@ export function useAdminOrdersPage(messageApi?: MessageInstance) {
     isError,
     errorMessage,
     cancelOrder,
+    deleteOrder,
+    updateOrderStatus,
     isCancelling,
+    isUpdatingStatus,
+    isDeleting,
     refetch,
   } = useOrderState(messageApi);
   const [search, setSearch] = useState("");
@@ -81,15 +88,10 @@ export function useAdminOrdersPage(messageApi?: MessageInstance) {
     if (status === "cancelled") {
       cancelOrder(statusTarget._id);
       messageApi?.success("Order cancelled");
-      setToast({ msg: "Order cancelled", type: "success" });
     } else {
       messageApi?.error(
         `No endpoint yet to move an order to "${status}" — only cancel is wired up.`,
       );
-      setToast({
-        msg: `No endpoint yet to move an order to "${status}" — only cancel is wired up.`,
-        type: "error",
-      });
     }
     setStatusTarget(null);
   };
@@ -99,14 +101,20 @@ export function useAdminOrdersPage(messageApi?: MessageInstance) {
   // useDeleteOrder hook when the backend supports it.
   const handleDelete = () => {
     if (!deleteTarget) return;
-
-    cancelOrder(deleteTarget.orderId);
-    messageApi?.error("No delete endpoint yet — order was cancelled instead.");
-    setToast({
-      msg: "No delete endpoint yet — order was cancelled instead.",
-      type: "error",
-    });
+    deleteOrder(deleteTarget.orderId);
+    // messageApi?.error("No delete endpoint yet — order was cancelled instead.");
+    // setToast({
+    //   msg: "No delete endpoint yet — order was cancelled instead.",
+    //   type: "error",
+    // });
     setDeleteTarget(null);
+    refresh();
+  };
+
+  const handleUpdateOrderStatusFn = (orderStatusInfo: IOrderStatusUpdate) => {
+    updateOrderStatus(orderStatusInfo);
+    setStatusTarget(null);
+    refresh();
   };
   const refresh = () => {
     if (refetch) {
@@ -123,7 +131,8 @@ export function useAdminOrdersPage(messageApi?: MessageInstance) {
   return {
     orders: filteredOrders,
     stats,
-    isLoading: isGetAllOrdersPending || isCancelling,
+    isLoading:
+      isGetAllOrdersPending || isCancelling || isUpdatingStatus || isDeleting,
     error: isError ? errorMessage || "Failed to load orders." : null,
     search,
     setSearch,
@@ -139,6 +148,7 @@ export function useAdminOrdersPage(messageApi?: MessageInstance) {
     toast,
     handleStatusSave,
     handleDelete,
+    handleUpdateOrderStatusFn,
     refresh,
   };
 }
