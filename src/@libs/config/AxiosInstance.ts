@@ -2,8 +2,8 @@ import axios from "axios";
 import { getAccessToken, removeAccessToken } from "../utils/auth.token";
 
 export const AxiosInstance = axios.create({
-  // baseURL: "http://localhost:5000/",
-    baseURL: "https://foody-vai-server-production.up.railway.app/",
+  baseURL: "http://localhost:5000/",
+  // baseURL: "https://foody-vai-server-production.up.railway.app/",
   // baseURL:'/data'
 });
 
@@ -27,7 +27,7 @@ AxiosInstance.interceptors.response.use(
   (error) => {
     if (error.response.status === 401) {
       removeAccessToken();
-        localStorage.removeItem("auth");
+      localStorage.removeItem("auth");
       window.location.href = "/signIn";
     }
     return Promise.reject(error);

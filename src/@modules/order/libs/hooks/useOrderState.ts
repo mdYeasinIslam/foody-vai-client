@@ -60,21 +60,26 @@ export const useOrderState = (messageApi?: MessageInstance) => {
   } = usePlaceOrder({
     config: {
       onSuccess: (res) => {
-        console.log(res)
         if (!res.success) {
           messageApi?.error(res.message || "Failed to place order");
           return;
         }
-        clearCart();
-        setOrders((prev) => [res?.data as any, ...prev]);
-        setCart([]);
-        messageApi?.success(res.message);
-
-        router.push(`/order-track/${res?.data?.orderId}`);
+        messageApi
+          ?.loading(
+            "Order placed successfully. Redirecting to order tracking page...",
+            1,
+          )
+          .then(() => {
+            clearCart();
+            setOrders((prev) => [res?.data as any, ...prev]);
+            setCart([]);
+            messageApi?.success(res.message);
+            router.push(`/order-track/${res?.data?.orderId}`);
+          });
       },
       onError: (err) => {
-        console.log(err)
-        messageApi?.error(err.message)
+        console.log(err);
+        messageApi?.error(err.message);
       },
     },
   });
@@ -120,8 +125,8 @@ export const useOrderState = (messageApi?: MessageInstance) => {
         if (res.success) {
           setOrders((prev) =>
             prev.filter((o) => o._id !== res.data?.data?._id),
-        );
-        refetch();
+          );
+          refetch();
           messageApi?.success("Order deleted");
         }
       },
