@@ -1,8 +1,8 @@
 import cn from "@/src/@libs/utils/_cn";
 import React from "react";
 interface IProps {
-    className?: string;
-    pageTitle?: string;
+  className?: string;
+  pageTitle?: string;
   stats?: {
     totalOrders: number;
     totalRevenue: number;
@@ -11,9 +11,14 @@ interface IProps {
       number
     >;
   };
-  refresh: () => void;
+  refresh?: () => void;
 }
-const PageHeader: React.FC<IProps> = ({ className,pageTitle, stats, refresh }) => {
+const PageHeader: React.FC<IProps> = ({
+  className,
+  pageTitle,
+  stats,
+  refresh,
+}) => {
   return (
     <div
       className={cn(
