@@ -7,7 +7,7 @@ const END_POINT: string = "products";
 
 export const ProductsService = {
   Name: END_POINT,
-  async create(payload: any): Promise<IProductResponse> {
+  async create(payload: IProductCreateAndUpdate): Promise<IProductResponse> {
     try {
       const res = await AxiosInstance.post(END_POINT, payload);
       return Promise.resolve(res?.data);
@@ -25,7 +25,7 @@ export const ProductsService = {
   },
   async findById(id: string): Promise<IProductResponse> {
     try {
-      const res = await axios.get(`${END_POINT}/${id}`);
+      const res = await AxiosInstance.get(`${END_POINT}/${id}`);
       return Promise.resolve(res?.data);
     } catch (error) {
       throw error;

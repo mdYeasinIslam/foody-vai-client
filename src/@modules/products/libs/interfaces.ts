@@ -18,22 +18,23 @@ export interface IProduct {
   }[];
   category: string;
   subcategory?: string;
+  quantity?: number;
   img: string;
 }
 export interface IProductCreateAndUpdate {
   _id: string;
   name: string;
   description?: string;
-  price: {
+  prices: {
     weight: number;
     price: number;
     originalPrice: number;
     weightName: string;
     currency: string;
-  };
+  }[];
   category: string;
   subcategory?: string;
-  quantity: number;
+  quantity?: number;
   img: string;
 }
 

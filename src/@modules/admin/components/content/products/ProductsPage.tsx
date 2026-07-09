@@ -8,11 +8,12 @@ import { RxCross2 } from "react-icons/rx";
 import BaseLoader from "@/src/@base/components/BaseLoader";
 import PageHeader from "../base/PageHeader";
 
+import {
+  IProduct,
+  IProductCreateAndUpdate,
+} from "@/src/@modules/products/libs/interfaces";
 import { useProductsState } from "../../../libs/hooks/useProductsState";
-
-
 import ProductTableSection from "./ProductTableSection";
-import { IProduct, IProductCreateAndUpdate } from "@/src/@modules/products/libs/interfaces";
 import ProductModal from "./ProductModal";
 import { ConfirmModal } from "../orders/ConfirmModal";
 
@@ -24,87 +25,77 @@ export default function ProductsPage() {
     createProduct,
     updateProduct,
     deleteProduct,
-
     refetch,
-
     isCreating,
     isUpdating,
     isDeleting,
     isGetProductsPending,
-
     isError,
     errorMessage,
   } = useProductsState(messageApi);
 
-  // =====================================================
-  // UI STATES
-  // =====================================================
-
   const [search, setSearch] = useState("");
-
   const [category, setCategory] = useState("All");
 
-  const [productModal, setProductModal] = useState<IProduct | "add" | null>(
-    null,
-  );
-
+  const [modal, setModal] = useState<IProduct | "add" | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<IProduct | null>(null);
 
-  // =====================================================
-  // FILTERED PRODUCTS
-  // =====================================================
+  // ============================
+  // Categories
+  // ============================
+
+  const categories = useMemo(() => {
+    const list = products.map((p) => p.category);
+
+    return ["All", ...Array.from(new Set(list))];
+  }, [products]);
+
+  // ============================
+  // Filtered Products
+  // ============================
 
   const filteredProducts = useMemo(() => {
-    const keyword = search.trim().toLowerCase();
+    return products.filter((item) => {
+      const matchCategory = category === "All" || item.category === category;
 
-    return products.filter((product) => {
-      const matchCategory = category === "All" || product.category === category;
+      const keyword = search.toLowerCase();
 
-      if (!matchCategory) return false;
+      const matchSearch =
+        item.name.toLowerCase().includes(keyword) ||
+        item.category.toLowerCase().includes(keyword);
 
-      if (!keyword) return true;
-
-      return (
-        product.name.toLowerCase().includes(keyword) ||
-        product.category.toLowerCase().includes(keyword) ||
-        product.description?.toLowerCase().includes(keyword)
-      );
+      return matchCategory && matchSearch;
     });
   }, [products, search, category]);
 
-  // =====================================================
-  // CATEGORY
-  // =====================================================
-
-  const categories = useMemo(() => {
-    return ["All", ...new Set(products.map((item) => item.category))];
-  }, [products]);
-
-  // =====================================================
-  // STATS
-  // =====================================================
+  // ============================
+  // Statistics
+  // ============================
 
   const stats = useMemo(() => {
     return {
       totalProducts: products.length,
-      totalCategories: categories.length - 1,
-      totalVariants: products.reduce((acc, cur) => acc + cur.prices.length, 0),
+      totalCategories: new Set(products.map((i) => i.category)).size,
     };
   }, [products]);
 
-  // =====================================================
-  // HANDLERS
-  // =====================================================
+  // ============================
+  // Save
+  // ============================
 
-  const handleSave = (payload: IProductCreateAndUpdate, id?: string) => {
+  const handleSave = (values: IProductCreateAndUpdate, id?: string) => {
     if (id) {
-      updateProduct(id, payload);
+      updateProduct(id, values);
     } else {
-      createProduct(payload);
+      createProduct(values);
     }
 
-    setProductModal(null);
+    setModal(null);
   };
+
+  // ============================
+  // Delete
+  // ============================
 
   const handleDelete = () => {
     if (!deleteTarget) return;
@@ -114,27 +105,28 @@ export default function ProductsPage() {
     setDeleteTarget(null);
   };
 
-  const isLoading =
-    isCreating || isUpdating || isDeleting || isGetProductsPending;
-
   return (
     <>
       {contextHolder}
 
       <div className="space-y-6 px-8 pt-5">
-        <PageHeader pageTitle="PRODUCTS" refresh={refetch} productStats={stats} />
+        <PageHeader
+          pageTitle="PRODUCTS"
+          refresh={refetch}
+          productStats={stats}
+        />
 
-        {/* SEARCH */}
+        {/* Search + Filter */}
 
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col sm:flex-row gap-3 items-center">
-          <div className="relative flex-1 w-full">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col lg:flex-row gap-4">
+          <div className="relative flex-1">
             <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
 
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search Product..."
-              className="w-full pl-9 pr-10 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#f97316]"
+              placeholder="Search product..."
+              className="w-full border rounded-xl py-2.5 pl-10 pr-10 outline-none focus:border-[#f97316]"
             />
 
             {search && (
@@ -150,7 +142,7 @@ export default function ProductsPage() {
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="px-4 py-2.5 rounded-xl border border-gray-200"
+            className="border rounded-xl px-4"
           >
             {categories.map((item) => (
               <option key={item}>{item}</option>
@@ -158,70 +150,55 @@ export default function ProductsPage() {
           </select>
 
           <button
-            onClick={() => setProductModal("add")}
-            className="flex items-center gap-2 bg-[#f97316] hover:bg-[#ea6c0a] text-white rounded-xl px-5 py-2.5"
+            onClick={() => setModal("add")}
+            className="bg-[#f97316] hover:bg-[#ea6c0a] text-white rounded-xl px-5 flex items-center gap-2 font-semibold cursor-pointer"
           >
             <FaPlus />
             Add Product
           </button>
         </div>
 
-        {/* TABLE */}
+        {/* Table */}
 
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-          {isLoading ? (
-            <BaseLoader className="flex justify-center py-20" />
+          {isGetProductsPending ? (
+            <BaseLoader className="flex justify-center mt-10" />
           ) : isError ? (
             <div className="py-20 text-center">
-              <p className="text-4xl mb-3">⚠️</p>
-
               <p>{errorMessage}</p>
-            </div>
-          ) : filteredProducts.length === 0 ? (
-            <div className="py-20 text-center">
-              <p className="text-4xl mb-3">📦</p>
-
-              <p>No Products Found</p>
             </div>
           ) : (
             <ProductTableSection
               products={filteredProducts}
-              setProductModal={setProductModal}
-              setDeleteTarget={setDeleteTarget}
+              onEdit={(item) => setModal(item)}
+              onDelete={(item) => setDeleteTarget(item)}
             />
-          )}
-
-          {filteredProducts.length > 0 && (
-            <div className="border-t px-6 py-3 flex justify-between text-sm text-gray-500">
-              <span>Showing {filteredProducts.length} Products</span>
-
-              {category !== "All" && (
-                <button
-                  onClick={() => setCategory("All")}
-                  className="text-[#f97316]"
-                >
-                  Clear Filter
-                </button>
-              )}
-            </div>
           )}
         </div>
 
-        {productModal && (
+        {/* Modal */}
+
+        {modal && (
           <ProductModal
-            product={productModal}
-            categories={categories.filter((c) => c !== "All")}
+            open={!!modal}
+            product={modal}
+            categories={categories.filter((i) => i !== "All")}
+            onClose={() => setModal(null)}
             onSave={handleSave}
-            onClose={() => setProductModal(null)}
+            isLoading={isCreating || isUpdating}
           />
         )}
 
-        {deleteTarget && (
+        {/* Delete */}
+
+        {/* {deleteTarget && (
           <ConfirmModal
-            onConfirm={handleDelete}
+            product={deleteTarget}
             onCancel={() => setDeleteTarget(null)}
+            onConfirm={handleDelete}
+            loading={isDeleting}
           />
-        )}
+        )} */}
       </div>
     </>
   );

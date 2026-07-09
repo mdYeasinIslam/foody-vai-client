@@ -6,7 +6,7 @@ interface IProps {
   productStats?: {
     totalProducts: number;
     totalCategories: number;
-    totalVariants: number;
+    totalVariants?: number;
   };
   orderStats?: {
     totalOrders: number;

@@ -38,6 +38,7 @@ export const useProductsState = (messageApi?: MessageInstance) => {
   } = useCreateProduct({
     config: {
       onSuccess: (res: IProductResponse) => {
+        console.log(res)
         if (!res.success) {
           messageApi?.error(res.message);
           return;
@@ -127,7 +128,8 @@ export const useProductsState = (messageApi?: MessageInstance) => {
   // ========================================================
 
   const createProduct = (payload: IProductCreateAndUpdate) => {
-    createMutate(payload);
+    console.log(payload)
+    // createMutate(payload);
   };
 
   const updateProduct = (id: string, payload: Partial<IProductCreateAndUpdate>) => {

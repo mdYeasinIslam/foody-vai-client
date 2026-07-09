@@ -7,11 +7,11 @@ type IUseProducts = {
   options?: IProductFilter;
   config?: QueryConfig<typeof ProductsService.find>;
 };
-export const useProducts = ({ config }: IUseProducts = {}) => {
+export const useProducts = ({ config, options }: IUseProducts = {}) => {
   return useQuery({
     ...config,
     queryKey: ["products"],
-    queryFn: () => ProductsService.find(),
+    queryFn: () => ProductsService.find(options),
   });
 };
 
