@@ -1,5 +1,5 @@
-import { QueryConfig } from "@/src/@libs/config/react-query";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { MutationConfig, QueryConfig } from "@/src/@libs/config/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { IProductCreateAndUpdate, IProductFilter } from "./interfaces";
 import { ProductsService } from "./services";
 
@@ -7,8 +7,9 @@ type IUseProducts = {
   options?: IProductFilter;
   config?: QueryConfig<typeof ProductsService.find>;
 };
-export const useProducts = ({ options }: IUseProducts) => {
+export const useProducts = ({ config }: IUseProducts = {}) => {
   return useQuery({
+    ...config,
     queryKey: ["products"],
     queryFn: () => ProductsService.find(),
   });
@@ -25,50 +26,44 @@ export const useProduct = ({ id, config }: IUseProduct) => {
     queryFn: () => ProductsService.findById(id),
   });
 };
-export const useCreateProduct = () => {
-  const queryClient = useQueryClient();
 
+type ICreateProductProps = {
+  config?: MutationConfig<typeof ProductsService.create>;
+};
+export const useCreateProduct = ({ config }: ICreateProductProps = {}) => {
   return useMutation({
+    ...config,
     mutationFn: ProductsService.create,
-
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["products"],
-      });
-    },
   });
 };
 
-export const useUpdateProduct = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({
-      id,
-      payload,
-    }: {
+type IUpdateProductProps = {
+  config?: MutationConfig<
+    (variables: {
       id: string;
       payload: Partial<IProductCreateAndUpdate>;
-    }) => ProductsService.update(id, payload),
+    }) => ReturnType<typeof ProductsService.update>
+  >;
+};
+export const useUpdateProduct = ({ config }: IUpdateProductProps = {}) => {
+  type UpdateProductVariables = {
+    id: string;
+    payload: Partial<IProductCreateAndUpdate>;
+  };
 
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["products"],
-      });
-    },
+  return useMutation({
+    ...config,
+    mutationFn: ({ id, payload }: UpdateProductVariables) =>
+      ProductsService.update(id, payload),
   });
 };
 
-export const useDeleteProduct = () => {
-  const queryClient = useQueryClient();
-
+type IDeleteProductProps = {
+  config?: MutationConfig<typeof ProductsService.delete>;
+};
+export const useDeleteProduct = ({ config }: IDeleteProductProps = {}) => {
   return useMutation({
+    ...config,
     mutationFn: ProductsService.delete,
-
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["products"],
-      });
-    },
   });
 };

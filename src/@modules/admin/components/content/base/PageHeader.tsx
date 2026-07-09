@@ -2,8 +2,13 @@ import cn from "@/src/@libs/utils/_cn";
 import React from "react";
 interface IProps {
   className?: string;
-  pageTitle?: string;
-  stats?: {
+  pageTitle: string;
+  productStats?: {
+    totalProducts: number;
+    totalCategories: number;
+    totalVariants: number;
+  };
+  orderStats?: {
     totalOrders: number;
     totalRevenue: number;
     statusCounts: Record<
@@ -16,7 +21,8 @@ interface IProps {
 const PageHeader: React.FC<IProps> = ({
   className,
   pageTitle,
-  stats,
+  orderStats,
+  productStats,
   refresh,
 }) => {
   return (
@@ -29,8 +35,22 @@ const PageHeader: React.FC<IProps> = ({
       <div>
         <h2 className="text-2xl font-extrabold text-[#1e2a3a]">{pageTitle}</h2>
         <p className="text-gray-600 text-sm mt-0.5">
-          {stats?.totalOrders} total orders · ${stats?.totalRevenue.toFixed(2)}{" "}
-          revenue
+          {orderStats && (
+            <>
+              {orderStats?.totalOrders} total orders · $
+              {orderStats?.totalRevenue?.toFixed(2)}
+              revenue
+            </>
+          )}
+          {
+            productStats && (
+              <>
+                {productStats?.totalProducts} products ·
+                {productStats?.totalCategories} categories ·
+                {productStats?.totalVariants} variants
+              </>
+            )
+          }
         </p>
       </div>
       <button
