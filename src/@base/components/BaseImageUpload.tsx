@@ -56,16 +56,14 @@ const [imgUrl, setImgUrl] = useState(value || "");
             alt="preview"
             width={64}
             height={64}
-            quality={100}
             className="w-full h-full object-cover"
           />
         ) : (
           <Image
             src={imgUrl}
-              alt="preview"
+            alt="preview"
             width={64}
             height={64}
-            quality={100}
             className="w-full h-full object-cover"
           />
         )}
