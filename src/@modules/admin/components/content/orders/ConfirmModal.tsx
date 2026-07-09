@@ -1,9 +1,8 @@
 import { orderId } from "@/src/@libs/utils/utils";
 import { IOrderInfo } from "@/src/@modules/order/libs/interface";
 
-
 interface ConfirmModalProps {
-  order: IOrderInfo;
+  order?: IOrderInfo;
   onConfirm: () => void;
   onCancel: () => void;
 }
@@ -30,17 +29,19 @@ export function ConfirmModal({
           </svg>
         </div>
         <h3 className="text-lg font-bold text-[#1e2a3a] mb-1">Delete Order?</h3>
-        <p className="text-sm text-gray-500 mb-6">
-          Order{" "}
-          <span className="font-semibold text-[#f97316]">
-            #{orderId(order)}
-          </span>{" "}
-          from{" "}
-          <span className="font-semibold text-[#1e2a3a]">
-            {order.customerName || "Unknown customer"}
-          </span>{" "}
-          will be permanently removed.
-        </p>
+        {order && (
+          <p className="text-sm text-gray-500 mb-6">
+            Order
+            <span className="font-semibold text-[#f97316]">
+              #{orderId(order)}
+            </span>
+            from
+            <span className="font-semibold text-[#1e2a3a]">
+              {order.customerName || "Unknown customer"}
+            </span>
+            will be permanently removed.
+          </p>
+        )}
         <div className="flex gap-3">
           <button
             onClick={onCancel}

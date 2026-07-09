@@ -7,7 +7,12 @@ const COOKIE_NAME = "auth_token";
 
 const ROUTES = {
   protected: ["/checkout", "/profile", "/orders"],
-  admin: ["/admin/dashboard", "/admin/orders", "/admin/products", "/admin/users"],
+  admin: [
+    "/admin/dashboard",
+    "/admin/orders",
+    "/admin/products",
+    "/admin/users",
+  ],
   guestOnly: ["/signIn", "/signUp"],
 };
 
@@ -30,6 +35,7 @@ const verifyToken = async (token: string): Promise<JWTPayload | null> => {
     return payload as unknown as JWTPayload;
   } catch {
     // token expired, invalid signature, malformed etc.
+
     return null;
   }
 };
@@ -48,7 +54,7 @@ export async function middleware(req: NextRequest) {
   // Already logged in → redirect away from auth pages
   if (matchesRoute(pathname, ROUTES.guestOnly)) {
     if (isAuthenticated) {
-      const redirectTo = isAdmin ? "/admin" : "/";
+      const redirectTo = isAdmin ? "/admin/dashboard" : "/";
       return NextResponse.redirect(new URL(redirectTo, req.url));
     }
     return NextResponse.next();

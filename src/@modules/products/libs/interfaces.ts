@@ -20,7 +20,7 @@ export interface IProduct {
   subcategory?: string;
   img: string;
 }
-export interface IProductCreate {
+export interface IProductCreateAndUpdate {
   _id: string;
   name: string;
   description?: string;
@@ -36,6 +36,7 @@ export interface IProductCreate {
   quantity: number;
   img: string;
 }
+
 export interface IProductResponse {
   success: boolean;
   message: string;

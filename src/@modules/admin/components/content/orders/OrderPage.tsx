@@ -48,7 +48,7 @@ export default function OrderPage() {
       <div className="space-y-6 px-8 pt-5">
         {contextHolder}
         {/* header */}
-        <PageHeader pageTitle="ORDERS" refresh={refresh} stats={stats} />
+        <PageHeader pageTitle="ORDERS" refresh={refresh} orderStats={stats} />
 
         {/* Summary stat chips — derived client-side from `orders` in useAdminOrdersPage */}
         <AllStatusStats
