@@ -8,7 +8,6 @@ import { RxCross2 } from "react-icons/rx";
 import BaseLoader from "@/src/@base/components/BaseLoader";
 import PageHeader from "../base/PageHeader";
 
-;
 import {
   IProduct,
   IProductCreateAndUpdate,
@@ -111,7 +110,11 @@ export default function ProductsPage() {
       {contextHolder}
 
       <div className="space-y-6 px-8 pt-5">
-        <PageHeader pageTitle="PRODUCTS" refresh={refetch} productStats={stats} />
+        <PageHeader
+          pageTitle="PRODUCTS"
+          refresh={refetch}
+          productStats={stats}
+        />
 
         {/* Search + Filter */}
 
@@ -148,7 +151,7 @@ export default function ProductsPage() {
 
           <button
             onClick={() => setModal("add")}
-            className="bg-[#f97316] hover:bg-[#ea6c0a] text-white rounded-xl px-5 flex items-center gap-2 font-semibold"
+            className="bg-[#f97316] hover:bg-[#ea6c0a] text-white rounded-xl px-5 flex items-center gap-2 font-semibold cursor-pointer"
           >
             <FaPlus />
             Add Product
@@ -177,6 +180,7 @@ export default function ProductsPage() {
 
         {modal && (
           <ProductModal
+            open={!!modal}
             product={modal}
             categories={categories.filter((i) => i !== "All")}
             onClose={() => setModal(null)}
@@ -187,14 +191,14 @@ export default function ProductsPage() {
 
         {/* Delete */}
 
-        {deleteTarget && (
+        {/* {deleteTarget && (
           <ConfirmModal
             product={deleteTarget}
             onCancel={() => setDeleteTarget(null)}
             onConfirm={handleDelete}
             loading={isDeleting}
           />
-        )}
+        )} */}
       </div>
     </>
   );

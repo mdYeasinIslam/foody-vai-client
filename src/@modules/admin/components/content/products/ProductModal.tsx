@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Form, Modal } from "antd";
+import { Col, Form, Modal, Row } from "antd";
 import BaseAntForm from "@/src/@base/components/BaseAntForm";
 import {
   IProduct,
@@ -16,7 +16,7 @@ interface Props {
 
   isLoading: boolean;
 
-  createProduct: (payload: IProductCreateAndUpdate) => void;
+  // createProduct: (payload: IProductCreateAndUpdate) => void;
   onSave: (values: IProductCreateAndUpdate, id?: string) => void;
 
   onClose: () => void;
@@ -45,8 +45,6 @@ export default function ProductModal({
   open,
   product,
   categories,
-
-  createProduct,
   onSave,
   onClose,
 
@@ -81,11 +79,7 @@ export default function ProductModal({
   }, [open, product]);
 
   const handleSubmit = (values: IProductCreateAndUpdate) => {
-    if (isEdit) {
-      onSave(values, isEdit ? product._id : undefined);
-    } else {
-      createProduct(values);
-    }
+    onSave(values, isEdit ? product._id : undefined);
 
     form.resetFields();
     onClose();
@@ -98,98 +92,116 @@ export default function ProductModal({
 
   const ProductFields = {
     basic: (
-      <div className="space-y-5">
-        <Form.Item
-          label="Product Image"
-          name="img"
-          rules={[
-            {
-              required: true,
-              message: "Please upload product image",
-            },
-          ]}
-        >
-          <BaseImageUpload
-            value={form.getFieldValue("img")}
-            onChange={(url) => form.setFieldValue("img", url)}
-          />
-        </Form.Item>
-
-        <Form.Item
-          label="Product Name"
-          name="name"
-          rules={[
-            {
-              required: true,
-              message: "Product name is required",
-            },
-          ]}
-        >
-          <input
-            className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#f97316]"
-            placeholder="Product Name"
-          />
-        </Form.Item>
-
-        <Form.Item label="Description" name="description">
-          <textarea
-            rows={4}
-            className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#f97316]"
-            placeholder="Description"
-          />
-        </Form.Item>
-
-        <div className="grid grid-cols-2 gap-5">
+      <Row gutter={10}>
+        <Col xs={24}>
           <Form.Item
-            label="Category"
-            name="category"
+            className="my-0!"
+            label="Product Image"
+            name="img"
             rules={[
               {
                 required: true,
-                message: "Category is required",
+                message: "Please upload product image",
               },
             ]}
           >
-            <select className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#f97316]">
-              <option value="">Select Category</option>
-
-              {categories.map((item) => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-          </Form.Item>
-
-          <Form.Item label="Sub Category" name="subcategory">
-            <input
-              className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#f97316]"
-              placeholder="Sub Category"
+            <BaseImageUpload
+              value={form?.getFieldValue("img")}
+              onChange={(url) => form?.setFieldValue("img", url)}
             />
           </Form.Item>
-        </div>
+        </Col>
+        <Col xs={24}>
+          <Form.Item
+            className="my-0!"
+            label="Product Name"
+            name="name"
+            rules={[
+              {
+                required: true,
+                message: "Product name is required",
+              },
+            ]}
+          >
+            <input
+              className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#f97316]"
+              placeholder="Product Name"
+            />
+          </Form.Item>
+        </Col>
+        <Col xs={24} md={12}>
+          <Form.Item className="my-0!" label="Description" name="description">
+            <textarea
+              rows={4}
+              className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#f97316]"
+              placeholder="Description"
+            />
+          </Form.Item>
+        </Col>
+        <Col xs={24}>
+          <Row gutter={10}>
+            <Col xs={24} md={12}>
+              <Form.Item
+                className="my-0!"
+                label="Category"
+                name="category"
+                rules={[
+                  {
+                    required: true,
+                    message: "Category is required",
+                  },
+                ]}
+              >
+                <select className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#f97316]">
+                  <option value="">Select Category</option>
 
-        <Form.Item
-          label="Available Quantity"
-          name="quantity"
-          rules={[
-            {
-              required: true,
-              message: "Quantity is required",
-            },
-          ]}
-        >
-          <input
-            type="number"
-            className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#f97316]"
-            placeholder="Quantity"
-          />
-        </Form.Item>
-      </div>
+                  {categories.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </Form.Item>
+            </Col>
+
+            <Col xs={24} md={12}>
+              <Form.Item
+                className="my-0!"
+                label="Sub Category"
+                name="subcategory"
+              >
+                <input
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#f97316]"
+                  placeholder="Sub Category"
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        </Col>
+        <Col xs={24} md={12}>
+          <Form.Item
+            className="my-0!"
+            label="Available Quantity"
+            name="quantity"
+            rules={[
+              {
+                required: true,
+                message: "Quantity is required",
+              },
+            ]}
+          >
+            <input
+              type="number"
+              className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#f97316]"
+              placeholder="Quantity"
+            />
+          </Form.Item>
+        </Col>
+      </Row>
     ),
 
     variants: (
-      <div className="space-y-5">
+      <div className="space-y-2">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold">Price Variants</h2>
 
@@ -207,7 +219,7 @@ export default function ProductModal({
                       currency: "BDT",
                     })
                   }
-                  className="rounded-lg bg-[#f97316] px-4 py-2 text-white"
+                  className="rounded-lg bg-[#f97316] px-4 py-2 text-white cursor-pointer"
                 >
                   + Add Variant
                 </button>
@@ -240,69 +252,80 @@ export default function ProductModal({
                     )}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-5">
-                    <Form.Item
-                      {...field}
-                      label="Weight Name"
-                      name={[field.name, "weightName"]}
-                      rules={[
-                        {
-                          required: true,
-                        },
-                      ]}
-                    >
-                      <input
-                        className="w-full rounded-xl border border-gray-200 px-4 py-3"
-                        placeholder="250 gm"
-                      />
-                    </Form.Item>
-
-                    <Form.Item
-                      {...field}
-                      label="Weight"
-                      name={[field.name, "weight"]}
-                    >
-                      <input
-                        type="number"
-                        className="w-full rounded-xl border border-gray-200 px-4 py-3"
-                      />
-                    </Form.Item>
-
-                    <Form.Item
-                      {...field}
-                      label="Price"
-                      name={[field.name, "price"]}
-                      rules={[
-                        {
-                          required: true,
-                        },
-                      ]}
-                    >
-                      <input
-                        type="number"
-                        className="w-full rounded-xl border border-gray-200 px-4 py-3"
-                      />
-                    </Form.Item>
-
-                    <Form.Item
-                      {...field}
-                      label="Original Price"
-                      name={[field.name, "originalPrice"]}
-                    >
-                      <input
-                        type="number"
-                        className="w-full rounded-xl border border-gray-200 px-4 py-3"
-                      />
-                    </Form.Item>
-
-                    <Form.Item
-                      {...field}
-                      label="Currency"
-                      name={[field.name, "currency"]}
-                    >
-                      <input className="w-full rounded-xl border border-gray-200 px-4 py-3" />
-                    </Form.Item>
-                  </div>
+                  <Row gutter={[16, 2]} about="">
+                    <Col sm={24} md={12}>
+                      <Form.Item
+                        className="my-0!"
+                        {...field}
+                        label="Weight Name"
+                        name={[field.name, "weightName"]}
+                        rules={[
+                          {
+                            required: true,
+                          },
+                        ]}
+                      >
+                        <input
+                          className="w-full rounded-xl border border-gray-200 px-4 py-3"
+                          placeholder="250 gm"
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col sm={24} md={12}>
+                      <Form.Item
+                        className="my-0!"
+                        {...field}
+                        label="Weight"
+                        name={[field.name, "weight"]}
+                      >
+                        <input
+                          type="number"
+                          className="w-full rounded-xl border border-gray-200 px-4 py-3"
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col sm={24} md={12}>
+                      <Form.Item
+                        className="my-0!"
+                        {...field}
+                        label="Price"
+                        name={[field.name, "price"]}
+                        rules={[
+                          {
+                            required: true,
+                          },
+                        ]}
+                      >
+                        <input
+                          type="number"
+                          className="w-full rounded-xl border border-gray-200 px-4 py-3"
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col sm={24} md={12}>
+                      <Form.Item
+                        className="my-0!"
+                        {...field}
+                        label="Original Price"
+                        name={[field.name, "originalPrice"]}
+                      >
+                        <input
+                          type="number"
+                          className="w-full rounded-xl border border-gray-200 px-4 py-3"
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col sm={24} md={12}>
+                      <Form.Item
+                        className="my-0!"
+                        {...field}
+                        label="Currency"
+                        name={[field.name, "currency"]}
+                      >
+                        <input className="w-full rounded-xl border border-gray-200 px-4 py-3" />
+                      </Form.Item>
+                    </Col>
+                  </Row>
                 </div>
               ))}
             </div>

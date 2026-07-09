@@ -129,7 +129,7 @@ export const useProductsState = (messageApi?: MessageInstance) => {
 
   const createProduct = (payload: IProductCreateAndUpdate) => {
     console.log(payload)
-    createMutate(payload);
+    // createMutate(payload);
   };
 
   const updateProduct = (id: string, payload: Partial<IProductCreateAndUpdate>) => {
