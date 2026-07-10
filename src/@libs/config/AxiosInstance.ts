@@ -3,8 +3,8 @@ import { getAccessToken, removeAccessToken } from "../utils/auth.token";
 
 export const AxiosInstance = axios.create({
   // baseURL: "http://localhost:5000/",
-  baseURL: "https://foody-vai-server-production.up.railway.app/",
-  // baseURL:'/data'
+  // baseURL: "https://foody-vai-server-production.up.railway.app/",
+  baseURL:'https://foody-vai-server.onrender.com/'
 });
 
 AxiosInstance.interceptors.request.use(

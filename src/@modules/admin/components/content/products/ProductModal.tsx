@@ -8,6 +8,7 @@ import {
   IProductCreateAndUpdate,
 } from "@/src/@modules/products/libs/interfaces";
 import BaseImageUpload from "@/src/@base/components/BaseImageUpload";
+import BaseModal from "@/src/@base/components/BaseModal";
 
 interface Props {
   open: boolean;
@@ -335,13 +336,14 @@ export default function ProductModal({
     ),
   };
   return (
-    <Modal
+    <BaseModal
       open={open}
       onCancel={onClose}
-      footer={null}
       width={900}
+      height={700}
       destroyOnClose
       title={isEdit ? "Update Product" : "Add Product"}
+      className="overflow-y-scroll max-h-[80vh] h-full px-5 py-8 my-0!"
     >
       <BaseAntForm<IProductCreateAndUpdate>
         formInstance={form}
@@ -362,6 +364,6 @@ export default function ProductModal({
           },
         ]}
       />
-    </Modal>
+    </BaseModal>
   );
 }
