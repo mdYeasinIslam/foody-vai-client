@@ -9,7 +9,7 @@ export const ProductsService = {
   Name: END_POINT,
   async create(payload: IProductCreateAndUpdate): Promise<IProductResponse> {
     try {
-      const res = await AxiosInstance.post(END_POINT, payload);
+      const res = await AxiosInstance.post(`${END_POINT}/add-product`, payload);
       return Promise.resolve(res?.data);
     } catch (error) {
       throw error;

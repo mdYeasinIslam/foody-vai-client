@@ -4,18 +4,19 @@ export interface IProductFilter {
   maxPrice?: number;
   search?: string;
 }
-
+interface IPrice {
+  weight: number;
+  price: number;
+  originalPrice: number;
+  weightName: string;
+  currency: string;
+  availableWeight: number;
+}
 export interface IProduct {
   _id: string;
   name: string;
   description?: string;
-  prices: {
-    weight: number;
-    price: number;
-    originalPrice: number;
-    weightName: string;
-    currency: string;
-  }[];
+  prices: IPrice[];
   category: string;
   subcategory?: string;
   quantity?: number;
@@ -25,13 +26,7 @@ export interface IProductCreateAndUpdate {
   _id: string;
   name: string;
   description?: string;
-  prices: {
-    weight: number;
-    price: number;
-    originalPrice: number;
-    weightName: string;
-    currency: string;
-  }[];
+  prices: IPrice[];
   category: string;
   subcategory?: string;
   quantity?: number;
