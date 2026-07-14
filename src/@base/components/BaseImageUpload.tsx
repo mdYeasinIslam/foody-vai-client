@@ -6,10 +6,10 @@ interface IProps {
 }
 const IMGBB_API_KEY = "2652e01633554d3e4796cc1dbbd023e2";
 
-const BaseImageUpload:React.FC<IProps>=({ value, onChange }) =>{
+const BaseImageUpload: React.FC<IProps> = ({ value, onChange }) => {
   const [uploading, setUploading] = useState(false);
-const [imgUrl, setImgUrl] = useState(value || "");
-  const uploadImage = async (file:any) => {
+  const [imgUrl, setImgUrl] = useState(value || "");
+  const uploadImage = async (file: any) => {
     try {
       setUploading(true);
 
@@ -28,8 +28,8 @@ const [imgUrl, setImgUrl] = useState(value || "");
       );
 
       const data = await res.json();
-        if (data.success) {
-          setImgUrl(data.data.url);
+      if (data.success) {
+        setImgUrl(data.data.url);
         onChange(data.data.url);
       }
     } catch (error) {
@@ -39,20 +39,20 @@ const [imgUrl, setImgUrl] = useState(value || "");
     }
   };
 
-  const handleFileChange = (e:any) => {
+  const handleFileChange = (e: any) => {
     const file = e.target.files[0];
 
     if (file) {
       uploadImage(file);
     }
   };
-
   return (
     <div className="flex items-center gap-4">
       <div className="w-16 h-16 rounded-xl bg-gray-100 overflow-hidden shrink-0 border border-gray-200">
-        {value ? (
+        {value.includes('http') && !uploading ? (
           <Image
             src={value}
+            // src={"https://i.ibb.co.com/HVNcRPK/logo2.png"}
             alt="preview"
             width={64}
             height={64}
@@ -60,7 +60,8 @@ const [imgUrl, setImgUrl] = useState(value || "");
           />
         ) : (
           <Image
-            src={imgUrl}
+            src={!imgUrl ? "https://i.ibb.co.com/HVNcRPK/logo2.png" : imgUrl}
+            // src={"https://i.ibb.co.com/HVNcRPK/logo2.png"}
             alt="preview"
             width={64}
             height={64}
@@ -94,5 +95,5 @@ const [imgUrl, setImgUrl] = useState(value || "");
       </div>
     </div>
   );
-}
+};
 export default BaseImageUpload;

@@ -1,14 +1,14 @@
 "use client";
 
-import React from "react";
-import { Col, Form, Modal, Row } from "antd";
 import BaseAntForm from "@/src/@base/components/BaseAntForm";
+import BaseImageUpload from "@/src/@base/components/BaseImageUpload";
+import BaseModal from "@/src/@base/components/BaseModal";
 import {
   IProduct,
   IProductCreateAndUpdate,
 } from "@/src/@modules/products/libs/interfaces";
-import BaseImageUpload from "@/src/@base/components/BaseImageUpload";
-import BaseModal from "@/src/@base/components/BaseModal";
+import { Col, Form, Row } from "antd";
+import React from "react";
 
 interface Props {
   open: boolean;
@@ -29,7 +29,6 @@ const EMPTY_VALUES: IProductCreateAndUpdate = {
   description: "",
   category: "",
   subcategory: "",
-  quantity: 0,
   img: "",
   prices: [
     {
@@ -38,6 +37,7 @@ const EMPTY_VALUES: IProductCreateAndUpdate = {
       price: 0,
       originalPrice: 0,
       currency: "BDT",
+      availableWeight: 0,
     },
   ],
 };
@@ -62,8 +62,7 @@ export default function ProductModal({
         description: product.description,
         category: product.category,
         subcategory: product.subcategory,
-        quantity: product?.quantity,
-        img: product.img,
+        img: product?.img,
         prices: product.prices,
       }
     : EMPTY_VALUES;
@@ -179,11 +178,11 @@ export default function ProductModal({
             </Col>
           </Row>
         </Col>
-        <Col xs={24} md={12}>
+        {/* <Col xs={24} md={12}>
           <Form.Item
             className="my-0!"
-            label="Available Quantity"
-            name="quantity"
+            label="Available Weight"
+            name="availableWeight"
             rules={[
               {
                 required: true,
@@ -194,10 +193,10 @@ export default function ProductModal({
             <input
               type="number"
               className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#f97316]"
-              placeholder="Quantity"
+              placeholder="Available Weight or quantity"
             />
           </Form.Item>
-        </Col>
+        </Col> */}
       </Row>
     ),
 
@@ -213,11 +212,12 @@ export default function ProductModal({
                   type="button"
                   onClick={() =>
                     add({
-                      weight: 250,
+                      weight: 0,
                       weightName: "",
                       price: 0,
                       originalPrice: 0,
                       currency: "BDT",
+                      availableWeight: 0,
                     })
                   }
                   className="rounded-lg bg-[#f97316] px-4 py-2 text-white cursor-pointer"
@@ -320,8 +320,18 @@ export default function ProductModal({
                       <Form.Item
                         className="my-0!"
                         {...field}
-                        label="Currency"
+                        label="Currency Name"
                         name={[field.name, "currency"]}
+                      >
+                        <input className="w-full rounded-xl border border-gray-200 px-4 py-3" />
+                      </Form.Item>
+                    </Col>
+                    <Col sm={24} md={12}>
+                      <Form.Item
+                        className="my-0!"
+                        {...field}
+                        label="Available Weight"
+                        name={[field.name, "availableWeight"]}
                       >
                         <input className="w-full rounded-xl border border-gray-200 px-4 py-3" />
                       </Form.Item>
@@ -341,7 +351,7 @@ export default function ProductModal({
       onCancel={onClose}
       width={900}
       height={700}
-      destroyOnClose
+      destroyOnHidden={true}
       title={isEdit ? "Update Product" : "Add Product"}
       className="overflow-y-scroll max-h-[80vh] h-full px-5 py-8 my-0!"
     >
