@@ -1,6 +1,5 @@
 
 import { AxiosInstance } from "@/src/@libs/config/AxiosInstance";
-import axios from "axios";
 import { IProductCreateAndUpdate, IProductFilter, IProductResponse, IProductsResponse } from "./interfaces";
 
 const END_POINT: string = "products";
