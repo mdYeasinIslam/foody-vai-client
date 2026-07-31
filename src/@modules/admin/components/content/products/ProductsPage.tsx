@@ -84,24 +84,21 @@ export default function ProductsPage() {
   // ============================
 
   const handleSave = (values: IProductCreateAndUpdate, id?: string) => {
-    if (id) {
-      updateProduct(id, values);
-    } else {
-      createProduct(values);
-    }
+    console.log(values, id)
+    // if (id) {
+    //   updateProduct(id, values);
+    // } else {
+    //   createProduct(values);
+    // }
 
-    setModal(null);
+    // setModal(null);
   };
 
-  // ============================
-  // Delete
-  // ============================
+  // Delete ============================
 
   const handleDelete = () => {
     if (!deleteTarget) return;
-
     deleteProduct(deleteTarget._id);
-
     setDeleteTarget(null);
   };
 
@@ -159,7 +156,6 @@ export default function ProductsPage() {
         </div>
 
         {/* Table */}
-
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           {isGetProductsPending ? (
             <BaseLoader className="flex justify-center mt-10" />
@@ -191,14 +187,12 @@ export default function ProductsPage() {
 
         {/* Delete */}
 
-        {/* {deleteTarget && (
+        {deleteTarget && (
           <ConfirmModal
-            product={deleteTarget}
             onCancel={() => setDeleteTarget(null)}
             onConfirm={handleDelete}
-            loading={isDeleting}
           />
-        )} */}
+        )}
       </div>
     </>
   );

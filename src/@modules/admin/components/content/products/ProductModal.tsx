@@ -27,19 +27,14 @@ const EMPTY_VALUES: IProductCreateAndUpdate = {
   _id: "",
   name: "",
   description: "",
-  category: "",
-  subcategory: "",
   img: "",
-  prices: [
-    {
-      weight: 250,
-      weightName: "250 gm",
-      price: 0,
-      originalPrice: 0,
-      currency: "BDT",
-      availableWeight: 0,
-    },
-  ],
+  sellUnit: "",
+  price: 0,
+  salePrice: 0,
+  averageRating: 0,
+  category: "",
+  quantity: 0,
+  slug: "",
 };
 
 export default function ProductModal({
@@ -55,17 +50,25 @@ export default function ProductModal({
 
   const isEdit = !!product && product !== "add";
 
-  const initialValues: IProductCreateAndUpdate = isEdit
-    ? {
-        _id: product._id,
-        name: product.name,
-        description: product.description,
-        category: product.category,
-        subcategory: product.subcategory,
-        img: product?.img,
-        prices: product.prices,
-      }
-    : EMPTY_VALUES;
+  const initialValues = React.useMemo<IProductCreateAndUpdate>(
+    () =>
+      isEdit
+        ? {
+            _id: product._id,
+            name: product.name,
+            description: product.description,
+            category: product.category,
+            img: product?.img,
+            sellUnit: product.sellUnit,
+            price: product.price,
+            salePrice: product.salePrice,
+            averageRating: product.averageRating,
+            quantity: product.quantity,
+            slug: product.slug,
+          }
+        : EMPTY_VALUES,
+    [isEdit, product],
+  );
 
   React.useEffect(() => {
     if (!open) return;
@@ -76,7 +79,7 @@ export default function ProductModal({
       form.resetFields();
       form.setFieldsValue(EMPTY_VALUES);
     }
-  }, [open, product]);
+  }, [open, product, form, initialValues, isEdit]);
 
   const handleSubmit = (values: IProductCreateAndUpdate) => {
     onSave(values, isEdit ? product._id : undefined);
@@ -138,6 +141,92 @@ export default function ProductModal({
             />
           </Form.Item>
         </Col>
+        <Col xs={24} md={12}>
+          <Form.Item
+            className="my-0!"
+            label="Sell Unit"
+            name="sellUnit"
+            rules={[
+              {
+                required: true,
+                message: "Sell unit is required",
+              },
+            ]}
+          >
+            <input
+              className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#f97316]"
+              placeholder="Sell Unit"
+            />
+          </Form.Item>
+        </Col>
+        <Col xs={24} md={12}>
+          <Form.Item
+            className="my-0!"
+            label="Price"
+            name="price"
+            rules={[
+              {
+                required: true,
+                message: "Price is required",
+              },
+            ]}
+          >
+            <input
+              type="number"
+              className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#f97316]"
+              placeholder="Price"
+            />
+          </Form.Item>
+        </Col>
+        <Col xs={24} md={12}>
+          <Form.Item className="my-0!" label="Sale Price" name="salePrice">
+            <input
+              type="number"
+              className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#f97316]"
+              placeholder="Sale Price"
+            />
+          </Form.Item>
+        </Col>
+        <Col xs={24} md={12}>
+          <Form.Item
+            className="my-0!"
+            label="Average Rating"
+            name="averageRating"
+          >
+            <input
+              type="number"
+              className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#f97316]"
+              placeholder="Average Rating"
+            />
+          </Form.Item>
+        </Col>
+        <Col xs={24} md={12}>
+          <Form.Item
+            className="my-0!"
+            label="Quantity"
+            name="quantity"
+            rules={[
+              {
+                required: true,
+                message: "Quantity is required",
+              },
+            ]}
+          >
+            <input
+              type="number"
+              className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#f97316]"
+              placeholder="Quantity"
+            />
+          </Form.Item>
+        </Col>
+        <Col xs={24} md={12}>
+          <Form.Item className="my-0!" label="Slug" name="slug">
+            <input
+              className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#f97316]"
+              placeholder="Slug"
+            />
+          </Form.Item>
+        </Col>
         <Col xs={24}>
           <Row gutter={10}>
             <Col xs={24} md={12}>
@@ -165,15 +254,8 @@ export default function ProductModal({
             </Col>
 
             <Col xs={24} md={12}>
-              <Form.Item
-                className="my-0!"
-                label="Sub Category"
-                name="subcategory"
-              >
-                <input
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#f97316]"
-                  placeholder="Sub Category"
-                />
+              <Form.Item className="my-0!" label="Sub Category" name="slug">
+                <input type="hidden" />
               </Form.Item>
             </Col>
           </Row>
@@ -202,11 +284,11 @@ export default function ProductModal({
 
     variants: (
       <div className="space-y-2">
-        <div className="flex items-center justify-between">
+        {/* <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold">Price Variants</h2>
 
           <Form.List name="prices">
-            {(fields, { add }) => (
+            {(_, { add }) => (
               <>
                 <button
                   type="button"
@@ -229,9 +311,9 @@ export default function ProductModal({
               </>
             )}
           </Form.List>
-        </div>
+        </div> */}
 
-        <Form.List name="prices">
+        {/* <Form.List name="prices">
           {(fields, { remove }) => (
             <div className="space-y-5">
               {fields.map((field, index) => (
@@ -341,7 +423,7 @@ export default function ProductModal({
               ))}
             </div>
           )}
-        </Form.List>
+        </Form.List> */}
       </div>
     ),
   };

@@ -2,8 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { MessageInstance } from "antd/es/message/interface";
-import { IProduct, IProductCreateAndUpdate, IProductResponse } from "@/src/@modules/products/libs/interfaces";
-import { useCreateProduct, useDeleteProduct, useProducts, useUpdateProduct } from "@/src/@modules/products/libs/hooks";
+import {
+  IProduct,
+  IProductCreateAndUpdate,
+  IProductResponse,
+} from "@/src/@modules/products/libs/interfaces";
+import {
+  useCreateProduct,
+  useDeleteProduct,
+  useProducts,
+  useUpdateProduct,
+} from "@/src/@modules/products/libs/hooks";
 
 export const useProductsState = (messageApi?: MessageInstance) => {
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -38,7 +47,7 @@ export const useProductsState = (messageApi?: MessageInstance) => {
   } = useCreateProduct({
     config: {
       onSuccess: (res: IProductResponse) => {
-        console.log(res)
+        console.log(res);
         if (!res.success) {
           messageApi?.error(res.message);
           return;
@@ -107,13 +116,13 @@ export const useProductsState = (messageApi?: MessageInstance) => {
           messageApi?.error(res.message);
           return;
         }
+        messageApi?.loading("Deleting product...", 1).then((message) => {
+          setProducts((prev) =>
+            prev.filter((product) => product._id !== res.data._id),
+          );
 
-        setProducts((prev) =>
-          prev.filter((product) => product._id !== res.data._id),
-        );
-
-        messageApi?.success(res.message);
-
+          messageApi?.success(res.message);
+        });
         refetch();
       },
 
@@ -128,11 +137,14 @@ export const useProductsState = (messageApi?: MessageInstance) => {
   // ========================================================
 
   const createProduct = (payload: IProductCreateAndUpdate) => {
-    console.log(payload)
+    console.log(payload);
     createMutate(payload);
   };
 
-  const updateProduct = (id: string, payload: Partial<IProductCreateAndUpdate>) => {
+  const updateProduct = (
+    id: string,
+    payload: Partial<IProductCreateAndUpdate>,
+  ) => {
     updateMutate({
       id,
       payload,

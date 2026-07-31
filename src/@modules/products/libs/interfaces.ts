@@ -4,34 +4,60 @@ export interface IProductFilter {
   maxPrice?: number;
   search?: string;
 }
-interface IPrice {
-  weight: number;
+// interface IPrice {
+//   weight: number;
+//   price: number;
+//   originalPrice: number;
+//   weightName: string;
+//   currency: string;
+//   availableWeight: number;
+// }
+// export interface Product {
+//   _id: string;
+//   name: string;
+//   description?: string;
+//   prices: IPrice[];
+//   category: string;
+//   subcategory?: string;
+//   quantity?: number;
+//   img: string;
+// }
+export type IProduct = {
+  _id: string;
+  name: string;
+  description?: string;
+  img: string;
+  sellUnit: string;
   price: number;
-  originalPrice: number;
-  weightName: string;
-  currency: string;
-  availableWeight: number;
-}
-export interface IProduct {
-  _id: string;
+  salePrice: number;
+  averageRating: number;
+  category: string;
+  quantity: number;
+  slug: string;
+};
+export type IProductCreateAndUpdate = {
+  _id?: string;
   name: string;
   description?: string;
-  prices: IPrice[];
-  category: string;
-  subcategory?: string;
-  quantity?: number;
   img: string;
-}
-export interface IProductCreateAndUpdate {
-  _id: string;
-  name: string;
-  description?: string;
-  prices: IPrice[];
+  sellUnit: string;
+  price: number;
+  salePrice: number;
+  averageRating: number;
   category: string;
-  subcategory?: string;
-  quantity?: number;
-  img: string;
-}
+  quantity: number;
+  slug: string;
+};
+// export interface ProductCreateAndUpdate {
+//   _id: string;
+//   name: string;
+//   description?: string;
+//   prices: IPrice[];
+//   category: string;
+//   subcategory?: string;
+//   quantity?: number;
+//   img: string;
+// }
 
 export interface IProductResponse {
   success: boolean;
